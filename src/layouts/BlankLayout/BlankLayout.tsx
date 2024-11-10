@@ -1,0 +1,12 @@
+import React from 'react';
+import { Outlet } from 'react-router-dom';
+
+const BlankLayout: React.FC = () => {
+  return (
+    <main className='BlankLayout'>
+      <Outlet />
+    </main>
+  );
+};
+
+export default BlankLayout;
