@@ -1,4 +1,4 @@
-import { UserDetailInsertSchemaType } from '@/types/schema.type';
+import { UserDetailSelectSchemaType } from '@/types/schema.type';
 import { registerUserValidation, verifyUserValidation } from '@/validations/auth.validation';
 import { z } from 'zod';
 
@@ -12,7 +12,7 @@ export type TokenResponseType = {
 };
 
 export type LoginUserResponseType = {
-  userDetail: UserDetailInsertSchemaType;
+  userDetail: UserDetailSelectSchemaType;
   meta: TokenResponseType;
 };
 
