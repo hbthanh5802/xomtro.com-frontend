@@ -32,6 +32,7 @@ class AuthServices {
       method: 'POST',
       url: '/auth/google',
       data,
+      withCredentials: true,
     });
   }
 }
