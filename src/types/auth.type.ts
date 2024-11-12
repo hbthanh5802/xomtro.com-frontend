@@ -7,14 +7,15 @@ export type RegisterDataType = z.infer<typeof registerUserValidation>;
 export type VerifyUserDataType = z.infer<typeof verifyUserValidation>;
 
 export type TokenResponseType = {
-  refreshToken: string;
-  accessToken: string;
+  meta: {
+    refreshToken: string;
+    accessToken: string;
+  };
 };
 
 export type LoginUserResponseType = {
   userDetail: UserDetailSelectSchemaType;
-  meta: TokenResponseType;
-};
+} & TokenResponseType;
 
 export type GoogleAuthDataType = {
   credential: string;

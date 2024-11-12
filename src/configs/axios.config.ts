@@ -1,6 +1,13 @@
 import { env } from '@/configs/environment.config';
+import authService from '@/services/auth.service';
+import { useAppStore } from '@/store/store';
+import { TokenResponseType } from '@/types/auth.type';
+import { handleAxiosError } from '@/utils/constants.helper';
+import history from '@/utils/history.helper';
 import axios, { AxiosRequestConfig } from 'axios';
+import { jwtDecode } from 'jwt-decode';
 import queryString from 'query-string';
+import { toast } from 'sonner';
 
 type HttpMethods = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 interface ApiResponse<T = any> {
@@ -47,11 +54,40 @@ axiosClient.interceptors.response.use(
   },
 );
 
+let refreshTokenRequest: any = null;
 axiosAuth.interceptors.request.use(
   async (config) => {
     if (config.data) {
       config.headers['Content-Type'] = 'application/json';
     }
+
+    let accessToken = useAppStore.getState().accessToken;
+    const decodeToken = jwtDecode(accessToken as string);
+    const date = new Date();
+
+    if (decodeToken.exp! < date.getTime() / 1000) {
+      refreshTokenRequest = !!refreshTokenRequest ? refreshTokenRequest : authService.refreshUserToken();
+      try {
+        const response = (await refreshTokenRequest) as TokenResponseType;
+        const { meta } = response;
+        if (meta.accessToken) {
+          accessToken = meta.accessToken;
+          useAppStore.getState().setAccessToken(accessToken);
+        }
+        refreshTokenRequest = null;
+      } catch (error) {
+        console.log('Refresh failed!', error);
+        const { status } = handleAxiosError(error)!;
+        if (status === 401) {
+          useAppStore.getState().resetAuthState();
+          toast.info('Có lỗi xảy ra. Vui lòng đăng nhập lại!', {
+            duration: 1000,
+            onAutoClose: () => history.push('/login'),
+          });
+        }
+      }
+    }
+    config.headers.Authorization = `Bearer ${accessToken}`;
     return config;
   },
   (error) => {

@@ -1,5 +1,11 @@
 import { axiosRequest } from '@/configs/axios.config';
-import { GoogleAuthDataType, LoginUserResponseType, RegisterDataType, VerifyUserDataType } from '@/types/auth.type';
+import {
+  GoogleAuthDataType,
+  LoginUserResponseType,
+  RegisterDataType,
+  TokenResponseType,
+  VerifyUserDataType,
+} from '@/types/auth.type';
 import { UserDetailSelectSchemaType } from '@/types/schema.type';
 
 class AuthServices {
@@ -32,6 +38,14 @@ class AuthServices {
       method: 'POST',
       url: '/auth/google',
       data,
+      withCredentials: true,
+    });
+  }
+
+  async refreshUserToken() {
+    return axiosRequest<TokenResponseType>({
+      method: 'POST',
+      url: '/auth/refresh',
       withCredentials: true,
     });
   }

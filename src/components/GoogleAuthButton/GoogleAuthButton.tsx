@@ -4,10 +4,12 @@ import { useAppStore } from '@/store/store';
 import { Button } from '@mui/joy';
 import { useGoogleLogin } from '@react-oauth/google';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useShallow } from 'zustand/react/shallow';
 
 const GoogleAuthButton: React.FC = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const { setCurrentUser, setAccessToken } = useAppStore(
     useShallow((state) => ({
@@ -25,14 +27,27 @@ const GoogleAuthButton: React.FC = () => {
         userDetail,
         meta: { accessToken },
       } = response.data;
-
-      setCurrentUser(userDetail);
-      setAccessToken(accessToken);
-
       toast.success('Thành công! Bạn sẽ được chuyển hướng ngay sau đó', {
         duration: 1500,
         id: toastId,
       });
+      if (!userDetail.role) {
+        navigate('/auth/role', {
+          state: {
+            userDetail,
+          },
+        });
+      } else if (!userDetail.isEmailVerified) {
+        navigate('/auth/verify', {
+          state: {
+            userDetail,
+          },
+        });
+      } else {
+        setCurrentUser(userDetail);
+        setAccessToken(accessToken);
+        navigate('/');
+      }
     } catch (error) {
       toast.error('Có lỗi xảy ra. Vui lòng thử lại!', {
         id: toastId,

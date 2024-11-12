@@ -1,6 +1,10 @@
-import { addresses, userDetail } from '@/configs/schema.config';
-import { userRole } from '@/types/schema.type';
-import { emailValidation, passwordValidation, phoneValidation } from '@/validations/common.validation';
+import { addresses, userDetail, users } from '@/configs/schema.config';
+import {
+  emailValidation,
+  passwordValidation,
+  phoneValidation,
+  userRoleValidation,
+} from '@/validations/common.validation';
 import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
@@ -8,7 +12,7 @@ export const registerUserValidation = z.object({
   email: emailValidation,
   phone: phoneValidation,
   password: passwordValidation,
-  role: z.enum([userRole.RENTER, userRole.LANDLORD], { message: 'Vai trò không hợp lệ' }),
+  role: userRoleValidation,
   firstName: z.string().trim().min(1, { message: 'Bạn chưa nhập đầy đủ thông tin!' }),
   lastName: z.string().trim().min(1, { message: 'Bạn chưa nhập đầy đủ thông tin!' }),
 });
@@ -75,3 +79,5 @@ export const updateUserProfileValidation = createInsertSchema(userDetail)
   })
   .strict()
   .partial();
+
+export const updateUserRoleValidation = createInsertSchema(userDetail).pick({ role: true }).strict();

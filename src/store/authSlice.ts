@@ -9,6 +9,7 @@ type authState = {
 type authActions = {
   setCurrentUser: (currentUser: UserDetailSelectSchemaType) => void;
   setAccessToken: (token: string) => void;
+  resetAuthState: () => void;
 };
 
 const initialState: authState = {
