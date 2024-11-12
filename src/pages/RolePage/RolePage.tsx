@@ -1,11 +1,11 @@
 import LogoIcon from '@/assets/LogoIcon';
-import RHFInput from '@/components/RHFInput';
-import Timer from '@/components/Timer';
+import RHFRoleChoices from '@/components/RHFRoleChoices';
 import useUrl from '@/hooks/useUrl.hook';
 import authService from '@/services/auth.service';
-import { useAppStore } from '@/store/store';
-import { VerifyUserDataType } from '@/types/auth.type';
-import { verifyUserValidation } from '@/validations/auth.validation';
+import userService from '@/services/user.service';
+import { userRoleDataType } from '@/types/user.type';
+import { handleAxiosError } from '@/utils/constants.helper';
+import { updateUserRoleValidation } from '@/validations/auth.validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, IconButton, Typography } from '@mui/joy';
 import { useMutation } from '@tanstack/react-query';
@@ -13,9 +13,8 @@ import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { useShallow } from 'zustand/react/shallow';
 
-const VerifyPage = () => {
+const RolePage = () => {
   const {
     state: { userDetail },
   } = useUrl();
@@ -24,77 +23,66 @@ const VerifyPage = () => {
     return <>Forbidden</>;
   }
   const navigate = useNavigate();
-  const [canResend, setCanResend] = useState(true);
-  const [isSending, setIsSending] = useState(false);
-  const { setAccessToken, setCurrentUser } = useAppStore(
-    useShallow((state) => ({ setAccessToken: state.setAccessToken, setCurrentUser: state.setCurrentUser })),
-  );
+  const [canResend, setCanResend] = useState(false);
 
   const methods = useForm({
-    defaultValues: {
-      email: userDetail.email,
-      otpCode: '',
-    },
-    resolver: zodResolver(verifyUserValidation),
+    resolver: zodResolver(updateUserRoleValidation),
   });
   const { isValid, isSubmitting } = methods.formState;
 
   const verifyMutation = useMutation({
-    mutationFn: (data: VerifyUserDataType) => authService.verifyUser(data),
+    mutationFn: (data: userRoleDataType) => userService.updateUserDetail(data),
     onError: () => {
       toast.error('Có lỗi xảy ra. Vui lòng thử lại.');
       methods.resetField('otpCode');
     },
     onSuccess: (response) => {
-      const {
-        userDetail,
-        meta: { accessToken },
-      } = response.data;
-
+      console.log(response);
       toast.success('Xác thực thành công. Trang sẽ chuyển hướng ngay sau thông báo này.', {
-        duration: 1000,
+        duration: 1500,
         onAutoClose: () => {
-          if (!userDetail.role) {
-            navigate('/auth/role', {
-              state: {
-                userDetail,
-              },
-            });
-          } else if (!userDetail.isEmailVerified) {
-            navigate('/auth/verify', {
-              state: {
-                userDetail,
-              },
-            });
-          } else {
-            setCurrentUser(userDetail);
-            setAccessToken(accessToken);
-            navigate('/');
-          }
+          toast.success('Xác thực thành công. Trang sẽ chuyển hướng ngay sau thông báo này.', {
+            duration: 1000,
+            onAutoClose: () => {
+              if (!userDetail.role) {
+                navigate('/auth/role', {
+                  state: {
+                    userDetail,
+                  },
+                });
+              } else if (!userDetail.isEmailVerified) {
+                navigate('/auth/verify', {
+                  state: {
+                    userDetail,
+                  },
+                });
+              } else {
+                navigate('/');
+              }
+            },
+          });
         },
       });
     },
   });
 
-  const onSubmit = async (data: VerifyUserDataType) => {
+  const onSubmit = async (data: userRoleDataType) => {
     await verifyMutation.mutateAsync(data);
   };
 
   const handleSendVerifyEmail = async () => {
-    setCanResend(false);
-    setIsSending(true);
     try {
       await authService.getVerifyUser(userDetail.email);
     } catch (error) {
+      console.log(handleAxiosError(error));
       toast.error('Có lỗi xảy ra. Vui lòng thử lại.');
     } finally {
-      setIsSending(false);
+      setCanResend(false);
     }
   };
 
   useEffect(() => {
     if (canResend) {
-      console.log('Call');
       handleSendVerifyEmail();
     }
   }, []);
@@ -172,43 +160,23 @@ const VerifyPage = () => {
             <FormProvider {...methods}>
               <div className='tw-space-y-4'>
                 <Typography level='h3' sx={{ textAlign: 'center' }}>
-                  Xác thực tài khoản
+                  Xin Chào,{' '}
+                  <Typography variant='soft' sx={{ fontWeight: 600 }}>
+                    {`${userDetail.firstName} ${userDetail.lastName}`}
+                  </Typography>
                 </Typography>
                 <Typography level='body-md'>
-                  Vì lý do bảo mật, một mã xác thực tài khoản gồm 6 chữ số đã được gửi tới:{' '}
-                  <Typography variant='soft' sx={{ fontWeight: 600 }}>
-                    {userDetail.email}
-                  </Typography>{' '}
-                  Hãy kiểm tra và làm theo hướng dẫn dưới đây.
+                  Hãy cho chúng tôi biết mục đích lựa chọn của bạn. Vui lòng làm theo hưỡng dẫn sau đây:
                 </Typography>
               </div>
               <form onSubmit={methods.handleSubmit(onSubmit)}>
-                <RHFInput<VerifyUserDataType>
-                  name='otpCode'
-                  label='Nhập mã tại đây:'
-                  placeholder='VD: 123456'
-                  type='text'
-                />
+                <RHFRoleChoices<userRoleDataType> name='role' label='Lựa chọn vai trò:' />
                 {/* Submit button */}
                 <Button type='submit' fullWidth disabled={!isValid || isSubmitting} loading={isSubmitting}>
-                  Xác thực
+                  Xác nhận
                 </Button>
               </form>
             </FormProvider>
-            <div className='tw-flex tw-items-center tw-space-x-1'>
-              <Typography level='body-md' component='div'>
-                Chưa nhận được mã?
-              </Typography>
-              {canResend ? (
-                <Button size='sm' variant='soft' onClick={() => handleSendVerifyEmail()} loading={isSending}>
-                  Gửi mã
-                </Button>
-              ) : (
-                <Typography level='body-md' component='div'>
-                  Thử lại sau <Timer second={30} onEnd={() => setCanResend(true)} className='tw-inline-block' />
-                </Typography>
-              )}
-            </div>
           </Box>
           <Box component='footer' sx={{ py: 3 }}>
             <Typography level='body-xs' sx={{ textAlign: 'center' }}>
@@ -221,4 +189,4 @@ const VerifyPage = () => {
   );
 };
 
-export default VerifyPage;
+export default RolePage;

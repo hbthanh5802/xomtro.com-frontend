@@ -1,3 +1,4 @@
+import { userRole } from '@/types/schema.type';
 import { z } from 'zod';
 
 export const emailValidation = z
@@ -14,3 +15,5 @@ export const passwordValidation = z
   .string()
   .trim()
   .regex(passwordRegex, 'Mật khẩu phải chứa ít nhất 6 ký tự, bao gồm 1 chữ cái viết hoa, 1 số, 1 ký tự đặc biệt.');
+
+export const userRoleValidation = z.enum([userRole.RENTER, userRole.LANDLORD], { message: 'Vai trò không hợp lệ' });

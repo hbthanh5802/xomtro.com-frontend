@@ -2,6 +2,7 @@ import BlankLayout from '@/layouts/BlankLayout';
 import MainLayout from '@/layouts/MainLayout';
 import AuthPage from '@/pages/AuthPage';
 import HomePage from '@/pages/HomePage';
+import RolePage from '@/pages/RolePage';
 import VerifyPage from '@/pages/VerifyPage';
 import React, { lazy } from 'react';
 import { useRoutes } from 'react-router-dom';
@@ -28,6 +29,14 @@ const AppRoutes: React.FC = () => {
           element: (
             <AuthPage>
               <VerifyPage />
+            </AuthPage>
+          ),
+        },
+        {
+          path: 'role',
+          element: (
+            <AuthPage>
+              <RolePage />
             </AuthPage>
           ),
         },
