@@ -3,6 +3,11 @@ import axios, { AxiosRequestConfig } from 'axios';
 import queryString from 'query-string';
 
 type HttpMethods = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+interface ApiResponse<T = any> {
+  statusCode: number;
+  message: string;
+  data: T;
+}
 interface customAxiosRequestConfig extends AxiosRequestConfig {
   method?: HttpMethods;
 }
@@ -66,10 +71,10 @@ axiosAuth.interceptors.response.use(
   },
 );
 
-export const axiosRequest = <T>(config: customAxiosRequestConfig): Promise<T> => {
-  return axiosClient(config) as Promise<T>;
+export const axiosRequest = <T = any>(config: customAxiosRequestConfig): Promise<ApiResponse<T>> => {
+  return axiosClient(config) as Promise<ApiResponse<T>>;
 };
 
-export const axiosAuthRequest = <T>(config: customAxiosRequestConfig): Promise<T> => {
-  return axiosAuth(config) as Promise<T>;
+export const axiosAuthRequest = <T = any>(config: customAxiosRequestConfig): Promise<ApiResponse<T>> => {
+  return axiosAuth(config) as Promise<ApiResponse<T>>;
 };

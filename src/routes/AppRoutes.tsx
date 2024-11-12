@@ -1,6 +1,8 @@
 import BlankLayout from '@/layouts/BlankLayout';
 import MainLayout from '@/layouts/MainLayout';
+import AuthPage from '@/pages/AuthPage';
 import HomePage from '@/pages/HomePage';
+import VerifyPage from '@/pages/VerifyPage';
 import React, { lazy } from 'react';
 import { useRoutes } from 'react-router-dom';
 
@@ -10,12 +12,30 @@ const RegisterPage = lazy(() => import('@/pages/RegisterPage'));
 const AppRoutes: React.FC = () => {
   const routes = useRoutes([
     {
-      element: <MainLayout />,
-      children: [{ path: '/', element: <HomePage /> }],
+      path: '/auth',
+      element: <BlankLayout></BlankLayout>,
+      children: [
+        {
+          path: 'register',
+          element: (
+            <AuthPage>
+              <RegisterPage />
+            </AuthPage>
+          ),
+        },
+        {
+          path: 'verify',
+          element: (
+            <AuthPage>
+              <VerifyPage />
+            </AuthPage>
+          ),
+        },
+      ],
     },
     {
-      element: <BlankLayout />,
-      children: [{ path: 'register', element: <RegisterPage /> }],
+      element: <MainLayout />,
+      children: [{ path: '/', element: <HomePage /> }],
     },
     {
       path: '*',
