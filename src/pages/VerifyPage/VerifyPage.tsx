@@ -43,7 +43,7 @@ const VerifyPage = () => {
     mutationFn: (data: VerifyUserDataType) => authService.verifyUser(data),
     onError: () => {
       toast.error('Có lỗi xảy ra. Vui lòng thử lại.');
-      methods.resetField('otpCode');
+      methods.setError('otpCode', { message: 'Mã xác nhận không chính xác.' });
     },
     onSuccess: (response) => {
       const {
@@ -86,7 +86,7 @@ const VerifyPage = () => {
     try {
       await authService.getVerifyUser(userDetail.email);
     } catch (error) {
-      toast.error('Có lỗi xảy ra. Vui lòng thử lại.');
+      toast.error('Xin lỗi, chúng tôi tạm thời chưa thể gửi mã. Vui lòng thử lại sau!');
     } finally {
       setIsSending(false);
     }

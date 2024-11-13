@@ -1,7 +1,9 @@
 import BlankLayout from '@/layouts/BlankLayout';
 import MainLayout from '@/layouts/MainLayout';
 import AuthPage from '@/pages/AuthPage';
+import ForgotPasswordPage from '@/pages/ForgotPasswordPage';
 import HomePage from '@/pages/HomePage';
+import LoginPage from '@/pages/LoginPage';
 import RolePage from '@/pages/RolePage';
 import VerifyPage from '@/pages/VerifyPage';
 import React, { lazy } from 'react';
@@ -25,6 +27,14 @@ const AppRoutes: React.FC = () => {
           ),
         },
         {
+          path: 'login',
+          element: (
+            <AuthPage>
+              <LoginPage />
+            </AuthPage>
+          ),
+        },
+        {
           path: 'verify',
           element: (
             <AuthPage>
@@ -37,6 +47,14 @@ const AppRoutes: React.FC = () => {
           element: (
             <AuthPage>
               <RolePage />
+            </AuthPage>
+          ),
+        },
+        {
+          path: 'forgot-password',
+          element: (
+            <AuthPage>
+              <ForgotPasswordPage />
             </AuthPage>
           ),
         },

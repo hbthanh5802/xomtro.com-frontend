@@ -27,6 +27,8 @@ const GoogleAuthButton: React.FC = () => {
         userDetail,
         meta: { accessToken },
       } = response.data;
+      setCurrentUser(userDetail);
+      setAccessToken(accessToken);
       toast.success('Thành công! Bạn sẽ được chuyển hướng ngay sau đó', {
         duration: 1500,
         id: toastId,
@@ -44,8 +46,6 @@ const GoogleAuthButton: React.FC = () => {
           },
         });
       } else {
-        setCurrentUser(userDetail);
-        setAccessToken(accessToken);
         navigate('/');
       }
     } catch (error) {

@@ -4,7 +4,7 @@ import { ReactNode, useState } from 'react';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa6';
 
-interface RHFPasswordInputProps<T extends FieldValues> {
+interface RHFLoginPasswordInputProps<T extends FieldValues> {
   label?: ReactNode | string;
   name: Path<T>;
   control?: Control<T>;
@@ -13,10 +13,7 @@ interface RHFPasswordInputProps<T extends FieldValues> {
   disable?: boolean;
 }
 
-const passwordMessage =
-  'Mật khẩu phải chứa ít nhất 6 ký tự, bao gồm 1 chữ cái viết hoa, 1 số, 1 ký tự đặc biệt (Vd: Abc@123).';
-
-const RHFPasswordInput = <T extends FieldValues>(props: RHFPasswordInputProps<T>) => {
+const RHFLoginPasswordInput = <T extends FieldValues>(props: RHFLoginPasswordInputProps<T>) => {
   const [show, setShow] = useState(false);
   return (
     <>
@@ -25,10 +22,6 @@ const RHFPasswordInput = <T extends FieldValues>(props: RHFPasswordInputProps<T>
         name={props.name}
         rules={{
           required: 'Vui lòng nhập mật khẩu.',
-          pattern: {
-            value: passwordRegex,
-            message: passwordMessage,
-          },
         }}
         render={({ field, fieldState }) => (
           <>
@@ -50,10 +43,7 @@ const RHFPasswordInput = <T extends FieldValues>(props: RHFPasswordInputProps<T>
                   </IconButton>
                 }
               />
-
-              <FormHelperText>
-                {props.name === 'confirmPassword' ? fieldState.error?.message : passwordMessage}
-              </FormHelperText>
+              {fieldState.error && <FormHelperText>{fieldState.error.message}</FormHelperText>}
             </FormControl>
           </>
         )}
@@ -62,4 +52,4 @@ const RHFPasswordInput = <T extends FieldValues>(props: RHFPasswordInputProps<T>
   );
 };
 
-export default RHFPasswordInput;
+export default RHFLoginPasswordInput;

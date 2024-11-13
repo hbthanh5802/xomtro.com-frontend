@@ -1,5 +1,10 @@
 import { UserDetailSelectSchemaType } from '@/types/schema.type';
-import { registerUserValidation, verifyUserValidation } from '@/validations/auth.validation';
+import {
+  forgotPasswordValidation,
+  loginUserValidation,
+  registerUserValidation,
+  verifyUserValidation,
+} from '@/validations/auth.validation';
 import { z } from 'zod';
 
 export type RegisterDataType = z.infer<typeof registerUserValidation>;
@@ -20,3 +25,7 @@ export type LoginUserResponseType = {
 export type GoogleAuthDataType = {
   credential: string;
 };
+
+export type LoginUserDataType = z.infer<typeof loginUserValidation>;
+
+export type ForgotPasswordDataType = z.infer<typeof forgotPasswordValidation>;

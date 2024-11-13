@@ -1,6 +1,8 @@
 import { axiosRequest } from '@/configs/axios.config';
 import {
+  ForgotPasswordDataType,
   GoogleAuthDataType,
+  LoginUserDataType,
   LoginUserResponseType,
   RegisterDataType,
   TokenResponseType,
@@ -13,6 +15,14 @@ class AuthServices {
     return axiosRequest<UserDetailSelectSchemaType>({
       method: 'POST',
       url: '/auth/register',
+      data,
+    });
+  }
+
+  async loginUser(data: LoginUserDataType) {
+    return axiosRequest<LoginUserResponseType>({
+      method: 'POST',
+      url: '/auth/login',
       data,
     });
   }
@@ -47,6 +57,22 @@ class AuthServices {
       method: 'POST',
       url: '/auth/refresh',
       withCredentials: true,
+    });
+  }
+
+  async getForgotPassword(email: string) {
+    return axiosRequest<TokenResponseType>({
+      method: 'GET',
+      url: '/auth/forgot-password',
+      params: { email },
+    });
+  }
+
+  async completeForgotPassword(data: ForgotPasswordDataType) {
+    return axiosRequest<TokenResponseType>({
+      method: 'POST',
+      url: '/auth/forgot-password',
+      data,
     });
   }
 }

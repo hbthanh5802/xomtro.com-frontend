@@ -37,30 +37,25 @@ const RolePage = () => {
       methods.resetField('otpCode');
     },
     onSuccess: (response) => {
-      console.log(response);
+      const userDetail = response.data;
       toast.success('Xác thực thành công. Trang sẽ chuyển hướng ngay sau thông báo này.', {
-        duration: 1500,
+        duration: 1000,
         onAutoClose: () => {
-          toast.success('Xác thực thành công. Trang sẽ chuyển hướng ngay sau thông báo này.', {
-            duration: 1000,
-            onAutoClose: () => {
-              if (!userDetail.role) {
-                navigate('/auth/role', {
-                  state: {
-                    userDetail,
-                  },
-                });
-              } else if (!userDetail.isEmailVerified) {
-                navigate('/auth/verify', {
-                  state: {
-                    userDetail,
-                  },
-                });
-              } else {
-                navigate('/');
-              }
-            },
-          });
+          if (!userDetail.role) {
+            navigate('/auth/role', {
+              state: {
+                userDetail,
+              },
+            });
+          } else if (!userDetail.isEmailVerified) {
+            navigate('/auth/verify', {
+              state: {
+                userDetail,
+              },
+            });
+          } else {
+            navigate('/');
+          }
         },
       });
     },
@@ -74,7 +69,6 @@ const RolePage = () => {
     try {
       await authService.getVerifyUser(userDetail.email);
     } catch (error) {
-      console.log(handleAxiosError(error));
       toast.error('Có lỗi xảy ra. Vui lòng thử lại.');
     } finally {
       setCanResend(false);
