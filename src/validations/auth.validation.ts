@@ -62,10 +62,10 @@ export const forgotPasswordValidation = z
     email: emailValidation,
     password: passwordValidation,
     confirmPassword: passwordValidation,
-    otpCode: z.string().length(6, { message: 'OTP has the invalid length!' }),
+    otpCode: z.string().length(6, { message: 'Mã xác nhận không hợp lệ!' }),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: 'Confirm password must be similar to Password',
+    message: 'Mật khẩu xác nhận không khớp với với nhau.',
     path: ['confirmPassword'],
   });
 
