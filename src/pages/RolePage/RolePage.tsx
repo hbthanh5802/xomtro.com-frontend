@@ -3,6 +3,7 @@ import RHFRoleChoices from '@/components/RHFRoleChoices';
 import useUrl from '@/hooks/useUrl.hook';
 import authService from '@/services/auth.service';
 import userService from '@/services/user.service';
+import { useAppStore } from '@/store/store';
 import { userRoleDataType } from '@/types/user.type';
 import { updateUserRoleValidation } from '@/validations/auth.validation';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -12,6 +13,7 @@ import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import { useShallow } from 'zustand/react/shallow';
 
 const RolePage = () => {
   const {
@@ -21,7 +23,12 @@ const RolePage = () => {
     toast.error('Có lỗi xảy ra. Vui lòng thử lại sau');
     return <>Forbidden</>;
   }
-  const navigate = useNavigate();
+  const { setCurrentUser } = useAppStore(
+    useShallow((state) => ({
+      setCurrentUser: state.setCurrentUser,
+    })),
+  );
+
   const [canResend, setCanResend] = useState(false);
 
   const methods = useForm({
@@ -37,26 +44,8 @@ const RolePage = () => {
     },
     onSuccess: (response) => {
       const userDetail = response.data;
-      toast.success('Xác thực thành công. Trang sẽ chuyển hướng ngay sau thông báo này.', {
-        duration: 1000,
-        onAutoClose: () => {
-          if (!userDetail.role) {
-            navigate('/auth/role', {
-              state: {
-                userDetail,
-              },
-            });
-          } else if (!userDetail.isEmailVerified) {
-            navigate('/auth/verify', {
-              state: {
-                userDetail,
-              },
-            });
-          } else {
-            navigate('/');
-          }
-        },
-      });
+      toast.success('Xác thực thành công. Trang sẽ chuyển hướng ngay sau thông báo này.');
+      setCurrentUser(userDetail);
     },
   });
 
