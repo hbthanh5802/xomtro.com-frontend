@@ -28,6 +28,7 @@ export const createUserSlice: StateCreator<userSlice, UserMiddlewares, [], userS
     }),
   fetchUserAvatar: async () => {
     try {
+      console.log('Fetch avatar');
       const response = await userService.getMyAvatar();
       const { data } = response;
       return set((state) => {

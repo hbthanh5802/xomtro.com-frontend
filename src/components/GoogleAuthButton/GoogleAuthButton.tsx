@@ -27,27 +27,12 @@ const GoogleAuthButton: React.FC = () => {
         userDetail,
         meta: { accessToken },
       } = response.data;
-      setCurrentUser(userDetail);
-      setAccessToken(accessToken);
       toast.success('Thành công! Bạn sẽ được chuyển hướng ngay sau đó', {
         duration: 1500,
         id: toastId,
       });
-      if (!userDetail.role) {
-        navigate('/auth/role', {
-          state: {
-            userDetail,
-          },
-        });
-      } else if (!userDetail.isEmailVerified) {
-        navigate('/auth/verify', {
-          state: {
-            userDetail,
-          },
-        });
-      } else {
-        navigate('/');
-      }
+      setCurrentUser(userDetail);
+      setAccessToken(accessToken);
     } catch (error) {
       toast.error('Có lỗi xảy ra. Vui lòng thử lại!', {
         id: toastId,

@@ -7,10 +7,11 @@ import { useShallow } from 'zustand/react/shallow';
 
 const Account = () => {
   const navigate = useNavigate();
-  const { currentUser, userAvatar } = useAppStore(
+  const { currentUser, userAvatar, logoutUser } = useAppStore(
     useShallow((state) => ({
       currentUser: state.currentUser,
       userAvatar: state.userAvatar,
+      logoutUser: state.logoutUser,
     })),
   );
 
@@ -75,7 +76,7 @@ const Account = () => {
           </div>
         </MenuItem>
         <ListDivider />
-        <MenuItem onClick={() => console.log('Logout')}>
+        <MenuItem onClick={() => logoutUser()}>
           <div className='tw-flex tw-items-center tw-gap-2'>
             <MdOutlineLogout className='tw-flex tw-text-lg tw-text-slate-600' />
             Đăng xuất

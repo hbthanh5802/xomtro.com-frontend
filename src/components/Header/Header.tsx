@@ -1,35 +1,20 @@
 import LogoIcon from '@/assets/LogoIcon';
 import SearchBar from '@/components/Header/SearchBar';
 import { useAppStore } from '@/store/store';
-import { handleAxiosError } from '@/utils/constants.helper';
 import history from '@/utils/history.helper';
 import { Button, IconButton, Typography } from '@mui/joy';
-import { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useShallow } from 'zustand/react/shallow';
 // Icons
 import Account from '@/components/Header/Account';
 
 const Header = () => {
-  const navigate = useNavigate();
-  const { currentUser, fetchUserAvatar } = useAppStore(
+  const { currentUser } = useAppStore(
     useShallow((state) => ({
       currentUser: state.currentUser,
       fetchUserAvatar: state.fetchUserAvatar,
     })),
   );
-
-  useEffect(() => {
-    if (currentUser) {
-      fetchUserAvatar()
-        .then(() => {
-          console.log('Get avatar');
-        })
-        .catch((error) => {
-          console.log(handleAxiosError(error));
-        });
-    }
-  }, [currentUser?.userId]);
 
   return (
     <header className='tw-sticky tw-top-0 tw-inset-x-0 red'>

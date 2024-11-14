@@ -50,29 +50,9 @@ const VerifyPage = () => {
         userDetail,
         meta: { accessToken },
       } = response.data;
-
-      toast.success('Xác thực thành công. Trang sẽ chuyển hướng ngay sau thông báo này.', {
-        duration: 1000,
-        onAutoClose: () => {
-          if (!userDetail.role) {
-            navigate('/auth/role', {
-              state: {
-                userDetail,
-              },
-            });
-          } else if (!userDetail.isEmailVerified) {
-            navigate('/auth/verify', {
-              state: {
-                userDetail,
-              },
-            });
-          } else {
-            setCurrentUser(userDetail);
-            setAccessToken(accessToken);
-            navigate('/');
-          }
-        },
-      });
+      toast.success('Xác thực thành công. Trang sẽ chuyển hướng ngay sau thông báo này');
+      setCurrentUser(userDetail);
+      setAccessToken(accessToken);
     },
   });
 
@@ -94,7 +74,6 @@ const VerifyPage = () => {
 
   useEffect(() => {
     if (canResend) {
-      console.log('Call');
       handleSendVerifyEmail();
     }
   }, []);

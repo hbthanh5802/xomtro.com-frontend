@@ -80,9 +80,10 @@ axiosAuth.interceptors.request.use(
         const { status } = handleAxiosError(error)!;
         if (status === 401) {
           useAppStore.getState().resetAuthState();
+          useAppStore.getState().resetUserState();
           toast.info('Có lỗi xảy ra. Vui lòng đăng nhập lại!', {
             duration: 1000,
-            onAutoClose: () => history.push('/login'),
+            onAutoClose: () => history.push('/auth/login'),
           });
         }
       }
