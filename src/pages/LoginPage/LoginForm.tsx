@@ -6,7 +6,7 @@ import { LoginUserDataType, RegisterDataType } from '@/types/auth.type';
 import { handleAxiosError } from '@/utils/constants.helper';
 import { loginUserValidation } from '@/validations/auth.validation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button, Stack, Typography } from '@mui/joy';
+import { Box, Button, Stack } from '@mui/joy';
 import { useMutation } from '@tanstack/react-query';
 import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';

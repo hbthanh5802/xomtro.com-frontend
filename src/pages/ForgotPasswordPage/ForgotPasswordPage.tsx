@@ -56,7 +56,7 @@ const ForgotPasswordPage = () => {
   const handleCompleteForgotPassword = async (data: ForgotPasswordDataType) => {
     setLoading(true);
     try {
-      const response = await authService.completeForgotPassword(data);
+      await authService.completeForgotPassword(data);
       toast.success(
         'Lấy lại mật khẩu thành công. Bạn sẽ được truyển hướng về trang Đăng nhập ngay sau thông báo này!',
         {

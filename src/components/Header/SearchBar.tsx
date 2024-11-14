@@ -16,7 +16,7 @@ const SearchBar: React.FC = () => {
         fullWidth
         sx={{
           boxShadow: 'sx',
-          '--Input-decoratorChildHeight': '40px',
+          '--Input-decoratorChildHeight': '32px',
         }}
       />
     </div>

@@ -4,7 +4,6 @@ import useUrl from '@/hooks/useUrl.hook';
 import authService from '@/services/auth.service';
 import userService from '@/services/user.service';
 import { userRoleDataType } from '@/types/user.type';
-import { handleAxiosError } from '@/utils/constants.helper';
 import { updateUserRoleValidation } from '@/validations/auth.validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, IconButton, Typography } from '@mui/joy';

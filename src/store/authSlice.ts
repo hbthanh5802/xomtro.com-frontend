@@ -19,12 +19,9 @@ const initialState: authState = {
 
 export type authSlice = authState & authActions;
 
-export const createAuthSlice: StateCreator<
-  authSlice,
-  [['zustand/immer', never], ['zustand/devtools', never]],
-  [],
-  authSlice
-> = (set) => ({
+type AuthMiddlewares = [['zustand/immer', never], ['zustand/devtools', never]];
+
+export const createAuthSlice: StateCreator<authSlice, AuthMiddlewares, [], authSlice> = (set) => ({
   ...initialState,
   setCurrentUser: (data: UserDetailSelectSchemaType) =>
     set((state) => {
