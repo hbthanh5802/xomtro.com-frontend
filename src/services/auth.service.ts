@@ -1,4 +1,4 @@
-import { axiosRequest } from '@/configs/axios.config';
+import { axiosAuthRequest, axiosRequest } from '@/configs/axios.config';
 import {
   ForgotPasswordDataType,
   GoogleAuthDataType,
@@ -73,6 +73,13 @@ class AuthServices {
       method: 'POST',
       url: '/auth/forgot-password',
       data,
+    });
+  }
+
+  async logoutUser() {
+    return axiosAuthRequest({
+      method: 'POST',
+      url: '/auth/logout',
     });
   }
 }

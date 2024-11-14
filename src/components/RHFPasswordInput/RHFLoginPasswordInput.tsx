@@ -1,4 +1,3 @@
-import { passwordRegex } from '@/validations/common.validation';
 import { FormControl, FormHelperText, FormLabel, IconButton, Input } from '@mui/joy';
 import { ReactNode, useState } from 'react';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
