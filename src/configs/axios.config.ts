@@ -21,6 +21,9 @@ interface customAxiosRequestConfig extends AxiosRequestConfig {
 
 const axiosClient = axios.create({
   baseURL: env.BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
   paramsSerializer: (params) => queryString.stringify(params),
 });
 
@@ -28,6 +31,9 @@ const axiosAuth = axios.create({
   baseURL: env.BASE_URL,
   paramsSerializer: (params) => queryString.stringify(params),
   withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 axiosClient.interceptors.request.use(
@@ -57,22 +63,21 @@ axiosClient.interceptors.response.use(
 let refreshTokenRequest: any = null;
 axiosAuth.interceptors.request.use(
   async (config) => {
-    if (config.data) {
-      config.headers['Content-Type'] = 'application/json';
-    }
-
     let accessToken = useAppStore.getState().accessToken;
     const decodeToken = jwtDecode(accessToken as string);
     const date = new Date();
 
     if (decodeToken.exp! < date.getTime() / 1000) {
+      console.log('Expired');
       refreshTokenRequest = !!refreshTokenRequest ? refreshTokenRequest : authService.refreshUserToken();
       try {
-        const response = (await refreshTokenRequest) as TokenResponseType;
-        const { meta } = response;
-        if (meta.accessToken) {
-          accessToken = meta.accessToken;
-          useAppStore.getState().setAccessToken(accessToken);
+        const response = (await refreshTokenRequest) as ApiResponse<TokenResponseType>;
+        if (response && response.data) {
+          const { meta } = response.data;
+          if (meta.accessToken) {
+            accessToken = meta.accessToken;
+            useAppStore.getState().setAccessToken(accessToken);
+          }
         }
         refreshTokenRequest = null;
       } catch (error) {

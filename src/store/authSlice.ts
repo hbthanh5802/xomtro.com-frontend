@@ -53,6 +53,7 @@ export const createAuthSlice: StateCreator<authSlice, AuthMiddlewares, [], authS
         id: toastId,
       });
       useAppStore.getState().resetUserState();
+      history.push('/');
       return set(initialState);
     } catch (error) {
       toast.error('Có lỗi xảy ra. Vui lòng thử lại sau!', {

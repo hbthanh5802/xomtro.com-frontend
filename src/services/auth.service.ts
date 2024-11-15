@@ -53,6 +53,7 @@ class AuthServices {
   }
 
   async refreshUserToken() {
+    console.log('Refreshing...');
     return axiosRequest<TokenResponseType>({
       method: 'POST',
       url: '/auth/refresh',

@@ -17,7 +17,10 @@ const Header = () => {
   );
 
   return (
-    <header className='tw-sticky tw-top-0 tw-inset-x-0 red'>
+    <header
+      className='tw-sticky tw-top-0 tw-inset-x-0 red tw-z-[999] tw-shadow-sm
+     tw-border-b-[1px] tw-border-b-slate-100'
+    >
       <div className='tw-w-screen tw-p-[12px] tw-px-[24px] tw-bg-white tw-flex tw-justify-between tw-items-center'>
         {/* Logo */}
         <Link to={'/'} className='tw-mr-[24px] tw-flex-1 tw-flex tw-items-center tw-gap-2 tw-select-none'>

@@ -5,6 +5,8 @@ import ForgotPasswordPage from '@/pages/ForgotPasswordPage';
 import HomePage from '@/pages/HomePage';
 import LoginPage from '@/pages/LoginPage';
 import RolePage from '@/pages/RolePage';
+import UserPage from '@/pages/UserPage';
+import ProfilePage from '@/pages/UserPage/ProfilePage';
 import VerifyPage from '@/pages/VerifyPage';
 import React, { lazy } from 'react';
 import { useRoutes } from 'react-router-dom';
@@ -62,7 +64,10 @@ const AppRoutes: React.FC = () => {
     },
     {
       element: <MainLayout />,
-      children: [{ path: '/', element: <HomePage /> }],
+      children: [
+        { path: 'users/:userId', element: <UserPage />, children: [{ path: 'profile', element: <ProfilePage /> }] },
+        { path: '/', element: <HomePage /> },
+      ],
     },
     {
       path: '*',
