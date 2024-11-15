@@ -17,3 +17,8 @@ export const passwordValidation = z
   .regex(passwordRegex, 'Mật khẩu phải chứa ít nhất 6 ký tự, bao gồm 1 chữ cái viết hoa, 1 số, 1 ký tự đặc biệt.');
 
 export const userRoleValidation = z.enum([userRole.RENTER, userRole.LANDLORD], { message: 'Vai trò không hợp lệ' });
+
+export const imageFileValidation = z
+  .instanceof(FileList)
+  .refine((files) => files.length > 0, { message: 'Bạn phải chọn một ảnh.' })
+  .refine((files) => files[0]?.type.startsWith('image/'), { message: 'File phải là ảnh.' });

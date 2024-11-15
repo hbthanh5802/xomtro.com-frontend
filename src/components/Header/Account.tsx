@@ -36,28 +36,27 @@ const Account = () => {
         placement='bottom-end'
         size='sm'
         sx={{
-          // maxWidth: '200px',
           zIndex: '99999',
           p: 1,
           gap: 1,
           '--ListItem-radius': 'var(--joy-radius-sm)',
         }}
       >
-        <MenuItem onClick={() => navigate('/profile/info')}>
+        <MenuItem onClick={() => navigate(`/users/${currentUser?.userId}/profile`)}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Avatar src={userAvatar?.url} sx={{ borderRadius: '50%' }} />
             <Box sx={{ ml: 1.5 }}>
               <Typography level='title-sm' textColor='text.primary'>
                 {`${currentUser?.firstName} ${currentUser?.lastName}`}
               </Typography>
-              <Typography level='body-xs' textColor='text.tertiary' noWrap sx={{ maxWidth: '250px' }}>
+              <Typography level='body-xs' textColor='text.tertiary' noWrap sx={{ maxWidth: '180px' }}>
                 {currentUser?.email}
               </Typography>
             </Box>
           </Box>
         </MenuItem>
         <ListDivider />
-        <MenuItem onClick={() => navigate('/profile/info')}>
+        <MenuItem onClick={() => navigate(`/users/${currentUser?.userId}/profile`)}>
           <div className='tw-flex tw-items-center tw-gap-2'>
             <FaClipboardUser className='tw-flex tw-text-lg tw-text-slate-600' />
             Thông tin tài khoản
@@ -69,16 +68,16 @@ const Account = () => {
             Trợ giúp
           </div>
         </MenuItem>
-        <MenuItem onClick={() => navigate('/profile/settings')}>
+        <MenuItem onClick={() => navigate(`/users/${currentUser?.userId}/settings`)}>
           <div className='tw-flex tw-items-center tw-gap-2'>
             <MdSettings className='tw-flex tw-text-lg tw-text-slate-600' />
             Cài đặt
           </div>
         </MenuItem>
         <ListDivider />
-        <MenuItem onClick={() => logoutUser()}>
+        <MenuItem onClick={() => logoutUser()} color='danger'>
           <div className='tw-flex tw-items-center tw-gap-2'>
-            <MdOutlineLogout className='tw-flex tw-text-lg tw-text-slate-600' />
+            <MdOutlineLogout className='tw-flex tw-text-lg tw-text-red-500' />
             Đăng xuất
           </div>
         </MenuItem>
