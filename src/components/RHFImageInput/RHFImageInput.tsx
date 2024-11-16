@@ -1,4 +1,4 @@
-import { FormControl, FormHelperText, styled } from '@mui/joy';
+import { FormControl, FormHelperText, FormLabel, Typography, styled } from '@mui/joy';
 import Button from '@mui/joy/Button';
 import SvgIcon from '@mui/joy/SvgIcon';
 import * as React from 'react';
@@ -24,6 +24,7 @@ interface RHFFileInput<T extends FieldValues> {
   className?: string;
   placeholder?: string;
   disable?: boolean;
+  required?: boolean;
   maxFiles?: number;
   maxSize?: number; // Kích thước file tối đa (theo byte)
   acceptedTypes?: string[]; // Danh sách loại file được chấp nhận
@@ -82,6 +83,12 @@ export default function RHFFileInput<T extends FieldValues>(props: RHFFileInput<
       name={props.name}
       render={({ field, fieldState }) => (
         <FormControl error={!!fieldState.error}>
+          {props.label && (
+            <FormLabel>
+              {props.required && <Typography color='danger' level='title-sm'>{`(*)`}</Typography>}
+              {props.label}
+            </FormLabel>
+          )}
           <Button
             component='label'
             role={undefined}

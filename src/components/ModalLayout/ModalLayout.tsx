@@ -1,7 +1,15 @@
-import { Modal, ModalClose, Sheet } from '@mui/joy';
+import { Modal, ModalClose, ModalDialog, ModalOverflow, Typography } from '@mui/joy';
 import React, { ReactNode } from 'react';
 
-const ModalLayout = (props: { isOpen: boolean; onCloseModal: (reason?: string) => void; children: ReactNode }) => {
+interface ModalLayoutProps {
+  isOpen: boolean;
+  onCloseModal: (reason?: string) => void;
+  children: ReactNode;
+  title?: ReactNode | string;
+  content?: ReactNode | string;
+}
+
+const ModalLayout = (props: ModalLayoutProps) => {
   const { isOpen, onCloseModal, children } = props;
 
   return (
@@ -13,13 +21,39 @@ const ModalLayout = (props: { isOpen: boolean; onCloseModal: (reason?: string) =
         onCloseModal(reason);
       }}
     >
-      <Sheet variant='outlined' sx={{ minWidth: 300, borderRadius: 'md', p: 3 }}>
-        <ModalClose
-          variant='outlined'
-          onClick={() => onCloseModal('closeClick')} // Custom lý do closeClick
-        />
-        {children}
-      </Sheet>
+      <ModalOverflow>
+        <ModalDialog
+          aria-labelledby='nested-modal-title'
+          aria-describedby='nested-modal-description'
+          sx={(theme) => ({
+            [theme.breakpoints.only('xs')]: {
+              top: 'unset',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              borderRadius: 0,
+              transform: 'none',
+              maxWidth: 'unset',
+            },
+          })}
+        >
+          {props?.title && (
+            <Typography id='nested-modal-title' level='h2'>
+              {props?.title}
+            </Typography>
+          )}
+          {props?.content && (
+            <Typography id='nested-modal-description' textColor='text.tertiary'>
+              {props?.content}
+            </Typography>
+          )}
+          <ModalClose
+            variant='outlined'
+            onClick={() => onCloseModal('closeClick')} // Custom lý do closeClick
+          />
+          {children}
+        </ModalDialog>
+      </ModalOverflow>
     </Modal>
   );
 };

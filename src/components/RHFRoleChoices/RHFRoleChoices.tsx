@@ -1,4 +1,4 @@
-import { FormControl, FormHelperText, FormLabel, List, ListItem, Radio, RadioGroup } from '@mui/joy';
+import { FormControl, FormHelperText, FormLabel, List, ListItem, Radio, RadioGroup, Typography } from '@mui/joy';
 import { ReactNode, useId } from 'react';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 // import { GoHome } from 'react-icons/go';
@@ -11,6 +11,7 @@ interface RHFRoleChoicesProps<T extends FieldValues> {
   control?: Control<T>;
   className?: string;
   disable?: boolean;
+  required?: boolean;
 }
 
 const roleChoices = [
@@ -39,7 +40,12 @@ const RHFRoleChoices = <T extends FieldValues>(props: RHFRoleChoicesProps<T>) =>
           return (
             <>
               <FormControl error={!!fieldState.error}>
-                <FormLabel>{props.label}</FormLabel>
+                {props.label && (
+                  <FormLabel>
+                    {props.required && <Typography color='danger' level='title-sm'>{`(*)`}</Typography>}
+                    {props.label}
+                  </FormLabel>
+                )}
                 <RadioGroup name={props.name} onChange={field.onChange} value={field.value || null}>
                   <List
                     sx={{

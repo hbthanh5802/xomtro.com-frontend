@@ -5,6 +5,7 @@ export default {
     extend: {
       colors: {
         backgroundColor: '#F2F4F7',
+        primaryColor: '#0B6BCB',
       },
     },
     screens: {
