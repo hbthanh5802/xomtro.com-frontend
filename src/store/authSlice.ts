@@ -11,7 +11,7 @@ type authState = {
 };
 
 type authActions = {
-  setCurrentUser: (currentUser: UserDetailSelectSchemaType) => void;
+  setCurrentUser: (currentUser: UserDetailSelectSchemaType, allowRedirect?: boolean) => void;
   setAccessToken: (token: string) => void;
   logoutUser: () => void;
   resetAuthState: () => void;
@@ -32,13 +32,13 @@ export const createAuthSlice: StateCreator<authSlice, AuthMiddlewares, [], authS
     set((state) => {
       state.accessToken = token;
     }),
-  setCurrentUser: (userDetail: UserDetailSelectSchemaType) => {
+  setCurrentUser: (userDetail: UserDetailSelectSchemaType, allowRedirect: boolean = true) => {
     if (!userDetail.isEmailVerified) {
-      history.push('/auth/verify', { userDetail });
+      if (allowRedirect) history.push('/auth/verify', { userDetail });
     } else if (!userDetail.role) {
-      history.push('/auth/role', { userDetail });
+      if (allowRedirect) history.push('/auth/role', { userDetail });
     } else {
-      history.push('/');
+      if (allowRedirect) history.push('/');
       useAppStore.getState().fetchUserAvatar();
       return set((state) => {
         state.currentUser = userDetail;

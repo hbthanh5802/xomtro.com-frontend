@@ -1,4 +1,4 @@
-import { FormControl, FormHelperText, FormLabel, Input, Typography } from '@mui/joy';
+import { FormControl, FormHelperText, FormLabel, Textarea, Typography } from '@mui/joy';
 import { ReactNode } from 'react';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { MdOutlineInfo } from 'react-icons/md';
@@ -8,10 +8,11 @@ interface RHFInputProps<T extends FieldValues> {
   name: Path<T>;
   control?: Control<T>;
   className?: string;
+  required?: boolean;
   placeholder?: string;
   disable?: boolean;
-  type?: 'text' | 'email';
-  required?: boolean;
+  minRows?: number;
+  maxRows?: number;
 }
 
 const RHFInput = <T extends FieldValues>(props: RHFInputProps<T>) => {
@@ -22,20 +23,22 @@ const RHFInput = <T extends FieldValues>(props: RHFInputProps<T>) => {
         name={props.name}
         render={({ field, fieldState }) => (
           <>
-            <FormControl error={!!fieldState.error}>
+            <FormControl error={!!fieldState.error} sx={{ width: '100%' }}>
               {props.label && (
                 <FormLabel>
                   {props.required && <Typography color='danger' level='title-sm'>{`(*)`}</Typography>}
                   {props.label}
                 </FormLabel>
               )}
-              <Input
+              <Textarea
+                sx={{ width: '100%' }}
                 disabled={props.disable}
                 placeholder={props.placeholder || ''}
-                className={props.className}
-                type={props.type || 'text'}
+                error={!!fieldState.error}
                 {...field}
                 value={field.value ?? ''}
+                minRows={props.minRows}
+                maxRows={props.maxRows}
               />
               {!!fieldState.error && (
                 <FormHelperText>

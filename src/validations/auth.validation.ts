@@ -69,15 +69,4 @@ export const forgotPasswordValidation = z
     path: ['confirmPassword'],
   });
 
-export const updateUserProfileValidation = createInsertSchema(userDetail)
-  .pick({
-    bio: true,
-    firstName: true,
-    lastName: true,
-    gender: true,
-    phone: true,
-  })
-  .strict()
-  .partial();
-
 export const updateUserRoleValidation = createInsertSchema(userDetail).pick({ role: true }).strict();

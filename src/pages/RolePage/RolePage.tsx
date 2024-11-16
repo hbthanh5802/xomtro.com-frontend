@@ -4,14 +4,14 @@ import useUrl from '@/hooks/useUrl.hook';
 import authService from '@/services/auth.service';
 import userService from '@/services/user.service';
 import { useAppStore } from '@/store/store';
-import { userRoleDataType } from '@/types/user.type';
+import { UserRoleDataType } from '@/types/user.type';
 import { updateUserRoleValidation } from '@/validations/auth.validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, IconButton, Typography } from '@mui/joy';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useShallow } from 'zustand/react/shallow';
 
@@ -37,7 +37,7 @@ const RolePage = () => {
   const { isValid, isSubmitting } = methods.formState;
 
   const verifyMutation = useMutation({
-    mutationFn: (data: userRoleDataType) => userService.updateUserDetail(data),
+    mutationFn: (data: UserRoleDataType) => userService.updateUserDetail(data),
     onError: () => {
       toast.error('Có lỗi xảy ra. Vui lòng thử lại.');
       methods.resetField('otpCode');
@@ -49,7 +49,7 @@ const RolePage = () => {
     },
   });
 
-  const onSubmit = async (data: userRoleDataType) => {
+  const onSubmit = async (data: UserRoleDataType) => {
     await verifyMutation.mutateAsync(data);
   };
 
@@ -152,7 +152,7 @@ const RolePage = () => {
                 </Typography>
               </div>
               <form onSubmit={methods.handleSubmit(onSubmit)}>
-                <RHFRoleChoices<userRoleDataType> name='role' label='Lựa chọn vai trò:' />
+                <RHFRoleChoices<UserRoleDataType> name='role' label='Lựa chọn vai trò:' />
                 {/* Submit button */}
                 <Button type='submit' fullWidth disabled={!isValid || isSubmitting} loading={isSubmitting}>
                   Xác nhận

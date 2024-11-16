@@ -10,7 +10,7 @@ const DefaultLayout: React.FC = () => {
       <main>
         <Outlet />
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

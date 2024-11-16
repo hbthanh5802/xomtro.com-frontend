@@ -2,6 +2,7 @@ import CustomRouter from '@/components/CustomRouter/CustomRouter.tsx';
 import { env } from '@/configs/environment.config.ts';
 import history from '@/utils/history.helper.ts';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import 'quill/dist/quill.snow.css';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Toaster } from 'sonner';

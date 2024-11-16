@@ -1,4 +1,5 @@
 import { userRole } from '@/types/schema.type';
+import dayjs from 'dayjs';
 import { z } from 'zod';
 
 export const emailValidation = z
@@ -22,3 +23,7 @@ export const imageFileValidation = z
   .instanceof(FileList)
   .refine((files) => files.length > 0, { message: 'Bạn phải chọn một ảnh.' })
   .refine((files) => files[0]?.type.startsWith('image/'), { message: 'File phải là ảnh.' });
+
+export const dateValidation = z.string().refine((date) => dayjs(date, 'YYYY-MM-DD', true).isValid(), {
+  message: 'Thông tin không đúng định dạng YYYY-MM-DD',
+});
