@@ -3,22 +3,18 @@ import RHFInput from '@/components/RHFInput';
 import RHFPhoneInput from '@/components/RHFPhoneInput';
 import RHFRadioGroup from '@/components/RHFRadioGroup';
 import { RadioOptionItem } from '@/components/RHFRadioGroup/RHFRadioGroup';
-import RHFRichText from '@/components/RHFRichText';
 import RHFTextArea from '@/components/RHFTextArea';
-import useUrl from '@/hooks/useUrl.hook';
-import useUserApiHook from '@/hooks/useUserApi.hook';
 import userService from '@/services/user.service';
 import { useAppStore } from '@/store/store';
 import { UserDetailInsertSchemaType, UserDetailSelectSchemaType } from '@/types/schema.type';
 import { UpdateUserProfileDataType } from '@/types/user.type';
 import { handleAxiosError } from '@/utils/constants.helper';
-import { timeInVietNam } from '@/utils/time.helper';
+import { formatDateForInput, timeInVietNam } from '@/utils/time.helper';
 import { updateUserDetailValidation } from '@/validations/user.validation';
 import { DevTool } from '@hookform/devtools';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Skeleton } from '@mui/joy';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { useShallow } from 'zustand/react/shallow';
@@ -39,26 +35,29 @@ const genderRadioOptions: RadioOptionItem[] = [
   },
 ];
 
-const EditProfile = (props: { onSuccess?: () => void }) => {
-  const {
-    params: { userId },
-  } = useUrl();
+interface EditProfileProps {
+  onSuccess?: () => void;
+  userData: UserDetailSelectSchemaType;
+}
+
+const EditProfile = (props: EditProfileProps) => {
+  const { userData } = props;
+  const isFetching = !userData;
   const queryClient = useQueryClient();
   const methods = useForm<UpdateUserProfileDataType>({
     defaultValues: {
-      firstName: '',
-      lastName: '',
-      gender: null,
-      bio: '',
-      phone: '',
-      email: '',
-      dob: null,
+      firstName: userData?.firstName || '',
+      lastName: userData?.lastName || '',
+      gender: userData?.gender || null,
+      bio: userData?.bio || '',
+      phone: userData?.phone || '',
+      email: userData?.email || '',
+      dob: formatDateForInput(userData?.dob || undefined),
     },
     resolver: zodResolver(updateUserDetailValidation),
   });
   const {
     control,
-    reset,
     formState: { isValid },
   } = methods;
 
@@ -67,17 +66,6 @@ const EditProfile = (props: { onSuccess?: () => void }) => {
       setCurrentUser: state.setCurrentUser,
     })),
   );
-
-  const { data: UserDetailResponse, isFetching } = useUserApiHook.useUserDetail(Number(userId), {
-    staleTime: 3 * 60 * 1000,
-  });
-  const userDetail = UserDetailResponse?.data;
-
-  useEffect(() => {
-    if (userDetail) {
-      reset(userDetail as UpdateUserProfileDataType);
-    }
-  }, [userDetail]);
 
   const updateUserProfileMutation = useMutation({
     mutationFn: (data: UpdateUserProfileDataType) => userService.updateUserDetail(data as UserDetailInsertSchemaType),

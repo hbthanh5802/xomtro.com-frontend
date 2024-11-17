@@ -37,21 +37,23 @@ const ModalLayout = (props: ModalLayoutProps) => {
             },
           })}
         >
-          {props?.title && (
-            <Typography id='nested-modal-title' level='h2'>
-              {props?.title}
-            </Typography>
-          )}
-          {props?.content && (
-            <Typography id='nested-modal-description' textColor='text.tertiary'>
-              {props?.content}
-            </Typography>
-          )}
-          <ModalClose
-            variant='outlined'
-            onClick={() => onCloseModal('closeClick')} // Custom lý do closeClick
-          />
-          {children}
+          <div className={`tw-animate-fade tw-animate-once tw-animate-duration-300 tw-animate-ease-in-out tw-w-fit`}>
+            {props?.title && (
+              <Typography id='nested-modal-title' level='h2'>
+                {props?.title}
+              </Typography>
+            )}
+            {props?.content && (
+              <Typography id='nested-modal-description' textColor='text.tertiary'>
+                {props?.content}
+              </Typography>
+            )}
+            <ModalClose
+              variant='outlined'
+              onClick={() => onCloseModal('closeClick')} // Custom lý do closeClick
+            />
+            {children}
+          </div>
         </ModalDialog>
       </ModalOverflow>
     </Modal>

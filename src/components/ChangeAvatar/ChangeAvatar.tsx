@@ -4,15 +4,14 @@ import { useAppStore } from '@/store/store';
 import { UpdateAvatarDataType } from '@/types/user.type';
 import { updateAvatarValidation } from '@/validations/user.validation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Avatar, Button, Skeleton } from '@mui/joy';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { Avatar, Button } from '@mui/joy';
+import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { useShallow } from 'zustand/react/shallow';
 
 const ChangeAvatar = (props: { onSuccess?: () => void }) => {
-  const queryClient = useQueryClient();
   const [preview, setPreview] = useState<string | null>(null);
 
   const handlePreview = (fileList: FileList) => {
@@ -54,7 +53,6 @@ const ChangeAvatar = (props: { onSuccess?: () => void }) => {
     try {
       await updateAvatarMutation.mutateAsync(formData);
       fetchUserAvatar();
-      // queryClient.invalidateQueries({ queryKey: ['user-avatar', { userId: currentUser?.userId }] });
       if (props?.onSuccess) props.onSuccess();
       toast.success('Thay đổi ảnh đại diện thành công!', {
         duration: 1500,
