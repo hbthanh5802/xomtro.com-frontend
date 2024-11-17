@@ -1,4 +1,4 @@
-import { addresses, userDetail, users } from '@/configs/schema.config';
+import { addresses, userDetail } from '@/configs/schema.config';
 import {
   emailValidation,
   passwordValidation,
@@ -38,16 +38,16 @@ export const loginUserValidation = z
 
 export const changeUserPasswordValidation = z
   .object({
-    oldPassword: z.string().trim().min(1, { message: 'Old password is required.' }),
+    oldPassword: z.string().trim().min(1, { message: 'Thông tin này là bắt buộc.' }),
     newPassword: passwordValidation,
     confirmNewPassword: passwordValidation,
   })
   .refine((data) => data.newPassword === data.confirmNewPassword, {
-    message: 'Confirm password does not match!',
+    message: 'Mật khẩu xác nhận không khớp. Hãy kiểm tra lại!',
     path: ['confirmPassword'],
   })
   .refine((data) => data.oldPassword !== data.newPassword, {
-    message: 'New password must be different from your old password!',
+    message: 'Mật khẩu mới phải khác mật khẩu cũ!',
     path: ['newPassword'],
   });
 

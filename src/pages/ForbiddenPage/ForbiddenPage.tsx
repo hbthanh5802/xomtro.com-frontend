@@ -8,7 +8,7 @@ import { useShallow } from 'zustand/react/shallow';
 import Account from '@/components/Header/Account';
 import React from 'react';
 
-const NotFoundPage = () => {
+const ForbiddenPage = () => {
   const { currentUser } = useAppStore(
     useShallow((state) => ({
       currentUser: state.currentUser,
@@ -49,10 +49,10 @@ const NotFoundPage = () => {
       <div className='tw-flex tw-flex-col tw-items-center tw-justify-center tw-w-screen tw-h-screen tw-gap-12 tw-py-8 tw-bg-primaryColor'>
         <div className='tw-text-white tw-text-center tw-pb-[200px]'>
           <p className='tw-bg-clip-text tw-text-transparent tw-bg-gradient-to-r tw-from-slate-200/0 tw-to-70% tw-to-orange-200 tw-text-[200px] tw-font-bold tw-animate-fade-left tw-animate-duration-500 tw-animate-delay-0 tw-animate-normal'>
-            404
+            403
           </p>
           <p className='tw-bg-clip-text tw-text-transparent tw-bg-gradient-to-r tw-from-orange-200 tw-to-70% tw-to-slate-200/50 tw-text-[48px] tw-font-semibold tw-animate-fade-right tw-animate-duration-500 tw-animate-delay-100 tw-animate-normal'>
-            Trang bạn truy cập không tồn tại!
+            Bạn không được phép truy cập vào trang này!
           </p>
         </div>
       </div>
@@ -60,4 +60,4 @@ const NotFoundPage = () => {
   );
 };
 
-export default NotFoundPage;
+export default ForbiddenPage;

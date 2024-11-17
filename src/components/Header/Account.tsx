@@ -71,7 +71,7 @@ const Account = () => {
         <MenuItem onClick={() => navigate(`/users/${currentUser?.userId}/settings`)}>
           <div className='tw-flex tw-items-center tw-gap-2'>
             <MdSettings className='tw-flex tw-text-lg tw-text-slate-600' />
-            Cài đặt
+            Cài đặt tài khoản
           </div>
         </MenuItem>
         <ListDivider />

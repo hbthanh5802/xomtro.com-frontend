@@ -1,7 +1,7 @@
 import useUrl from '@/hooks/useUrl.hook';
 import useUserApiHook from '@/hooks/useUserApi.hook';
-import InfoTab from '@/pages/UserPage/InfoTab';
-import ProfileHeader from '@/pages/UserPage/ProfileHeader';
+import InfoTab from '@/pages/UserPage/components/InfoTab';
+import ProfileHeader from '@/pages/UserPage/components/ProfileHeader';
 import { useAppStore } from '@/store/store';
 import { AssetSelectSchemaType, UserDetailSelectSchemaType } from '@/types/schema.type';
 import { Box } from '@mui/joy';
@@ -52,7 +52,7 @@ const ProfilePage = () => {
           <div className='tw-w-[300px] tw-min-w-[300px] tw-max-w-[300px] tw-px-[24px] tw-pb-[24px] tw-shadow-md tw-rounded-lg tw-mt-[12px] tw-bg-white'>
             <InfoTab userData={userData!} userAvatarData={userAvatarData!} />
           </div>
-          <div className='tw-container tw-m-[16px] tw-mr-0'>
+          <div className='tw-container tw-m-[14px] tw-mr-0'>
             <div className='tw-min-h-[100dvh]'>
               <Outlet />
             </div>

@@ -1,6 +1,6 @@
 import { axiosAuthRequest, axiosRequest } from '@/configs/axios.config';
 import { AssetSelectSchemaType, UserDetailInsertSchemaType, UserDetailSelectSchemaType } from '@/types/schema.type';
-import { UpdateAvatarDataType } from '@/types/user.type';
+import { UpdateAvatarDataType, UpdateUserPasswordDataType } from '@/types/user.type';
 
 class userServices {
   updateUserDetail(data: Partial<UserDetailInsertSchemaType>) {
@@ -40,6 +40,14 @@ class userServices {
     return axiosAuthRequest<UserDetailSelectSchemaType>({
       method: 'GET',
       url: `/users/` + userId,
+    });
+  }
+
+  updateUserPassword(data: UpdateUserPasswordDataType) {
+    return axiosAuthRequest({
+      method: 'PUT',
+      url: `/users/password`,
+      data,
     });
   }
 }
