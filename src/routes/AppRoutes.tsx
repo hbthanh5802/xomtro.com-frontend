@@ -1,12 +1,14 @@
 import BlankLayout from '@/layouts/BlankLayout';
 import MainLayout from '@/layouts/MainLayout';
 import AuthPage from '@/pages/AuthPage';
+import ForbiddenPage from '@/pages/ForbiddenPage';
 import ForgotPasswordPage from '@/pages/ForgotPasswordPage';
 import HomePage from '@/pages/HomePage';
 import LoginPage from '@/pages/LoginPage';
 import RolePage from '@/pages/RolePage';
 import UserPage from '@/pages/UserPage';
-import ProfilePage from '@/pages/UserPage/ProfilePage';
+import ProfilePage from '@/pages/UserPage/components/ProfilePage';
+import SettingPage from '@/pages/UserPage/components/SettingPage';
 import VerifyPage from '@/pages/VerifyPage';
 import React, { lazy } from 'react';
 import { useRoutes } from 'react-router-dom';
@@ -65,9 +67,20 @@ const AppRoutes: React.FC = () => {
     {
       element: <MainLayout />,
       children: [
-        { path: 'users/:userId', element: <UserPage />, children: [{ path: 'profile', element: <ProfilePage /> }] },
+        {
+          path: 'users/:userId',
+          element: <UserPage />,
+          children: [
+            { path: 'profile', element: <ProfilePage /> },
+            { path: 'settings', element: <SettingPage /> },
+          ],
+        },
         { path: '/', element: <HomePage /> },
       ],
+    },
+    {
+      path: '/403',
+      element: <ForbiddenPage />,
     },
     {
       path: '*',

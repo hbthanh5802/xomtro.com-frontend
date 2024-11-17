@@ -125,6 +125,7 @@ const EditProfile = (props: EditProfileProps) => {
                 label='Ngày sinh'
                 control={control}
                 maxDate={timeInVietNam().toDate()}
+                required
               />
             </Skeleton>
           </div>
@@ -135,6 +136,7 @@ const EditProfile = (props: EditProfileProps) => {
                 label='Giới tính:'
                 options={genderRadioOptions}
                 direction='horizontal'
+                required
               />
             </Skeleton>
           </div>

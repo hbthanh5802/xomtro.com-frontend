@@ -14,7 +14,7 @@ interface RHFPasswordInputProps<T extends FieldValues> {
 }
 
 const passwordMessage =
-  'Mật khẩu phải chứa ít nhất 6 ký tự, bao gồm 1 chữ cái viết hoa, 1 số, 1 ký tự đặc biệt (Vd: Abc@123).';
+  'Mật khẩu phải chứa ít nhất 6 ký tự, bao gồm ít nhất 1 chữ cái viết hoa, 1 số và 1 ký tự đặc biệt (Vd: Abc@123).';
 
 const RHFPasswordInput = <T extends FieldValues>(props: RHFPasswordInputProps<T>) => {
   const [show, setShow] = useState(false);

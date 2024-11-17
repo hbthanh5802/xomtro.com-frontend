@@ -42,7 +42,7 @@ const Header = () => {
             <Account />
           </div>
         ) : (
-          <div className='tw-gap-[12px] tw-flex-1 tw-text-right'>
+          <div className='tw-flex tw-gap-[8px] tw-flex-1 tw-text-right tw-self-end tw-justify-end'>
             <Button onClick={() => history.push('/auth/login')} size='md' className='tw-ml-auto'>
               Đăng nhập
             </Button>

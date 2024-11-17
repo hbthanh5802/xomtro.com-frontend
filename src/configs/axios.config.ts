@@ -56,6 +56,12 @@ axiosClient.interceptors.response.use(
     return response;
   },
   (error) => {
+    const { status } = handleAxiosError(error)!;
+    if (status === 404) {
+      history.push('/404');
+    } else if (status === 403) {
+      history.push('/403');
+    }
     throw error;
   },
 );
@@ -109,6 +115,12 @@ axiosAuth.interceptors.response.use(
     return response;
   },
   (error) => {
+    const { status } = handleAxiosError(error)!;
+    if (status === 404) {
+      history.push('/404');
+    } else if (status === 403) {
+      history.push('/403');
+    }
     throw error;
   },
 );

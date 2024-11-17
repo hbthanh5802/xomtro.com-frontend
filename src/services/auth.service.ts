@@ -83,6 +83,20 @@ class AuthServices {
       url: '/auth/logout',
     });
   }
+
+  async getDefaultGooglePassword() {
+    return axiosAuthRequest({
+      method: 'GET',
+      url: '/auth/google/password',
+    });
+  }
+
+  async disableAccount() {
+    return axiosAuthRequest({
+      method: 'POST',
+      url: `/auth/disable`,
+    });
+  }
 }
 
 export default new AuthServices();
