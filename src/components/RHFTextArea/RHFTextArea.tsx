@@ -10,12 +10,14 @@ interface RHFInputProps<T extends FieldValues> {
   className?: string;
   required?: boolean;
   placeholder?: string;
-  disable?: boolean;
+  disabled?: boolean;
   minRows?: number;
   maxRows?: number;
+  size?: 'sm' | 'lg' | 'md';
 }
 
 const RHFInput = <T extends FieldValues>(props: RHFInputProps<T>) => {
+  const { size = 'sm' } = props;
   return (
     <>
       <Controller
@@ -31,8 +33,9 @@ const RHFInput = <T extends FieldValues>(props: RHFInputProps<T>) => {
                 </FormLabel>
               )}
               <Textarea
+                size={size}
                 sx={{ width: '100%' }}
-                disabled={props.disable}
+                disabled={props.disabled}
                 placeholder={props.placeholder || ''}
                 error={!!fieldState.error}
                 {...field}

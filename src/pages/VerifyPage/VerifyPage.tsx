@@ -11,7 +11,7 @@ import { Box, Button, IconButton, Typography } from '@mui/joy';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useShallow } from 'zustand/react/shallow';
 
@@ -23,7 +23,7 @@ const VerifyPage = () => {
     toast.error('Có lỗi xảy ra. Vui lòng thử lại sau');
     return <>Forbidden</>;
   }
-  const navigate = useNavigate();
+
   const [canResend, setCanResend] = useState(true);
   const [isSending, setIsSending] = useState(false);
   const { setAccessToken, setCurrentUser } = useAppStore(
@@ -61,10 +61,10 @@ const VerifyPage = () => {
   };
 
   const handleSendVerifyEmail = async () => {
-    setCanResend(false);
     setIsSending(true);
     try {
       await authService.getVerifyUser(userDetail.email);
+      setCanResend(false);
     } catch (error) {
       toast.error('Xin lỗi, chúng tôi tạm thời chưa thể gửi mã. Vui lòng thử lại sau!');
     } finally {

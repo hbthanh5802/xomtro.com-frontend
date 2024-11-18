@@ -1,19 +1,13 @@
-import { FormControl, FormHelperText, FormLabel, Input, Radio, RadioGroup, Typography } from '@mui/joy';
+import { RadioOptionItemType } from '@/types/common.type';
+import { FormControl, FormHelperText, FormLabel, Radio, RadioGroup, Typography } from '@mui/joy';
 import { ReactNode, useId } from 'react';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { MdOutlineInfo } from 'react-icons/md';
 
-export type RadioOptionItem = {
-  label: ReactNode | string;
-  description?: ReactNode | string;
-  value: any;
-  defaultChecked?: boolean;
-};
-
 interface RHFRadioGroupProps<T extends FieldValues> {
   label?: ReactNode | string;
   name: Path<T>;
-  options: RadioOptionItem[];
+  options: RadioOptionItemType[];
   control?: Control<T>;
   className?: string;
   placeholder?: string;

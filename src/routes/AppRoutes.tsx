@@ -7,6 +7,7 @@ import HomePage from '@/pages/HomePage';
 import LoginPage from '@/pages/LoginPage';
 import RolePage from '@/pages/RolePage';
 import UserPage from '@/pages/UserPage';
+import AddressPage from '@/pages/UserPage/components/AddressPage';
 import ProfilePage from '@/pages/UserPage/components/ProfilePage';
 import SettingPage from '@/pages/UserPage/components/SettingPage';
 import VerifyPage from '@/pages/VerifyPage';
@@ -73,6 +74,7 @@ const AppRoutes: React.FC = () => {
           children: [
             { path: 'profile', element: <ProfilePage /> },
             { path: 'settings', element: <SettingPage /> },
+            { path: 'addresses', element: <AddressPage /> },
           ],
         },
         { path: '/', element: <HomePage /> },
