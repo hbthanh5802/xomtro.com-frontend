@@ -3,16 +3,32 @@ import EditProfile from '@/components/EditProfile';
 import ModalLayout from '@/components/ModalLayout';
 import useUrl from '@/hooks/useUrl.hook';
 import { useAppStore } from '@/store/store';
+import { AssetSelectSchemaType, UserDetailSelectSchemaType } from '@/types/schema.type';
 import { formatTimeForVietnamese } from '@/utils/time.helper';
-import { Avatar, Badge, Button, Divider, IconButton, Skeleton, Tooltip, Typography } from '@mui/joy';
+import {
+  Avatar,
+  Badge,
+  Button,
+  Chip,
+  Divider,
+  Dropdown,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  Skeleton,
+  Tooltip,
+  Typography,
+} from '@mui/joy';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useShallow } from 'zustand/react/shallow';
 // Icons
-import { AssetSelectSchemaType, UserDetailSelectSchemaType } from '@/types/schema.type';
 import { FaRegEdit } from 'react-icons/fa';
 import { FaCameraRotate, FaCircleCheck, FaClipboardUser } from 'react-icons/fa6';
+import { IoIosMore } from 'react-icons/io';
 import { IoCalendarSharp } from 'react-icons/io5';
-import { MdEmail, MdLocalPhone } from 'react-icons/md';
+import { MdEmail, MdLocalPhone, MdLocationPin, MdSettings } from 'react-icons/md';
 
 // const emptyContent = 'Chưa có thông tin';
 
@@ -22,6 +38,7 @@ interface InfoTabProps {
 }
 
 const InfoTab = (props: InfoTabProps) => {
+  const navigate = useNavigate();
   const { userData, userAvatarData } = props;
   const isLoading = !userData;
   const {
@@ -133,7 +150,48 @@ const InfoTab = (props: InfoTabProps) => {
           <div className='tw-flex tw-items-center tw-justify-center'>
             <Typography level='body-sm'>{userData?.bio || 'Chưa có tiểu sử'}</Typography>
           </div>
-          <Divider orientation='horizontal' />
+          <Divider orientation='horizontal' sx={{ '--Divider-childPosition': `${100}%` }}>
+            {Number(userId) === currentUser?.userId && (
+              <Dropdown>
+                <MenuButton
+                  variant='plain'
+                  size='sm'
+                  sx={{ maxWidth: '32px', maxHeight: '32px', borderRadius: '9999999px' }}
+                >
+                  <Tooltip title='Thiệt lập thêm' arrow placement='top-start'>
+                    <Chip size='sm' color='primary' variant='soft'>
+                      <IoIosMore />
+                    </Chip>
+                  </Tooltip>
+                </MenuButton>
+                <Menu
+                  placement='bottom-end'
+                  size='sm'
+                  sx={{
+                    zIndex: '99999',
+                    p: 1,
+                    gap: 1,
+                    '--ListItem-radius': 'var(--joy-radius-sm)',
+                  }}
+                >
+                  {/* Settings */}
+                  <MenuItem onClick={() => navigate(`/users/${currentUser?.userId}/settings`)}>
+                    <div className='tw-flex tw-items-center tw-gap-2'>
+                      <MdSettings className='tw-flex tw-text-lg tw-text-slate-600' />
+                      Cài đặt tài khoản
+                    </div>
+                  </MenuItem>
+                  {/* Addresses */}
+                  <MenuItem onClick={() => navigate(`/users/${currentUser?.userId}/addresses`)}>
+                    <div className='tw-flex tw-items-center tw-gap-2'>
+                      <MdLocationPin className='tw-flex tw-text-lg tw-text-slate-600' />
+                      Thiết lập địa chỉ
+                    </div>
+                  </MenuItem>
+                </Menu>
+              </Dropdown>
+            )}
+          </Divider>
           <Typography level='title-lg'>Giới thiệu</Typography>
           <div className='tw-flex tw-items-center tw-gap-3 tw-flex-wrap'>
             <Typography
@@ -238,7 +296,7 @@ const InfoTab = (props: InfoTabProps) => {
           {Number(userId) === currentUser?.userId && (
             <div className='tw-pt-[12px]'>
               <Button fullWidth startDecorator={<FaRegEdit />} variant='soft' onClick={() => setEditProfile(true)}>
-                Chỉnh sửa thông tin cá nhân
+                Chỉnh sửa thông tin cơ bản
               </Button>
             </div>
           )}

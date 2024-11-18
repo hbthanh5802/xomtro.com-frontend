@@ -1,13 +1,9 @@
 import userService from '@/services/user.service';
+import { TanstackQueryOptions } from '@/types/common.type';
 import { useQuery } from '@tanstack/react-query';
 
-type QueryOptions = {
-  staleTime?: number;
-  catchTime?: number;
-};
-
 class useUserApi {
-  useUserDetail(userId: number, queryOptions?: QueryOptions) {
+  useUserDetail(userId: number, queryOptions?: TanstackQueryOptions) {
     return useQuery({
       queryKey: ['user-detail', { userId }],
       queryFn: () => userService.getUserDetailByUserId(userId),
@@ -16,7 +12,7 @@ class useUserApi {
     });
   }
 
-  useUserAvatar(userId: number, queryOptions?: QueryOptions) {
+  useUserAvatar(userId: number, queryOptions?: TanstackQueryOptions) {
     return useQuery({
       queryKey: ['user-avatar', { userId }],
       queryFn: () => userService.getUserAvatarByUserId(userId),

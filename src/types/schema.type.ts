@@ -129,3 +129,4 @@ export type PassPostItemInsertSchemaType = typeof schema.passPostItems.$inferIns
 
 export type UserDetailSelectSchemaType = typeof schema.userDetail.$inferSelect;
 export type AssetSelectSchemaType = typeof schema.assets.$inferSelect;
+export type AddressSelectSchemaType = typeof schema.addresses.$inferSelect;

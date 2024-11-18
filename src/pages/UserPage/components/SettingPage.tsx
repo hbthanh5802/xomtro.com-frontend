@@ -10,7 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, DialogActions, DialogTitle, Divider, Typography } from '@mui/joy';
 import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 // Icons
 import useUrl from '@/hooks/useUrl.hook';
@@ -146,6 +146,13 @@ function DisableAccount() {
     }
   };
 
+  const { resetAuthState, resetUserState } = useAppStore(
+    useShallow((state) => ({
+      resetAuthState: state.resetAuthState,
+      resetUserState: state.resetUserState,
+    })),
+  );
+
   const handleDisableAccount = async () => {
     setLoading(true);
     const toastId = toast.loading('Đang lưu thay đổi. Vui lòng chờ...');
@@ -154,10 +161,10 @@ function DisableAccount() {
       toast.success('Tài khoản của bạn đã tạm ẩn! Bạn sẽ được chuyển hướng về trang Đăng nhập thông báo này.', {
         duration: 1000,
         id: toastId,
-        onAutoClose: () => {
-          navigate('/auth/login');
-        },
       });
+      navigate('/auth/login');
+      resetAuthState();
+      resetUserState();
     } catch (error) {
       toast.error('Có lỗi xảy, ra. Hãy kiểm tra lại thông tin hoặc vui lòng thử lại sau.', {
         duration: 1500,
@@ -216,15 +223,18 @@ function DisableAccount() {
 
 const SettingPage: React.FC = () => {
   const { params } = useUrl();
+  const navigate = useNavigate();
   const { currentUser } = useAppStore(
     useShallow((state) => ({
       currentUser: state.currentUser,
     })),
   );
 
-  if (Number(params.userId) !== currentUser?.userId) {
-    return <Navigate to={'/403'} />;
-  }
+  React.useEffect(() => {
+    if (currentUser && Number(params.userId) !== currentUser?.userId) {
+      navigate('/403');
+    }
+  }, [currentUser]);
 
   return (
     <div className='tw-shadow-md tw-rounded-lg tw-bg-white tw-overflow-hidden tw-p-[24px]'>
