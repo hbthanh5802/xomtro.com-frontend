@@ -1,13 +1,11 @@
 import { timestamps } from '@/utils/schema.helper';
 import { sql } from 'drizzle-orm';
 import {
-  AnyMySqlColumn,
   boolean,
   date,
   datetime,
   decimal,
   float,
-  foreignKey,
   index,
   int,
   json,
@@ -45,10 +43,13 @@ export const userDetail = mysqlTable('users_detail', {
   firstName: varchar('first_name', { length: 50 }).notNull(),
   lastName: varchar('last_name', { length: 50 }).notNull(),
   gender: mysqlEnum(['male', 'female', 'others']),
-  dob: date(),
+  dob: datetime(),
   isEmailVerified: boolean('is_email_verified').default(false),
   isPhoneVerified: boolean('is_phone_verified').default(false),
-  avatarAssetId: int('avatar_asset_id').references(() => assets.id),
+  avatarAssetId: int('avatar_asset_id').references(() => assets.id, {
+    onDelete: 'cascade',
+    onUpdate: 'cascade',
+  }),
   ...timestamps,
 });
 
@@ -57,13 +58,15 @@ export const addresses = mysqlTable(
   {
     id: int().primaryKey().autoincrement(),
     userId: int('user_id').references(() => users.id),
+    addressCode: varchar('address_code', { length: 255 }),
     provinceName: varchar('province_name', { length: 255 }).notNull(),
     districtName: varchar('district_name', { length: 255 }).notNull(),
     wardName: varchar('ward_name', { length: 255 }).notNull(),
     detail: text(),
     postalCode: varchar('postal_code', { length: 25 }),
-    latitude: decimal({ precision: 11, scale: 8 }),
-    longitude: decimal({ precision: 10, scale: 8 }),
+    isDefault: boolean('is_default').default(false),
+    latitude: decimal({ precision: 10, scale: 8 }), // Đủ lưu -90 đến 90
+    longitude: decimal({ precision: 11, scale: 8 }), // Đủ lưu -180 đến 180
     ...timestamps,
   },
   (table) => {
@@ -287,13 +290,6 @@ export const userPostReactions = mysqlTable(
     idxUserIdPostId: unique('idx_user_id_post_id').on(table.userId, table.postId),
   }),
 );
-
-// export const postTags = mysqlTable('post_tags', {
-//   id: int().primaryKey().autoincrement(),
-//   label: varchar({ length: 25 }).notNull(),
-//   usedCount: int('used_count').notNull().default(1),
-//   ...timestamps
-// });
 
 export const postComments = mysqlTable('post_comments', {
   id: int().primaryKey().autoincrement(),

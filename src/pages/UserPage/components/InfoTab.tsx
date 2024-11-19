@@ -24,8 +24,9 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useShallow } from 'zustand/react/shallow';
 // Icons
+import addressService from '@/services/address.service';
 import { FaRegEdit } from 'react-icons/fa';
-import { FaCameraRotate, FaCircleCheck, FaClipboardUser } from 'react-icons/fa6';
+import { FaCameraRotate, FaCircleCheck, FaClipboardUser, FaHouseFlag } from 'react-icons/fa6';
 import { IoIosMore } from 'react-icons/io';
 import { IoCalendarSharp } from 'react-icons/io5';
 import { MdEmail, MdLocalPhone, MdLocationPin, MdSettings } from 'react-icons/md';
@@ -52,6 +53,12 @@ const InfoTab = (props: InfoTabProps) => {
       currentUser: state.currentUser,
     })),
   );
+
+  const { data: getUserDefaultAddressResponse } = addressService.getUserDefaultAddress(Number(userId), {
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+  });
+  const defaultUserAddress = getUserDefaultAddressResponse?.data;
 
   const handleCloseChangeAvatarModal = (reason?: string) => {
     console.log(reason);
@@ -159,7 +166,7 @@ const InfoTab = (props: InfoTabProps) => {
                   sx={{ maxWidth: '32px', maxHeight: '32px', borderRadius: '9999999px' }}
                 >
                   <Tooltip title='Thiệt lập thêm' arrow placement='top-start'>
-                    <Chip size='sm' color='primary' variant='soft'>
+                    <Chip size='sm' color='primary' variant='solid'>
                       <IoIosMore />
                     </Chip>
                   </Tooltip>
@@ -193,7 +200,7 @@ const InfoTab = (props: InfoTabProps) => {
             )}
           </Divider>
           <Typography level='title-lg'>Giới thiệu</Typography>
-          <div className='tw-flex tw-items-center tw-gap-3 tw-flex-wrap'>
+          <div className='tw-flex tw-items-center tw-gap-2 tw-flex-wrap'>
             <Typography
               level='title-sm'
               startDecorator={<FaClipboardUser className='tw-text-slate-600 tw-mr-[4px] tw-text-[16px]' />}
@@ -206,7 +213,7 @@ const InfoTab = (props: InfoTabProps) => {
           </div>
 
           {userData?.role && (
-            <div className='tw-flex tw-items-center tw-gap-3 tw-flex-wrap'>
+            <div className='tw-flex tw-items-center tw-gap-2 tw-flex-wrap'>
               <Typography
                 level='title-sm'
                 startDecorator={<FaClipboardUser className='tw-text-slate-600 tw-mr-[4px] tw-text-[16px]' />}
@@ -220,7 +227,7 @@ const InfoTab = (props: InfoTabProps) => {
           )}
 
           {userData?.gender && (
-            <div className='tw-flex tw-items-center tw-gap-3 tw-flex-wrap'>
+            <div className='tw-flex tw-items-center tw-gap-2 tw-flex-wrap'>
               <Typography
                 level='title-sm'
                 startDecorator={<FaClipboardUser className='tw-text-slate-600 tw-mr-[4px] tw-text-[16px]' />}
@@ -234,7 +241,7 @@ const InfoTab = (props: InfoTabProps) => {
           )}
 
           {userData?.dob && (
-            <div className='tw-flex tw-items-center tw-gap-3 tw-flex-wrap'>
+            <div className='tw-flex tw-items-center tw-gap-2 tw-flex-wrap'>
               <Typography
                 level='title-sm'
                 startDecorator={<IoCalendarSharp className='tw-text-slate-600 tw-mr-[4px] tw-text-[16px]' />}
@@ -248,7 +255,7 @@ const InfoTab = (props: InfoTabProps) => {
           )}
 
           {userData?.email && (
-            <div className='tw-flex tw-items-center tw-gap-3 tw-flex-wrap'>
+            <div className='tw-flex tw-items-center tw-gap-2 tw-flex-wrap'>
               <Typography
                 level='title-sm'
                 startDecorator={<MdEmail className='tw-text-slate-600 tw-mr-[4px] tw-text-[16px]' />}
@@ -271,7 +278,7 @@ const InfoTab = (props: InfoTabProps) => {
           )}
 
           {userData?.phone && (
-            <div className='tw-flex tw-items-center tw-gap-3 tw-flex-wrap'>
+            <div className='tw-flex tw-items-center tw-gap-2 tw-flex-wrap'>
               <Typography
                 level='title-sm'
                 startDecorator={<MdLocalPhone className='tw-text-slate-600 tw-mr-[4px] tw-text-[16px]' />}
@@ -289,6 +296,20 @@ const InfoTab = (props: InfoTabProps) => {
                 >
                   Nhắn Zalo
                 </a> */}
+              </Typography>
+            </div>
+          )}
+
+          {defaultUserAddress && (
+            <div className='tw-flex tw-items-center tw-gap-2 tw-flex-wrap'>
+              <Typography
+                level='title-sm'
+                startDecorator={<FaHouseFlag className='tw-text-slate-600 tw-mr-[4px] tw-text-[16px]' />}
+              >
+                Đến từ:
+              </Typography>
+              <Typography level='body-sm' color='neutral' sx={{ borderRadius: 1 }}>
+                {defaultUserAddress.provinceName}
               </Typography>
             </div>
           )}

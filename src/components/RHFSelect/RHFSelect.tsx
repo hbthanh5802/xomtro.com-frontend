@@ -21,8 +21,15 @@ const RHFSelect = <T extends FieldValues>(props: RHFSelectProps<T>) => {
   const { name, control, required = false, size = 'sm' } = props;
   const { field } = useController({ name, control });
 
-  const handleChange = (event: React.SyntheticEvent | null, newValue: string | null) => {
-    field.onChange(newValue);
+  const handleChange = (
+    event:
+      | React.MouseEvent<Element, MouseEvent>
+      | React.KeyboardEvent<Element>
+      | React.FocusEvent<Element, Element>
+      | null,
+    value: {} | null,
+  ) => {
+    field.onChange(value);
   };
 
   return (
@@ -47,6 +54,7 @@ const RHFSelect = <T extends FieldValues>(props: RHFSelectProps<T>) => {
                   placeholder={props.placeholder}
                   name={props.name}
                   onChange={handleChange}
+                  value={field.value || null}
                   className={props.className}
                   // indicator={<MdOutlineKeyboardArrowDown className='tw-text-[24px]' />}
                   sx={{
