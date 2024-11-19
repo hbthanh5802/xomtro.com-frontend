@@ -189,7 +189,7 @@ function DisableAccount() {
             <Divider />
           </div>
           <Typography level='body-md'>
-            Hành đọng này sẽ tạm ẩn tài khoản của bạn. Sau khi khoá, các thông tin về tài khoản vễ tạm ẩn với tất cả mọi
+            Hành động này sẽ tạm ẩn tài khoản của bạn. Sau khi khoá, các thông tin về tài khoản vễ tạm ẩn với tất cả mọi
             người.
           </Typography>
           <DialogActions>

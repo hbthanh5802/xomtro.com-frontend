@@ -1,3 +1,4 @@
+import { queryClient } from '@/App';
 import authService from '@/services/auth.service';
 import { useAppStore } from '@/store/store';
 import type { UserDetailSelectSchemaType } from '@/types/schema.type';
@@ -52,6 +53,7 @@ export const createAuthSlice: StateCreator<authSlice, AuthMiddlewares, [], authS
       toast.success('Đăng xuất thành công!', {
         id: toastId,
       });
+      queryClient.invalidateQueries();
       useAppStore.getState().resetUserState();
       history.push('/');
       return set(initialState);

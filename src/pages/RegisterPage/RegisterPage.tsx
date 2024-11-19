@@ -107,7 +107,7 @@ export default function JoySignInSideTemplate() {
                 },
               })}
             >
-              or
+              hoặc
             </Divider>
             {/* Register Form */}
             <RegisterForm />

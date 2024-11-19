@@ -6,4 +6,5 @@ export const insertAddressValidation = createInsertSchema(addresses).pick({
   districtName: true,
   wardName: true,
   detail: true,
+  addressCode: true,
 });
