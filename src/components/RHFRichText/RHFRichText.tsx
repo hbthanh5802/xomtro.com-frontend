@@ -1,6 +1,6 @@
 import { FormControl, FormHelperText, FormLabel } from '@mui/joy';
 import { ReactNode, useEffect } from 'react';
-import { Control, Controller, FieldValues, Path, useController, useFormContext } from 'react-hook-form';
+import { Control, Controller, FieldValues, Path, useController } from 'react-hook-form';
 import { MdOutlineInfo } from 'react-icons/md';
 import { useQuill } from 'react-quilljs';
 
@@ -73,9 +73,10 @@ const RHFRichText = <T extends FieldValues>(props: RHFRichTextProps<T>) => {
         return (
           <FormControl error={!!fieldState.error}>
             {label && <FormLabel>{label}</FormLabel>}
-            <div className='tw-w-full tw-h-[200px] tw-rounded tw-border'>
-              <div ref={quillRef} />
-            </div>
+            <div
+              ref={quillRef}
+              className={`tw-w-full tw-min-h-[200px] tw-rounded tw-border tw-shadow-sm focus-within:tw-border-primaryColor ${props.className}`}
+            />
             {!!fieldState.error && (
               <FormHelperText>
                 <MdOutlineInfo />

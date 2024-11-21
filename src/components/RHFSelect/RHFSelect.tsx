@@ -12,13 +12,15 @@ interface RHFSelectProps<T extends FieldValues> {
   placeholder?: string;
   disabled?: boolean;
   required?: boolean;
+  minWidth?: string | number;
+  width?: string;
   options: SelectOptionItemType[];
   size?: 'md' | 'lg' | 'sm';
 }
 
 const RHFSelect = <T extends FieldValues>(props: RHFSelectProps<T>) => {
   const optionId = React.useId();
-  const { name, control, required = false, size = 'sm' } = props;
+  const { name, control, required = false, size = 'sm', minWidth = 150 } = props;
   const { field } = useController({ name, control });
 
   const handleChange = (
@@ -58,7 +60,8 @@ const RHFSelect = <T extends FieldValues>(props: RHFSelectProps<T>) => {
                   className={props.className}
                   // indicator={<MdOutlineKeyboardArrowDown className='tw-text-[24px]' />}
                   sx={{
-                    zIndex: '99999',
+                    minWidth: `${minWidth}px`,
+                    // zIndex: '99999',
                     p: 1,
                     gap: 1,
                     '--ListItem-radius': 'var(--joy-radius-sm)',

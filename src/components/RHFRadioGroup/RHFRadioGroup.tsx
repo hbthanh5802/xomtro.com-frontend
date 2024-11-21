@@ -1,7 +1,7 @@
 import { RadioOptionItemType } from '@/types/common.type';
 import { FormControl, FormHelperText, FormLabel, Radio, RadioGroup, Typography } from '@mui/joy';
 import { ReactNode, useId } from 'react';
-import { Control, Controller, FieldValues, Path } from 'react-hook-form';
+import { Control, Controller, FieldValues, Path, useController } from 'react-hook-form';
 import { MdOutlineInfo } from 'react-icons/md';
 
 interface RHFRadioGroupProps<T extends FieldValues> {
@@ -18,7 +18,18 @@ interface RHFRadioGroupProps<T extends FieldValues> {
 
 const RHFRadioGroup = <T extends FieldValues>(props: RHFRadioGroupProps<T>) => {
   const radioId = useId();
-  const { direction = 'vertical' } = props;
+  const { direction = 'vertical', control, name } = props;
+  const {
+    field: { onChange },
+  } = useController({
+    control,
+    name,
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    onChange(value === 'true' ? true : value === 'false' ? false : value);
+  };
 
   return (
     <>
@@ -38,7 +49,8 @@ const RHFRadioGroup = <T extends FieldValues>(props: RHFRadioGroupProps<T>) => {
                 defaultValue={null}
                 {...field}
                 name={props.name}
-                value={field.value || null}
+                value={field.value === true ? 'true' : field.value === false ? 'false' : field.value || null}
+                onChange={handleChange}
                 sx={{ gap: 2, flexDirection: direction === 'vertical' ? 'column' : 'row' }}
               >
                 {props.options.map((optionItem, index) => {

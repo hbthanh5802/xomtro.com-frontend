@@ -113,7 +113,7 @@ export default function RHFFileInput<T extends FieldValues>(props: RHFFileInput<
               </SvgIcon>
             }
           >
-            {props.label || 'Upload File'}
+            {props.label || 'Chọn ảnh'}
             {/* Visually hidden input */}
             <VisuallyHiddenInput
               multiple={maxSize > 1 ? true : false}
