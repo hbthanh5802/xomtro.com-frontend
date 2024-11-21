@@ -5,6 +5,8 @@ import ForbiddenPage from '@/pages/ForbiddenPage';
 import ForgotPasswordPage from '@/pages/ForgotPasswordPage';
 import HomePage from '@/pages/HomePage';
 import LoginPage from '@/pages/LoginPage';
+import PostPageWrapper from '@/pages/PostPage/PostPageWrapper';
+import RentalPostPage from '@/pages/PostPage/RentalPostPage';
 import RolePage from '@/pages/RolePage';
 import UserPage from '@/pages/UserPage';
 import AddressPage from '@/pages/UserPage/components/AddressPage';
@@ -76,6 +78,11 @@ const AppRoutes: React.FC = () => {
             { path: 'settings', element: <SettingPage /> },
             { path: 'addresses', element: <AddressPage /> },
           ],
+        },
+        {
+          path: 'posts',
+          element: <PostPageWrapper />,
+          children: [{ path: 'rental/create', element: <RentalPostPage /> }],
         },
         { path: '/', element: <HomePage /> },
       ],

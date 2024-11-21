@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { MdOutlineInfo } from 'react-icons/md';
 
-interface RHFInputProps<T extends FieldValues> {
+interface RHFNumberInputProps<T extends FieldValues> {
   label?: ReactNode | string;
   name: Path<T>;
   control?: Control<T>;
@@ -11,12 +11,16 @@ interface RHFInputProps<T extends FieldValues> {
   placeholder?: string;
   minWidth?: number | string;
   disable?: boolean;
-  type?: 'text' | 'email' | 'number';
   required?: boolean;
+  min?: number;
+  max?: number;
+  step?: number;
+  startDecorator?: ReactNode;
+  endDecorator?: ReactNode;
 }
 
-const RHFInput = <T extends FieldValues>(props: RHFInputProps<T>) => {
-  const { minWidth = 0 } = props;
+const RHFNumberInput = <T extends FieldValues>(props: RHFNumberInputProps<T>) => {
+  const { minWidth = 0, min, max, step, startDecorator, endDecorator } = props;
 
   return (
     <>
@@ -33,13 +37,16 @@ const RHFInput = <T extends FieldValues>(props: RHFInputProps<T>) => {
                 </FormLabel>
               )}
               <Input
+                startDecorator={startDecorator}
+                endDecorator={endDecorator}
                 sx={{ minWidth: `${minWidth}px` }}
                 disabled={props.disable}
                 placeholder={props.placeholder || ''}
                 className={props.className}
-                type={props.type || 'text'}
+                type='number'
+                slotProps={{ input: { min, max, step } }}
                 {...field}
-                onChange={(e) => field.onChange(props.type === 'number' ? Number(e.target.value) : e.target.value)}
+                onChange={(e) => field.onChange(Number(e.target.value))}
                 value={field.value ?? ''}
                 required={props.required}
               />
@@ -57,4 +64,4 @@ const RHFInput = <T extends FieldValues>(props: RHFInputProps<T>) => {
   );
 };
 
-export default RHFInput;
+export default RHFNumberInput;

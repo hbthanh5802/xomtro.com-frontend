@@ -65,7 +65,11 @@ const ForgotPasswordPage = () => {
       );
       navigate('/auth/login');
     } catch (error) {
-      toast.error('Có lỗi xảy ra, vui lòng thử lại sau!');
+      const errorResponse = handleAxiosError(error);
+      if (errorResponse?.status === 401) {
+        setError('otpCode', { message: 'Mã xác thực không chính xác. Vui lòng kiểm tra lại' });
+      }
+      toast.error('Có lỗi xảy ra, vui lòng thử lại thông tin hoặc thử lại sau!');
     } finally {
       setLoading(false);
     }

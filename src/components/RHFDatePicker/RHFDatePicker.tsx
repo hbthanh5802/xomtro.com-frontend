@@ -52,7 +52,9 @@ const RHFDatePicker = <T extends FieldValues>(props: RHFDatePickerProps<T>) => {
                   const utcValue = convertToUTC(e.target.value);
                   field.onChange(utcValue); // Cập nhật giá trị dưới dạng UTC
                 }}
-                className='tw-border tw-border-slate-300 tw-p-1 tw-pl-2 tw-rounded-md tw-shadow-sm tw-w-full tw-outline-primaryColor'
+                className={`tw-border tw-border-slate-300 tw-p-1 tw-pl-2 tw-rounded-md tw-shadow-sm tw-w-full tw-outline-primaryColor ${
+                  props.className ? props.className : ''
+                }`}
               />
               {!!fieldState.error && (
                 <FormHelperText>

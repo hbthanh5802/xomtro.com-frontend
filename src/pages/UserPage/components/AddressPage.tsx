@@ -428,12 +428,14 @@ const AddressPage = () => {
                             </div>
                           </MenuItem>
                           {/* Set Default */}
-                          <MenuItem onClick={() => handleSetDefaultClick(address)} color='success'>
-                            <div className='tw-flex tw-items-center tw-gap-2'>
-                              <FaHouseFlag className='tw-flex tw-text-lg' />
-                              Đặt làm mặc định
-                            </div>
-                          </MenuItem>
+                          {!address.isDefault && (
+                            <MenuItem onClick={() => handleSetDefaultClick(address)} color='success'>
+                              <div className='tw-flex tw-items-center tw-gap-2'>
+                                <FaHouseFlag className='tw-flex tw-text-lg' />
+                                Đặt làm mặc định
+                              </div>
+                            </MenuItem>
+                          )}
                           <ListDivider />
                           {/* Delete */}
                           <MenuItem color='danger' onClick={() => handleDeleteClick(address)}>

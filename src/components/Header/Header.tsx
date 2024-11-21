@@ -1,14 +1,18 @@
 import LogoIcon from '@/assets/LogoIcon';
+import Account from '@/components/Header/Account';
 import SearchBar from '@/components/Header/SearchBar';
 import { useAppStore } from '@/store/store';
 import history from '@/utils/history.helper';
-import { Button, IconButton, Typography } from '@mui/joy';
-import { Link } from 'react-router-dom';
+import { Button, Dropdown, IconButton, Menu, MenuButton, MenuItem, Typography } from '@mui/joy';
+import React from 'react';
+import { FaHandsHoldingCircle, FaHouseChimneyUser, FaHouseMedicalFlag, FaPlus } from 'react-icons/fa6';
+import { IoHome } from 'react-icons/io5';
+import { Link, useNavigate } from 'react-router-dom';
 import { useShallow } from 'zustand/react/shallow';
 // Icons
-import Account from '@/components/Header/Account';
 
 const Header = () => {
+  const navigate = useNavigate();
   const { currentUser } = useAppStore(
     useShallow((state) => ({
       currentUser: state.currentUser,
@@ -39,6 +43,59 @@ const Header = () => {
 
         {currentUser ? (
           <div className='tw-gap-[12px] tw-flex-1 tw-flex tw-justify-end tw-text-right tw-items-center'>
+            <Dropdown>
+              <MenuButton
+                variant='solid'
+                color='primary'
+                size='md'
+                startDecorator={<FaPlus />}
+                // sx={{ maxWidth: '32px', maxHeight: '32px', borderRadius: '9999999px' }}
+              >
+                Tạo bài viết
+              </MenuButton>
+              <Menu
+                placement='bottom-end'
+                size='md'
+                sx={{
+                  zIndex: '99999',
+                  p: 1,
+                  gap: 1,
+                  '--ListItem-radius': 'var(--joy-radius-sm)',
+                }}
+              >
+                {currentUser.role === 'renter' ? (
+                  <React.Fragment>
+                    <MenuItem onClick={() => {}}>
+                      <div className='tw-flex tw-items-center tw-gap-2'>
+                        <IoHome className='tw-flex tw-text-lg tw-text-slate-600' />
+                        Tìm phòng trống
+                      </div>
+                    </MenuItem>
+                    <MenuItem>
+                      <div className='tw-flex tw-items-center tw-gap-2'>
+                        <FaHouseChimneyUser className='tw-flex tw-text-lg tw-text-slate-600' />
+                        Tìm người ở ghép
+                      </div>
+                    </MenuItem>
+                    <MenuItem>
+                      <div className='tw-flex tw-items-center tw-gap-2'>
+                        <FaHandsHoldingCircle className='tw-flex tw-text-lg tw-text-slate-600' />
+                        Pass đồ
+                      </div>
+                    </MenuItem>
+                  </React.Fragment>
+                ) : (
+                  <React.Fragment>
+                    <MenuItem onClick={() => navigate('/posts/rental/create')}>
+                      <div className='tw-flex tw-items-center tw-gap-2'>
+                        <FaHouseMedicalFlag className='tw-flex tw-text-lg tw-text-slate-600' />
+                        Cho thuê phòng
+                      </div>
+                    </MenuItem>
+                  </React.Fragment>
+                )}
+              </Menu>
+            </Dropdown>
             <Account />
           </div>
         ) : (
