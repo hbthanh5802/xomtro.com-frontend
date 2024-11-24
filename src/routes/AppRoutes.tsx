@@ -10,8 +10,8 @@ import RentalPostPage from '@/pages/PostPage/RentalPostPage';
 import RolePage from '@/pages/RolePage';
 import UserPage from '@/pages/UserPage';
 import AddressPage from '@/pages/UserPage/components/AddressPage';
-import ProfilePage from '@/pages/UserPage/components/ProfilePage';
 import SettingPage from '@/pages/UserPage/components/SettingPage';
+import ProfilePage from '@/pages/UserPage/components/UserPostPage';
 import VerifyPage from '@/pages/VerifyPage';
 import React, { lazy } from 'react';
 import { useRoutes } from 'react-router-dom';
@@ -82,7 +82,7 @@ const AppRoutes: React.FC = () => {
         {
           path: 'posts',
           element: <PostPageWrapper />,
-          children: [{ path: 'rental/create', element: <RentalPostPage /> }],
+          children: [{ path: 'rental/:mode', element: <RentalPostPage /> }],
         },
         { path: '/', element: <HomePage /> },
       ],

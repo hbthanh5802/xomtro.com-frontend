@@ -53,12 +53,17 @@ const modules = {
 const RHFRichText = <T extends FieldValues>(props: RHFRichTextProps<T>) => {
   const { label, name, control, placeholder, disable = false } = props;
   const {
-    field: { onChange },
+    field: { onChange, value },
   } = useController({ control, name });
   const { quill, quillRef } = useQuill({ modules, formats, placeholder, readOnly: disable });
 
   useEffect(() => {
     if (quill) {
+      // Set default value khi component được mount
+      if (value) {
+        quill.root.innerHTML = value; // Gán giá trị mặc định cho Quill
+      }
+
       quill.on('text-change', () => {
         onChange(quill.root.innerHTML);
       });

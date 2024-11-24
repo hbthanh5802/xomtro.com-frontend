@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/vi';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
+import * as timeago from 'timeago.js';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -18,7 +19,7 @@ export const formatTimeForVietnamese = (
   date: dayjs.Dayjs | Date,
   format: 'HH:mm:ss DD/MM/YYYY' | 'DD/MM/YYYY' = 'DD/MM/YYYY',
 ) => {
-  const dayjsDate = dayjs.isDayjs(date) ? date : dayjs(date);
+  const dayjsDate = dayjs.isDayjs(date) ? date : dayjs.utc(date);
 
   return dayjsDate.locale('vi').format(format);
 };
@@ -61,4 +62,41 @@ export const validateDateRange = (date: string, minDate?: Date, maxDate?: Date):
   }
 
   return true;
+};
+
+export const isValidDateTime = (dateTimeString: string) => {
+  const date = new Date(dateTimeString);
+  return !isNaN(date.getTime());
+};
+
+// register your locale with timeago
+const localeFunc = (number: number, index: number, totalSec: number | undefined): [string, string] => {
+  // number: thời gian đã qua / thời gian sắp tới dưới dạng số;
+  // index: chỉ số của mảng bên dưới;
+  // totalSec: tổng số giây giữa ngày được định dạng và ngày hôm nay;
+  const locales: [string, string][] = [
+    ['vừa xong', 'ngay bây giờ'],
+    ['%s giây trước', 'trong %s giây'],
+    ['1 phút trước', 'trong 1 phút'],
+    ['%s phút trước', 'trong %s phút'],
+    ['1 giờ trước', 'trong 1 giờ'],
+    ['%s giờ trước', 'trong %s giờ'],
+    ['1 ngày trước', 'trong 1 ngày'],
+    ['%s ngày trước', 'trong %s ngày'],
+    ['1 tuần trước', 'trong 1 tuần'],
+    ['%s tuần trước', 'trong %s tuần'],
+    ['1 tháng trước', 'trong 1 tháng'],
+    ['%s tháng trước', 'trong %s tháng'],
+    ['1 năm trước', 'trong 1 năm'],
+    ['%s năm trước', 'trong %s năm'],
+  ];
+
+  return locales[index];
+};
+
+timeago.register('vi', localeFunc);
+
+export const getTimeAgo = (dateTimeString: string) => {
+  if (!isValidDateTime) return false;
+  return timeago.format(dateTimeString, 'vi');
 };

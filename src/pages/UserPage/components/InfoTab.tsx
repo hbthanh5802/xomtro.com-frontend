@@ -26,7 +26,7 @@ import { useShallow } from 'zustand/react/shallow';
 // Icons
 import addressService from '@/services/address.service';
 import { FaRegEdit } from 'react-icons/fa';
-import { FaCameraRotate, FaCircleCheck, FaClipboardUser, FaHouseFlag } from 'react-icons/fa6';
+import { FaCameraRotate, FaCircleCheck, FaClipboardUser, FaHouseFlag, FaRegEye, FaRegEyeSlash } from 'react-icons/fa6';
 import { IoIosMore } from 'react-icons/io';
 import { IoCalendarSharp } from 'react-icons/io5';
 import { MdEmail, MdLocalPhone, MdLocationPin, MdSettings } from 'react-icons/md';
@@ -47,6 +47,7 @@ const InfoTab = (props: InfoTabProps) => {
   } = useUrl();
   const [editAvatar, setEditAvatar] = React.useState(false);
   const [editProfile, setEditProfile] = React.useState(false);
+  const [showPhone, setShowPhone] = React.useState(false);
 
   const { currentUser } = useAppStore(
     useShallow((state) => ({
@@ -60,13 +61,11 @@ const InfoTab = (props: InfoTabProps) => {
   });
   const defaultUserAddress = getUserDefaultAddressResponse?.data;
 
-  const handleCloseChangeAvatarModal = (reason?: string) => {
-    console.log(reason);
+  const handleCloseChangeAvatarModal = () => {
     setEditAvatar(false);
   };
 
-  const handleCloseEditProfileModal = (reason?: string) => {
-    console.log(reason);
+  const handleCloseEditProfileModal = () => {
     setEditProfile(false);
   };
 
@@ -249,7 +248,7 @@ const InfoTab = (props: InfoTabProps) => {
                 Ngày sinh:
               </Typography>
               <Typography level='body-sm' color='neutral' sx={{ borderRadius: 1 }}>
-                {formatTimeForVietnamese(userData?.dob, 'DD/MM/YYYY')}
+                {formatTimeForVietnamese(new Date(userData?.dob), 'DD/MM/YYYY')}
               </Typography>
             </div>
           )}
@@ -285,18 +284,32 @@ const InfoTab = (props: InfoTabProps) => {
               >
                 Số điện thoại:
               </Typography>
-              <Typography level='body-sm' color='neutral' sx={{ borderRadius: 1 }}>
-                <a href={`tel:${userData.phone}`} className='tw-text-primaryColor hover:tw-underline tw-cursor-pointer'>
-                  {userData.phone}
-                </a>
-                {/* <a
-                  href='https://zalo.me/0869836386'
-                  target='_blank'
-                  className='tw-text-blue-500 hover:tw-underline tw-cursor-pointer'
-                >
-                  Nhắn Zalo
-                </a> */}
-              </Typography>
+              <div className='tw-flex tw-gap-2 tw-items-center'>
+                <Typography level='body-sm' color='neutral' sx={{ borderRadius: 1 }}>
+                  <a
+                    href={`tel:${userData.phone}`}
+                    className='tw-text-primaryColor hover:tw-underline tw-cursor-pointer'
+                  >
+                    {showPhone ? userData.phone : `${userData.phone.substring(0, 3)}_${userData.phone.substring(7)}`}
+                  </a>
+                  {/* <a
+                    href='https://zalo.me/0869836386'
+                    target='_blank'
+                    className='tw-text-blue-500 hover:tw-underline tw-cursor-pointer'
+                  >
+                    Nhắn Zalo
+                  </a> */}
+                </Typography>
+                {showPhone ? (
+                  <Chip color='primary' onClick={() => setShowPhone(false)}>
+                    <FaRegEyeSlash />
+                  </Chip>
+                ) : (
+                  <Chip color='primary' onClick={() => setShowPhone(true)}>
+                    <FaRegEye />
+                  </Chip>
+                )}
+              </div>
             </div>
           )}
 

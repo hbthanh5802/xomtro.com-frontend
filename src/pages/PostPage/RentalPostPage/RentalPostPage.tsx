@@ -6,18 +6,23 @@ import RHFRadioGroup from '@/components/RHFRadioGroup';
 import RHFRichText from '@/components/RHFRichText';
 import RHFSelect from '@/components/RHFSelect';
 import RHFTextArea from '@/components/RHFTextArea';
+import useUrl from '@/hooks/useUrl.hook';
 import locationService from '@/services/location.service';
 import postService from '@/services/post.service';
+import { useAppStore } from '@/store/store';
 import { SelectOptionItemType } from '@/types/common.type';
 import { InsertRentalPostDataType } from '@/types/post.type';
+import { AssetSelectSchemaType, PostSelectSchemaType, RentalPostSelectSchemaType } from '@/types/schema.type';
 import { handleAxiosError } from '@/utils/constants.helper';
 import { insertRentalPostValidation } from '@/validations/post.validation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, Chip, Divider, Typography } from '@mui/joy';
+import { AspectRatio, Button, Chip, Divider, Typography } from '@mui/joy';
 import React from 'react';
 import { Control, FormProvider, useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { MdDeleteOutline, MdOutlineInfo } from 'react-icons/md';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import { useShallow } from 'zustand/react/shallow';
 
 const expirationAfterOptions: SelectOptionItemType[] = [
   {
@@ -70,7 +75,7 @@ const minLeaseTermUnitOptions: SelectOptionItemType[] = [
 
 interface AddressPostFormProps {
   control: Control<InsertRentalPostDataType>;
-  mode: 'add' | 'edit';
+  mode: 'create' | 'edit';
   data?: any;
 }
 function AddressPostForm(props: AddressPostFormProps) {
@@ -188,23 +193,58 @@ function AddressPostForm(props: AddressPostFormProps) {
 }
 
 const RentalPostPage = () => {
+  const navigate = useNavigate();
+  const { params, state } = useUrl();
+  const assetId = React.useId();
+  const mode = params?.mode as 'create' | 'edit';
+  const postData = state?.postData;
+  const detail: RentalPostSelectSchemaType = mode === 'edit' && postData ? postData.detail : null;
+  const post: PostSelectSchemaType = mode === 'edit' && postData ? postData.post : null;
+  const assets: AssetSelectSchemaType[] = mode === 'edit' && postData ? postData.assets : [];
+  const [assetList, setAssetList] = React.useState(() => (mode === 'edit' && assets ? assets : []));
+
+  if (!['create', 'edit'].includes(mode)) {
+    return <Navigate to={'/404'} />;
+  }
+
+  if (mode === 'edit' && !postData) {
+    return <Navigate to={'/404'} />;
+  }
+
   const [loading, setLoading] = React.useState(false);
+
+  const defaultAddressCode = post?.addressCode?.split('-')!;
+
   const methods = useForm<InsertRentalPostDataType>({
     defaultValues: {
       type: 'rental',
-      expirationAfterUnit: 'day',
-      totalAreaUnit: 'm2',
-      minLeaseTermUnit: 'month',
-      hasFurniture: false,
-      hasAirConditioner: false,
-      hasWashingMachine: false,
-      hasRefrigerator: false,
-      hasPrivateBathroom: false,
-      hasParking: false,
-      hasSecurity: false,
-      hasElevator: false,
-      hasInternet: false,
-      allowPets: false,
+      title: mode === 'create' ? '' : post?.title,
+      description: mode === 'create' ? '' : post?.description,
+      minLeaseTerm: mode === 'create' ? undefined : detail?.minLeaseTerm,
+      expirationAfter: mode === 'create' ? null : post?.expirationAfter,
+      expirationAfterUnit: mode === 'create' ? 'day' : post?.expirationAfterUnit,
+      totalArea: mode === 'create' ? null : detail?.totalArea,
+      totalAreaUnit: mode === 'create' ? 'm2' : detail?.totalAreaUnit,
+      minLeaseTermUnit: mode === 'create' ? 'month' : detail?.minLeaseTermUnit,
+      numberRoomAvailable: mode === 'create' ? null : detail?.numberRoomAvailable,
+      hasFurniture: mode === 'create' ? false : detail?.hasFurniture,
+      hasAirConditioner: mode === 'create' ? false : detail?.hasAirConditioner,
+      hasWashingMachine: mode === 'create' ? false : detail?.hasWashingMachine,
+      hasRefrigerator: mode === 'create' ? false : detail?.hasRefrigerator,
+      hasPrivateBathroom: mode === 'create' ? false : detail?.hasPrivateBathroom,
+      hasParking: mode === 'create' ? false : detail?.hasParking,
+      hasSecurity: mode === 'create' ? false : detail?.hasSecurity,
+      hasElevator: mode === 'create' ? false : detail?.hasElevator,
+      hasInternet: mode === 'create' ? false : detail?.hasInternet,
+      allowPets: mode === 'create' ? false : detail?.allowPets,
+      priceStart: mode === 'create' ? undefined : detail?.priceStart,
+      priceEnd: mode === 'create' ? undefined : detail?.priceEnd,
+      note: mode === 'create' ? '' : post?.note,
+      addressCode: mode === 'create' ? '' : post?.addressCode,
+      addressProvince: mode === 'create' ? '' : `${defaultAddressCode[0]}-${post?.addressProvince}`,
+      addressDistrict: mode === 'create' ? '' : `${defaultAddressCode[1]}-${post?.addressDistrict}`,
+      addressWard: mode === 'create' ? '' : `${defaultAddressCode[2]}-${post?.addressWard}`,
+      addressDetail: mode === 'create' ? '' : post?.addressDetail,
     },
     resolver: zodResolver(insertRentalPostValidation),
   });
@@ -216,6 +256,26 @@ const RentalPostPage = () => {
     control,
     name: 'assets' as never,
   });
+
+  const { currentUser } = useAppStore(
+    useShallow((state) => ({
+      currentUser: state.currentUser,
+    })),
+  );
+
+  const handleRemoveAsset = async (assetId: number) => {
+    setLoading(true);
+    const toastId = toast.loading('Đang xoá, vui lòng chờ...');
+    try {
+      await postService.removePostAssets(post.id, [assetId]);
+      toast.success('Xoá thành công', { duration: 1000, id: toastId });
+      setAssetList((prev) => prev.filter((item) => item.id !== assetId));
+    } catch (error) {
+      toast.error('Xoá không thành công. Vui lòng thử lại sau.', { duration: 1500, id: toastId });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSubmitForm = async (data: InsertRentalPostDataType) => {
     setLoading(true);
@@ -259,15 +319,21 @@ const RentalPostPage = () => {
         }
       });
 
+      console.log('formData', data, console.log(Object.fromEntries(formData)));
+
       // Gửi request
-      const response = await postService.createRentalPost(formData as any); // Nếu không có file thì gửi `postPayload`
-      console.log(response);
+      if (mode === 'create') {
+        await postService.createRentalPost(formData as any);
+      } else if (mode === 'edit') {
+        await postService.updateRentalPost(post.id, formData as any);
+      }
 
       // Thông báo thành công
-      toast.success('Thành công! Bài viết của bạn sẽ sớm xuất hiện tại Trang chủ', {
+      toast.success('Thành công! Bài viết của bạn đã được lưu lại thông tin.', {
         id: toastId,
         duration: 1000,
       });
+      navigate(`/users/${currentUser?.userId}/profile`);
     } catch (error) {
       console.error(handleAxiosError(error));
       toast.error('Không thành công! Hãy kiểm tra lại thông tin hoặc thử lại sau.', {
@@ -318,7 +384,7 @@ const RentalPostPage = () => {
                   />
                   {/* Expiration time */}
                   <div className='tw-space-y-2'>
-                    <div className='tw-flex tw-items-center tw-gap-2'>
+                    <div className='tw-flex tw-flex-col tablet:tw-flex-row tablet:tw-items-center tw-gap-2'>
                       <RHFNumberInput<InsertRentalPostDataType>
                         name='expirationAfter'
                         label='Ẩn bài viết sau:'
@@ -339,8 +405,7 @@ const RentalPostPage = () => {
                         <MdOutlineInfo />
                       </span>
                       <Typography level='body-sm' color='neutral' variant='plain' textAlign={'justify'}>
-                        Đây là mộc thời gian bài đăng của bạn sẽ được tạm ẩn đi. VD: Vói 3 ngày, thì bài đăng của bạn sẽ
-                        tự động ẩn đi sau 3 ngày kể từ thời gian bài viết được đăng tải lên.
+                        Bài viết sẽ tự động ẩn đi sau một thời gian nếu bạn thiết lập thông tin này.
                       </Typography>
                     </div>
                   </div>
@@ -364,13 +429,13 @@ const RentalPostPage = () => {
                 </Divider>
                 <div className='tw-space-y-4'>
                   {/* Price */}
-                  <div className='tw-flex tw-flex-col tablet:tw-flex-row tw-flex-wrap tw-items-start tw-gap-2'>
+                  <div className='tw-flex tw-flex-col tablet:tw-flex-row tw-flex-wrap tablet:tw-items-start tw-gap-2'>
                     <div className='tw-flex-1'>
                       <RHFCurrencyInput<InsertRentalPostDataType>
                         startDecorator={'VNĐ'}
                         name='priceStart'
                         required
-                        label='Giá khởi điểm:'
+                        label='Giá thuê khởi điểm (/tháng):'
                         placeholder='Nhập giá khởi điểm...'
                       />
                     </div>
@@ -378,13 +443,23 @@ const RentalPostPage = () => {
                       <RHFCurrencyInput<InsertRentalPostDataType>
                         startDecorator={'VNĐ'}
                         name='priceEnd'
-                        label='Giá kết thúc:'
+                        label='Giá kết thúc (/tháng):'
                         placeholder='Giá kết thúc...'
                       />
                     </div>
                   </div>
+                  {/* Number Room Available */}
+                  <div className='tablet:tw-flex tw-flex-1 tablet:tw-items-center tw-gap-2 tw-flex-wrap'>
+                    <RHFNumberInput<InsertRentalPostDataType>
+                      name='numberRoomAvailable'
+                      label='Số phòng có sẵn:'
+                      placeholder='Nhập số phòng có sẵn...'
+                      min={0}
+                      required
+                    />
+                  </div>
                   {/* Total area */}
-                  <div className='tw-flex tw-items-center tw-gap-2'>
+                  <div className='tw-flex tw-flex-col tablet:tw-flex-row tablet:tw-items-center tw-gap-2 tw-flex-wrap'>
                     <RHFNumberInput<InsertRentalPostDataType>
                       name='totalArea'
                       label='Tổng diện tích:'
@@ -402,7 +477,7 @@ const RentalPostPage = () => {
                     />
                   </div>
                   {/* Lease term */}
-                  <div className='tw-flex tw-items-center tw-gap-2'>
+                  <div className='tw-flex tw-flex-col tablet:tw-flex-row tablet:tw-items-center tw-gap-2 tw-flex-wrap'>
                     <RHFNumberInput<InsertRentalPostDataType>
                       name='minLeaseTerm'
                       label='Thời gian thuê tối thiểu:'
@@ -601,7 +676,7 @@ const RentalPostPage = () => {
                   </Typography>
                 </div>
               </Divider>
-              <AddressPostForm control={control} mode='add' />
+              <AddressPostForm control={control} mode={mode} data={postData} />
             </div>
             {/* Assets */}
             <div className='tw-mt-[24px]'>
@@ -613,6 +688,20 @@ const RentalPostPage = () => {
                 </div>
               </Divider>
               <div className='tw-flex tw-flex-wrap tw-gap-[24px] tw-items-start'>
+                {assetList.map((assetItem, index) => {
+                  return (
+                    <div className='tw-relative tw-w-[200px] tw-border tw-rounded-lg' key={`asset-${assetId}-${index}`}>
+                      <div className='tw-absolute tw-right-0 tw-top-0 tw-translate-x-1/2 -tw-translate-y-1/2 tw-z-20'>
+                        <Chip color='danger' variant='solid' size='md' onClick={() => handleRemoveAsset(assetItem.id)}>
+                          <MdDeleteOutline className='tw-text-[18px]' />
+                        </Chip>
+                      </div>
+                      <AspectRatio ratio={'1/1'} objectFit='contain'>
+                        <img src={assetItem.url} alt='Hình ảnh' />
+                      </AspectRatio>
+                    </div>
+                  );
+                })}
                 {fields.map((field, index) => {
                   return (
                     <div className='tw-relative tw-w-[200px] tw-border tw-rounded-lg' key={field.id}>
@@ -621,7 +710,11 @@ const RentalPostPage = () => {
                           <MdDeleteOutline className='tw-text-[18px]' />
                         </Chip>
                       </div>
-                      <RHFImageUploadPreview<InsertRentalPostDataType> control={control} name={`assets.${index}`} />
+                      <RHFImageUploadPreview<InsertRentalPostDataType>
+                        control={control}
+                        name={`assets.${index}`}
+                        ratio='1/1'
+                      />
                     </div>
                   );
                 })}

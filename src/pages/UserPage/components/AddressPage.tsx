@@ -251,7 +251,7 @@ function DeleteAddressForm(props: Omit<AddressFormProps, 'mode'>) {
         <span className='tw-flex tw-items-center tw-justify-center'>
           <MdOutlineInfo />
         </span>
-        Xác nhận xoá đại chỉ này?
+        Xác nhận xoá địa chỉ?
       </DialogTitle>
       <div className='tw-my-2'>
         <Divider />

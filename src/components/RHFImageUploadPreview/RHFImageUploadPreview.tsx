@@ -7,9 +7,13 @@ interface RHFImageUploadPreviewProps<T extends FieldValues> {
   name: Path<T>;
   label?: React.ReactNode;
   control: Control<T>;
+  minHeight?: number;
+  maxHeight?: number;
+  ratio?: '1/1' | '4/3' | '16/9';
+  objectFit?: 'contain' | 'fill' | 'cover';
 }
 const RHFImageUploadPreview = <T extends FieldValues>(props: RHFImageUploadPreviewProps<T>) => {
-  const { name, label, control } = props;
+  const { name, label, control, minHeight, maxHeight, ratio = '16/9', objectFit = 'contain' } = props;
   const { watch } = useFormContext();
   const [preview, setPreview] = React.useState<string | null>(null);
 
@@ -32,7 +36,7 @@ const RHFImageUploadPreview = <T extends FieldValues>(props: RHFImageUploadPrevi
   return (
     <div className='tw-flex tw-flex-col tw-gap-2'>
       <div className='tw-drop-shadow-md'>
-        <AspectRatio minHeight={120} maxHeight={200} ratio='16/9' objectFit='contain'>
+        <AspectRatio flex minHeight={minHeight} maxHeight={maxHeight} ratio={ratio} objectFit={objectFit}>
           <img
             src={preview || undefined}
             // srcSet='https://images.unsplash.com/photo-1502657877623-f66bf489d236?auto=format&fit=crop&w=800&dpr=2 2x'
