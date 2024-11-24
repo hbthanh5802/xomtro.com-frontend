@@ -1,15 +1,13 @@
+/* Ẩn thanh cuộn ngang nhưng vẫn cuộn được */
 html {
-  overflow: scroll;
-  overflow-x: hidden;
+  overflow-y: auto; /* Chỉ hiển thị thanh cuộn dọc */
+  overflow-x: hidden; /* Ẩn thanh cuộn ngang */
 }
 
-::-webkit-scrollbar {
-  width: 0;
-  background: transparent;
-}
-
+/* Tùy chỉnh thanh cuộn */
 *::-webkit-scrollbar {
-  width: 8px;
+  width: 8px; /* Chiều rộng thanh cuộn dọc */
+  height: 8px; /* Chiều cao thanh cuộn ngang */
 }
 
 *::-webkit-scrollbar-track {

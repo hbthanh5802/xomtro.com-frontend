@@ -4,7 +4,6 @@ import InfoTab from '@/pages/UserPage/components/InfoTab';
 import ProfileHeader from '@/pages/UserPage/components/ProfileHeader';
 import { useAppStore } from '@/store/store';
 import { AssetSelectSchemaType, UserDetailSelectSchemaType } from '@/types/schema.type';
-import { Box } from '@mui/joy';
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { useShallow } from 'zustand/react/shallow';
@@ -16,13 +15,13 @@ const ProfilePage = () => {
   const [userData, setUserData] = React.useState<UserDetailSelectSchemaType | undefined | null>(null);
   const [userAvatarData, setUserAvatarData] = React.useState<AssetSelectSchemaType | undefined | null>(undefined);
 
-  const { currentUser, currentUserAvatar } = useAppStore(
+  const { resetPostFilterState } = useAppStore(
     useShallow((state) => ({
-      currentUser: state.currentUser,
-      currentUserAvatar: state.userAvatar,
+      resetPostFilterState: state.resetPostFilterState,
     })),
   );
 
+  console.log({ userId, userData, userAvatarData });
   const { data: UserDetailResponse } = useUserApiHook.useUserDetail(Number(userId), {
     staleTime: 1 * 60 * 1000,
   });
@@ -33,31 +32,29 @@ const ProfilePage = () => {
   const userAvatar = UserAvatarResponse?.data;
 
   React.useEffect(() => {
-    setUserData(currentUser?.userId === Number(userId) ? currentUser : userDetail);
-    setUserAvatarData(currentUser?.userId === Number(userId) ? currentUserAvatar : userAvatar);
-  }, [userDetail, userAvatar, userId, currentUser, currentUserAvatar]);
+    resetPostFilterState();
+    setUserData(userDetail);
+    setUserAvatarData(userAvatar);
+  }, [userDetail, userAvatar, Number(userId)]);
 
   return (
     <div className='tw-flex tw-flex-col tw-items-center tw-bg-backgroundColor'>
-      <div className='tw-container tw-bg-backgroundColor'>
-        <Box component='header'>
+      <div className='tw-container'>
+        <header className='Profile-header'>
           <ProfileHeader />
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'start',
-          }}
-        >
-          <div className='tw-w-[300px] tw-min-w-[300px] tw-max-w-[300px] tw-px-[24px] tw-pb-[24px] tw-shadow-md tw-rounded-lg tw-mt-[12px] tw-bg-white'>
+        </header>
+        <div className='tw-flex tw-flex-col laptop:tw-flex-row laptop:tw-items-start'>
+          {/* Sidebar */}
+          <div className='laptop:tw-w-[400px] tw-shadow-md tw-rounded-lg tw-mt-[12px] tw-bg-white tw-p-[24px]'>
             <InfoTab userData={userData!} userAvatarData={userAvatarData!} />
           </div>
-          <div className='tw-container tw-m-[14px] tw-mr-0'>
+          {/* Main content */}
+          <div className='tw-flex-1 tw-mt-[24px] laptop:tw-m-[14px] laptop:tw-mr-0 laptop:tw-max-w-[calc(100%-412px)]'>
             <div className='tw-min-h-[100dvh]'>
-              <Outlet />
+              <Outlet context={{ userData, userAvatarData }} />
             </div>
           </div>
-        </Box>
+        </div>
       </div>
     </div>
   );

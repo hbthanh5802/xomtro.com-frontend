@@ -37,7 +37,7 @@ class userServices {
   }
 
   getUserDetailByUserId(userId: number) {
-    return axiosAuthRequest<UserDetailSelectSchemaType>({
+    return axiosRequest<UserDetailSelectSchemaType>({
       method: 'GET',
       url: `/users/` + userId,
     });

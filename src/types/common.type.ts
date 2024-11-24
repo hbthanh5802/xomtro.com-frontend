@@ -17,3 +17,5 @@ export type TanstackQueryOptions = {
   staleTime?: number;
   gcTime?: number;
 };
+
+export type OrderDirectionType = 'desc' | 'asc';

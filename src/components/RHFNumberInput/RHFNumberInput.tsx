@@ -17,10 +17,11 @@ interface RHFNumberInputProps<T extends FieldValues> {
   step?: number;
   startDecorator?: ReactNode;
   endDecorator?: ReactNode;
+  fullWidth?: boolean;
 }
 
 const RHFNumberInput = <T extends FieldValues>(props: RHFNumberInputProps<T>) => {
-  const { minWidth = 0, min, max, step, startDecorator, endDecorator } = props;
+  const { minWidth = 0, min, max, step, startDecorator, endDecorator, fullWidth = true } = props;
 
   return (
     <>
@@ -49,6 +50,7 @@ const RHFNumberInput = <T extends FieldValues>(props: RHFNumberInputProps<T>) =>
                 onChange={(e) => field.onChange(Number(e.target.value))}
                 value={field.value ?? ''}
                 required={props.required}
+                fullWidth={fullWidth}
               />
               {!!fieldState.error && (
                 <FormHelperText>

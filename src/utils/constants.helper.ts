@@ -67,3 +67,15 @@ export const handleAxiosError = (error: unknown) => {
     return simplifiedError;
   }
 };
+
+export const formatCurrencyVND = (amount: number): string => {
+  if (isNaN(amount)) {
+    throw new Error('Invalid number');
+  }
+
+  return new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+    minimumFractionDigits: 0, // Không hiển thị phần lẻ
+  }).format(amount);
+};

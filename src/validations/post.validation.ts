@@ -19,7 +19,7 @@ export const insertRentalPostValidation = createInsertSchema(rentalPosts)
     (data) => {
       if (data.priceEnd) {
         // Chỉ kiểm tra khi priceEnd có giá trị
-        return data.priceStart < data.priceEnd;
+        return data.priceStart <= data.priceEnd;
       }
       return true; // Bỏ qua nếu priceEnd không tồn tại
     },
