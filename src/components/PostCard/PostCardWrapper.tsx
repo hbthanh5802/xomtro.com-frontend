@@ -1,7 +1,9 @@
 import { queryClient } from '@/App';
 import ModalLayout from '@/components/ModalLayout';
 import PostImages from '@/components/PostCard/components/PostImages';
+import PostTime from '@/components/PostCard/components/PostTime';
 import RentalDetail from '@/components/PostCard/components/RentalDetail';
+import ShareButtons from '@/components/ShareButton/ShareButton';
 import useUserApiHook from '@/hooks/useUserApi.hook';
 import postService from '@/services/post.service';
 import { useAppStore } from '@/store/store';
@@ -12,11 +14,11 @@ import {
   PostSelectSchemaType,
   RentalPostSelectSchemaType,
 } from '@/types/schema.type';
-import { room_amenities } from '@/utils/schema.helper';
-import { formatTimeForVietnamese, getTimeAgo } from '@/utils/time.helper';
+import { getTimeAgo } from '@/utils/time.helper';
 import {
   Avatar,
   Button,
+  ButtonGroup,
   DialogActions,
   DialogTitle,
   Divider,
@@ -31,6 +33,7 @@ import {
 } from '@mui/joy';
 import React from 'react';
 import { FaRegEye, FaRegEyeSlash, FaRegImages } from 'react-icons/fa6';
+import { IoIosShareAlt } from 'react-icons/io';
 import { MdDeleteForever, MdEdit, MdOutlineInfo, MdOutlineMoreHoriz } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -93,10 +96,10 @@ function DeletePostDialog(props: { postId: number; onSuccess?: () => void }) {
 
 const PostCardWrapper = (props: PostCardWrapperProps) => {
   const navigate = useNavigate();
+  const [openShare, setOpenShare] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const { post, detail, assets } = props.data;
   const { ownerId } = post;
-  const [showMore, setShowMore] = React.useState(false);
   const [showDeleteModal, setShowDeleteModal] = React.useState(false);
 
   const { currentUser } = useAppStore(
@@ -112,11 +115,6 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
   });
   const userDetail = UserDetailResponse?.data;
   const userAvatar = UserAvatarResponse?.data;
-
-  const hasAmenities = React.useMemo(
-    () => Object.keys(room_amenities).some((key: string) => (detail as any)[key as keyof typeof detail] as boolean),
-    [detail],
-  );
 
   const handleDeleteClick = () => {
     setShowDeleteModal(true);
@@ -142,7 +140,7 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
 
   return (
     <React.Fragment>
-      <div className='tw-shadow-md tw-rounded-lg tw-bg-white tw-overflow-hidden tw-py-[24px]'>
+      <div className='tw-shadow-md tw-rounded-lg tw-bg-white tw-overflow-hidden tw-pt-[24px]'>
         <header className='tw-p-[14px] tw-pt-0 tw-flex tw-justify-between tw-items-center'>
           <div className='tw-flex tw-gap-4 tw-items-start'>
             <Avatar
@@ -152,9 +150,9 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
             />
             <div>
               <Typography level='title-md'>{`${userDetail?.firstName || ''} ${userDetail?.lastName || ''}`}</Typography>
-              <Tooltip title={formatTimeForVietnamese(post.createdAt!, 'HH:mm:ss DD/MM/YYYY')} arrow>
+              <Tooltip title={<PostTime data={props.data} />} arrow>
                 <div className='tw-flex tw-items-center tw-gap-1'>
-                  <Typography level='body-sm'>{getTimeAgo(new Date(post.createdAt!).toDateString())}</Typography>
+                  <Typography level='body-sm'>{getTimeAgo(post.createdAt!)}</Typography>
                   <MdOutlineInfo className='tw-text-slate-600' />
                 </div>
               </Tooltip>
@@ -211,14 +209,41 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
           {assets.length ? (
             <PostImages data={props.data} />
           ) : (
+            // <TestLayout data={props.data} />
             <div className='tw-mt-2 tw-flex tw-items-start tw-gap-2 tw-flex-wrap tw-px-[24px]'>
-              <Typography startDecorator={<FaRegImages />} level='title-md'>
+              <Typography
+                startDecorator={<FaRegImages className='tw-flex tw-text-lg tw-text-slate-600' />}
+                level='title-md'
+              >
                 Hình ảnh:
               </Typography>
-              <Typography level='body-md'>Người đăng chưa cung cấp thông tin!</Typography>
+              <Typography level='body-md'>Người đăng chưa cung cấp hình ảnh!</Typography>
             </div>
           )}
         </main>
+
+        <footer className='tw-p-[12px]'>
+          <ButtonGroup size='lg' buttonFlex={1} aria-label='flex button group'>
+            <Button color='primary' variant='solid'>
+              One
+            </Button>
+            <Button>Two</Button>
+            <Tooltip
+              title={<ShareButtons onShareWindowClose={() => setOpenShare(false)} />}
+              variant='outlined'
+              arrow
+              open={openShare}
+            >
+              <Button
+                color='primary'
+                startDecorator={<IoIosShareAlt className='tw-text-[20px]' />}
+                onClick={() => setOpenShare(!openShare)}
+              >
+                Chia sẻ
+              </Button>
+            </Tooltip>
+          </ButtonGroup>
+        </footer>
       </div>
 
       {/* Modal */}

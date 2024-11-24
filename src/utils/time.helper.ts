@@ -96,7 +96,7 @@ const localeFunc = (number: number, index: number, totalSec: number | undefined)
 
 timeago.register('vi', localeFunc);
 
-export const getTimeAgo = (dateTimeString: string) => {
+export const getTimeAgo = (dateTimeString: string | Date) => {
   if (!isValidDateTime) return false;
-  return timeago.format(dateTimeString, 'vi');
+  return timeago.format(dayjs.utc(dateTimeString).format('YYYY-MM-DD HH:mm:ss'), 'vi');
 };

@@ -59,8 +59,6 @@ function RentalPost(props: PostTabProps) {
     },
   });
 
-  console.log(data);
-
   return (
     <div className='tw-space-y-4'>
       {data?.pages.map((page, index) => (
