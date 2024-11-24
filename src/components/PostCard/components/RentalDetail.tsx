@@ -3,9 +3,12 @@ import { formatCurrencyVND } from '@/utils/constants.helper';
 import { room_amenities } from '@/utils/schema.helper';
 import { Chip, Divider, Typography } from '@mui/joy';
 import React from 'react';
-import { BiArea } from 'react-icons/bi';
-import { FaHouseCircleCheck } from 'react-icons/fa6';
-import { MdAttachMoney, MdLocationPin, MdMiscellaneousServices, MdNoteAdd } from 'react-icons/md';
+import { BsHouseAdd } from 'react-icons/bs';
+import { IoLocationOutline } from 'react-icons/io5';
+import { LuAreaChart } from 'react-icons/lu';
+import { MdMiscellaneousServices, MdOutlineNoteAdd } from 'react-icons/md';
+import { PiMoneyWavy } from 'react-icons/pi';
+import { RiContractLine } from 'react-icons/ri';
 
 interface RentalDetailProps {
   data: PostCardDataType;
@@ -27,8 +30,8 @@ const RentalDetail = (props: RentalDetailProps) => {
           {post.title}
         </Typography>
 
-        <div className='tw-mt-6 tw-flex tw-items-start tw-gap-4'>
-          <Typography startDecorator={<MdAttachMoney className='tw-text-[20px] tw-text-slate-600' />} level='title-md'>
+        <div className='tw-mt-4 tw-flex tw-items-end tw-gap-2'>
+          <Typography startDecorator={<PiMoneyWavy className='tw-text-[20px] tw-text-slate-600' />} level='title-md'>
             Giá:
           </Typography>
           <div className='tw-flex tw-items-center tw-gap-3'>
@@ -47,7 +50,7 @@ const RentalDetail = (props: RentalDetailProps) => {
         </div>
 
         <div className='tw-mt-2 tw-flex tw-items-start tw-gap-2 tw-flex-wrap'>
-          <Typography startDecorator={<BiArea className='tw-text-slate-600' />} level='title-md'>
+          <Typography startDecorator={<LuAreaChart className='tw-text-slate-600 tw-text-[18px]' />} level='title-md'>
             Diện tích:
           </Typography>
           <Typography level='body-md'>
@@ -56,15 +59,34 @@ const RentalDetail = (props: RentalDetailProps) => {
           </Typography>
         </div>
 
-        <div className='tw-mt-2 tw-flex tw-items-start tw-gap-2 tw-flex-wrap'>
-          <Typography startDecorator={<FaHouseCircleCheck className='tw-text-slate-600' />} level='title-md'>
+        <div className='tw-mt-4 tw-flex tw-items-start tw-gap-2 tw-flex-wrap'>
+          <Typography startDecorator={<RiContractLine className='tw-text-slate-600 tw-text-[18px]' />} level='title-md'>
+            Hợp đồng thuê tối thiểu:
+          </Typography>
+          <Typography level='body-md'>
+            {detail.minLeaseTerm}{' '}
+            {detail.minLeaseTermUnit === 'day'
+              ? 'ngày'
+              : detail.minLeaseTermUnit === 'hour'
+              ? 'giờ'
+              : detail.minLeaseTermUnit === 'month'
+              ? 'tháng'
+              : 'năm'}
+          </Typography>
+        </div>
+
+        <div className='tw-mt-4 tw-flex tw-items-start tw-gap-2 tw-flex-wrap'>
+          <Typography startDecorator={<BsHouseAdd className='tw-text-slate-600 tw-text-[18px]' />} level='title-md'>
             Số phòng có sẵn:
           </Typography>
           <Typography level='body-md'>{detail.numberRoomAvailable}</Typography>
         </div>
 
-        <div className='tw-mt-2 tw-flex tw-items-start tw-gap-2 tw-flex-wrap'>
-          <Typography startDecorator={<MdMiscellaneousServices className='tw-text-slate-600' />} level='title-md'>
+        <div className='tw-mt-4 tw-flex tw-items-start tw-gap-2 tw-flex-wrap'>
+          <Typography
+            startDecorator={<MdMiscellaneousServices className='tw-text-slate-600 tw-text-[18px]' />}
+            level='title-md'
+          >
             Dịch vụ:
           </Typography>
           {!hasAmenities ? (
@@ -145,8 +167,11 @@ const RentalDetail = (props: RentalDetailProps) => {
           )}
         </div>
 
-        <div className='tw-mt-2 tw-flex tw-items-start tw-gap-2 tw-flex-wrap'>
-          <Typography startDecorator={<MdLocationPin className='tw-text-slate-600' />} level='title-md'>
+        <div className='tw-mt-4 tw-flex tw-items-start tw-gap-2 tw-flex-wrap'>
+          <Typography
+            startDecorator={<IoLocationOutline className='tw-text-slate-600 tw-text-[18px]' />}
+            level='title-md'
+          >
             Địa chỉ:
           </Typography>
           <Typography level='body-md'>{`${post.addressDetail ? post.addressDetail + ', ' : ''}${post.addressWard}, ${
@@ -154,20 +179,23 @@ const RentalDetail = (props: RentalDetailProps) => {
           }, ${post.addressProvince}.`}</Typography>
         </div>
 
-        <div className='tw-mt-2 tw-flex tw-items-start tw-gap-2 tw-flex-wrap'>
-          <Typography startDecorator={<MdNoteAdd className='tw-text-slate-600' />} level='title-md'>
-            Ghi chú thêm:
+        <div className='tw-mt-4 tw-flex tw-items-start tw-gap-2 tw-flex-wrap'>
+          <Typography
+            startDecorator={<MdOutlineNoteAdd className='tw-text-slate-600 tw-text-[18px]' />}
+            level='title-md'
+          >
+            Mô tả thêm:
           </Typography>
-          <Typography level='body-md'>{post.note || 'Chưa có ghi chú thêm'}</Typography>
-        </div>
-
-        <div className='tw-mt-2 tw-flex tw-items-start tw-gap-2 tw-flex-wrap'>
-          <Typography level='title-md'>Mô tả thêm:</Typography>
           {post.description ? (
             <div className='' dangerouslySetInnerHTML={{ __html: post.description }}></div>
           ) : (
             <Typography level='body-md'>Chưa có thông tin</Typography>
           )}
+        </div>
+
+        <div className='tw-mt-4 tw-flex tw-items-start tw-gap-2 tw-flex-wrap'>
+          <Typography level='title-sm'>Ghi chú thêm:</Typography>
+          <Typography level='body-sm'>{post.note || 'Chưa có ghi chú thêm'}</Typography>
         </div>
       </div>
       {!showMore && (

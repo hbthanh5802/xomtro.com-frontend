@@ -21,7 +21,6 @@ const ProfilePage = () => {
     })),
   );
 
-  console.log({ userId, userData, userAvatarData });
   const { data: UserDetailResponse } = useUserApiHook.useUserDetail(Number(userId), {
     staleTime: 1 * 60 * 1000,
   });
