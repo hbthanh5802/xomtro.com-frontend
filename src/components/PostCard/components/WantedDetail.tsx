@@ -1,20 +1,19 @@
 import { PostCardDataType } from '@/components/PostCard/PostCardWrapper';
 import { formatCurrencyVND } from '@/utils/constants.helper';
 import { room_amenities } from '@/utils/schema.helper';
+import { formatTimeForVietnamese } from '@/utils/time.helper';
 import { Chip, Divider, Typography } from '@mui/joy';
 import React from 'react';
-import { BsHouseAdd } from 'react-icons/bs';
 import { IoLocationOutline } from 'react-icons/io5';
 import { LuAreaChart } from 'react-icons/lu';
-import { MdMiscellaneousServices, MdOutlineNoteAdd } from 'react-icons/md';
+import { MdMiscellaneousServices, MdOutlineAccessTime, MdOutlineNoteAdd } from 'react-icons/md';
 import { PiMoneyWavy } from 'react-icons/pi';
-import { RiContractLine } from 'react-icons/ri';
 
-interface RentalDetailProps {
+interface WantedDetailProps {
   data: PostCardDataType;
 }
 
-const RentalDetail = (props: RentalDetailProps) => {
+const WantedDetail = (props: WantedDetailProps) => {
   const { post, detail } = props.data;
   const [showMore, setShowMore] = React.useState(false);
 
@@ -32,15 +31,15 @@ const RentalDetail = (props: RentalDetailProps) => {
 
         <div className='tw-mt-4 tw-flex tw-items-end tw-gap-2'>
           <Typography startDecorator={<PiMoneyWavy className='tw-text-[20px] tw-text-slate-600' />} level='title-md'>
-            Giá:
+            Giá muốn thuê:
           </Typography>
           <div className='tw-flex tw-items-center tw-gap-3'>
             <Typography level='body-md' variant='soft' color='success'>
-              {formatCurrencyVND(detail.priceStart)}/tháng
+              ~{formatCurrencyVND(detail.priceStart)}/tháng
             </Typography>
             {detail.priceEnd && detail.priceEnd !== detail.priceStart && (
               <>
-                <Typography level='body-md' variant='soft' color='success'>{`${formatCurrencyVND(
+                <Typography level='body-md' variant='soft' color='success'>{`~${formatCurrencyVND(
                   detail.priceEnd,
                 )}/tháng`}</Typography>
               </>
@@ -50,35 +49,12 @@ const RentalDetail = (props: RentalDetailProps) => {
 
         <div className='tw-mt-2 tw-flex tw-items-start tw-gap-2 tw-flex-wrap'>
           <Typography startDecorator={<LuAreaChart className='tw-text-slate-600 tw-text-[18px]' />} level='title-md'>
-            Diện tích:
+            Diện tích mong muốn:
           </Typography>
           <Typography level='body-md'>
             {detail.totalArea} {detail.totalAreaUnit === 'm2' ? 'm' : detail.totalAreaUnit === 'cm2' ? 'cm' : 'km'}
             <sup>2</sup>
           </Typography>
-        </div>
-
-        <div className='tw-mt-4 tw-flex tw-items-start tw-gap-2 tw-flex-wrap'>
-          <Typography startDecorator={<RiContractLine className='tw-text-slate-600 tw-text-[18px]' />} level='title-md'>
-            Hợp đồng thuê tối thiểu:
-          </Typography>
-          <Typography level='body-md'>
-            {detail.minLeaseTerm}{' '}
-            {detail.minLeaseTermUnit === 'day'
-              ? 'ngày'
-              : detail.minLeaseTermUnit === 'hour'
-              ? 'giờ'
-              : detail.minLeaseTermUnit === 'month'
-              ? 'tháng'
-              : 'năm'}
-          </Typography>
-        </div>
-
-        <div className='tw-mt-4 tw-flex tw-items-start tw-gap-2 tw-flex-wrap'>
-          <Typography startDecorator={<BsHouseAdd className='tw-text-slate-600 tw-text-[18px]' />} level='title-md'>
-            Số phòng có sẵn:
-          </Typography>
-          <Typography level='body-md'>{detail.numberRoomAvailable} phòng</Typography>
         </div>
 
         <div className='tw-mt-4 tw-flex tw-items-start tw-gap-2 tw-flex-wrap'>
@@ -166,12 +142,22 @@ const RentalDetail = (props: RentalDetailProps) => {
           )}
         </div>
 
+        <div className='tw-mt-2 tw-flex tw-items-start tw-gap-2 tw-flex-wrap'>
+          <Typography
+            startDecorator={<MdOutlineAccessTime className='tw-text-slate-600 tw-text-[18px]' />}
+            level='title-md'
+          >
+            Thời gian có thể chuyển vào:
+          </Typography>
+          <Typography level='body-md'>{formatTimeForVietnamese(detail.moveInDate)}</Typography>
+        </div>
+
         <div className='tw-mt-4 tw-flex tw-items-start tw-gap-2 tw-flex-wrap'>
           <Typography
             startDecorator={<IoLocationOutline className='tw-text-slate-600 tw-text-[18px]' />}
             level='title-md'
           >
-            Địa chỉ:
+            Khu vực thuê:
           </Typography>
           <Typography level='body-md'>{`${post.addressDetail ? post.addressDetail + ', ' : ''}${post.addressWard}, ${
             post.addressDistrict
@@ -210,4 +196,4 @@ const RentalDetail = (props: RentalDetailProps) => {
   );
 };
 
-export default RentalDetail;
+export default WantedDetail;

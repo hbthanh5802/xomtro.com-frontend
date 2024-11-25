@@ -65,20 +65,20 @@ const Header = () => {
               >
                 {currentUser.role === 'renter' ? (
                   <React.Fragment>
-                    <MenuItem onClick={() => {}}>
+                    <MenuItem onClick={() => navigate('/posts/wanted/create')}>
                       <div className='tw-flex tw-items-center tw-gap-2'>
                         <IoHome className='tw-flex tw-text-lg tw-text-slate-600' />
-                        Tìm phòng trống
+                        Tìm phòng cho thuê
                       </div>
                     </MenuItem>
-                    <MenuItem>
+                    <MenuItem onClick={() => navigate('/posts/join/create')}>
                       <div className='tw-flex tw-items-center tw-gap-2'>
                         <FaHouseChimneyUser className='tw-flex tw-text-lg tw-text-slate-600' />
                         Tìm người ở ghép
                       </div>
                     </MenuItem>
                     <MenuItem>
-                      <div className='tw-flex tw-items-center tw-gap-2'>
+                      <div onClick={() => navigate('/posts/pass/create')} className='tw-flex tw-items-center tw-gap-2'>
                         <FaHandsHoldingCircle className='tw-flex tw-text-lg tw-text-slate-600' />
                         Pass đồ
                       </div>

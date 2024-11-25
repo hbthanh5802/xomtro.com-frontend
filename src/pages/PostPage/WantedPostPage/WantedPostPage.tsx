@@ -1,4 +1,5 @@
 import RHFCurrencyInput from '@/components/RHFCurrencyInput';
+import RHFDatePicker from '@/components/RHFDatePicker';
 import RHFImageUploadPreview from '@/components/RHFImageUploadPreview';
 import RHFInput from '@/components/RHFInput';
 import RHFNumberInput from '@/components/RHFNumberInput';
@@ -11,10 +12,11 @@ import locationService from '@/services/location.service';
 import postService from '@/services/post.service';
 import { useAppStore } from '@/store/store';
 import { SelectOptionItemType } from '@/types/common.type';
-import { InsertRentalPostDataType } from '@/types/post.type';
-import { AssetSelectSchemaType, PostSelectSchemaType, RentalPostSelectSchemaType } from '@/types/schema.type';
+import { InsertWantedPostDataType } from '@/types/post.type';
+import { AssetSelectSchemaType, PostSelectSchemaType, WantedPostSelectSchemaType } from '@/types/schema.type';
 import { handleAxiosError } from '@/utils/constants.helper';
-import { insertRentalPostValidation } from '@/validations/post.validation';
+import { formatDateForInput, timeInVietNam } from '@/utils/time.helper';
+import { insertWantedPostValidation } from '@/validations/post.validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AspectRatio, Button, Chip, Divider, Typography } from '@mui/joy';
 import React from 'react';
@@ -54,27 +56,27 @@ const totalAreaUnitOptions: SelectOptionItemType[] = [
   },
 ];
 
-const minLeaseTermUnitOptions: SelectOptionItemType[] = [
-  {
-    label: 'Giờ',
-    value: 'hour',
-  },
-  {
-    label: 'Ngày',
-    value: 'day',
-  },
-  {
-    label: 'Tháng',
-    value: 'month',
-  },
-  {
-    label: 'Năm',
-    value: 'year',
-  },
-];
+// const minLeaseTermUnitOptions: SelectOptionItemType[] = [
+//   {
+//     label: 'Giờ',
+//     value: 'hour',
+//   },
+//   {
+//     label: 'Ngày',
+//     value: 'day',
+//   },
+//   {
+//     label: 'Tháng',
+//     value: 'month',
+//   },
+//   {
+//     label: 'Năm',
+//     value: 'year',
+//   },
+// ];
 
 interface AddressPostFormProps {
-  control: Control<InsertRentalPostDataType>;
+  control: Control<InsertWantedPostDataType>;
   mode: 'create' | 'edit';
   data?: any;
 }
@@ -152,7 +154,7 @@ function AddressPostForm(props: AddressPostFormProps) {
   return (
     <div className='tw-mt-[24px] tw-flex tw-flex-col tw-gap-4'>
       <div className='tw-grid tw-grid-cols-1 tablet:tw-grid-cols-3 tw-gap-4'>
-        <RHFSelect<InsertRentalPostDataType>
+        <RHFSelect<InsertWantedPostDataType>
           disabled={!provinceOptions.length}
           name='addressProvince'
           control={control}
@@ -162,7 +164,7 @@ function AddressPostForm(props: AddressPostFormProps) {
           required
         />
 
-        <RHFSelect<InsertRentalPostDataType>
+        <RHFSelect<InsertWantedPostDataType>
           disabled={!districtOptions.length}
           name='addressDistrict'
           control={control}
@@ -172,7 +174,7 @@ function AddressPostForm(props: AddressPostFormProps) {
           required
         />
 
-        <RHFSelect<InsertRentalPostDataType>
+        <RHFSelect<InsertWantedPostDataType>
           disabled={!wardOptions.length}
           name='addressWard'
           control={control}
@@ -183,7 +185,7 @@ function AddressPostForm(props: AddressPostFormProps) {
         />
       </div>
 
-      <RHFInput<InsertRentalPostDataType>
+      <RHFInput<InsertWantedPostDataType>
         name='addressDetail'
         label='Thông tin chi tiết:'
         placeholder='Số nhà, ngõ, xóm, đường, phố... (nếu có)'
@@ -192,13 +194,13 @@ function AddressPostForm(props: AddressPostFormProps) {
   );
 }
 
-const RentalPostPage = () => {
+const WantedPostPage = () => {
   const navigate = useNavigate();
   const { params, state } = useUrl();
   const assetId = React.useId();
   const mode = params?.mode as 'create' | 'edit';
   const postData = state?.postData;
-  const detail: RentalPostSelectSchemaType = mode === 'edit' && postData ? postData.detail : null;
+  const detail: WantedPostSelectSchemaType = mode === 'edit' && postData ? postData.detail : null;
   const post: PostSelectSchemaType = mode === 'edit' && postData ? postData.post : null;
   const assets: AssetSelectSchemaType[] = mode === 'edit' && postData ? postData.assets : [];
   const [assetList, setAssetList] = React.useState(() => (mode === 'edit' && assets ? assets : []));
@@ -215,18 +217,18 @@ const RentalPostPage = () => {
 
   const defaultAddressCode = post?.addressCode?.split('-')!;
 
-  const methods = useForm<InsertRentalPostDataType>({
+  console.log({ post, detail });
+
+  const methods = useForm<InsertWantedPostDataType>({
     defaultValues: {
-      type: 'rental',
+      type: 'wanted',
       title: mode === 'create' ? '' : post?.title,
       description: mode === 'create' ? '' : post?.description,
-      minLeaseTerm: mode === 'create' ? undefined : detail?.minLeaseTerm,
       expirationAfter: mode === 'create' ? null : post?.expirationAfter,
       expirationAfterUnit: mode === 'create' ? 'day' : post?.expirationAfterUnit,
+      moveInDate: mode === 'create' ? undefined : formatDateForInput(detail?.moveInDate),
       totalArea: mode === 'create' ? null : detail?.totalArea,
       totalAreaUnit: mode === 'create' ? 'm2' : detail?.totalAreaUnit,
-      minLeaseTermUnit: mode === 'create' ? 'month' : detail?.minLeaseTermUnit,
-      numberRoomAvailable: mode === 'create' ? null : detail?.numberRoomAvailable,
       hasFurniture: mode === 'create' ? false : detail?.hasFurniture,
       hasAirConditioner: mode === 'create' ? false : detail?.hasAirConditioner,
       hasWashingMachine: mode === 'create' ? false : detail?.hasWashingMachine,
@@ -239,14 +241,14 @@ const RentalPostPage = () => {
       allowPets: mode === 'create' ? false : detail?.allowPets,
       priceStart: mode === 'create' ? undefined : detail?.priceStart,
       priceEnd: mode === 'create' ? undefined : detail?.priceEnd,
-      note: mode === 'create' ? '' : post?.note,
+      note: mode === 'create' ? undefined : post?.note,
       addressCode: mode === 'create' ? '' : post?.addressCode,
-      addressProvince: mode === 'create' ? undefined : `${defaultAddressCode[0]}-${post?.addressProvince}`,
-      addressDistrict: mode === 'create' ? undefined : `${defaultAddressCode[1]}-${post?.addressDistrict}`,
-      addressWard: mode === 'create' ? undefined : `${defaultAddressCode[2]}-${post?.addressWard}`,
+      addressProvince: mode === 'create' ? undefined : `${defaultAddressCode?.[0]}-${post?.addressProvince}`,
+      addressDistrict: mode === 'create' ? undefined : `${defaultAddressCode?.[1]}-${post?.addressDistrict}`,
+      addressWard: mode === 'create' ? undefined : `${defaultAddressCode?.[2]}-${post?.addressWard}`,
       addressDetail: mode === 'create' ? undefined : post?.addressDetail,
     },
-    resolver: zodResolver(insertRentalPostValidation),
+    resolver: zodResolver(insertWantedPostValidation),
   });
   const {
     control,
@@ -277,7 +279,7 @@ const RentalPostPage = () => {
     }
   };
 
-  const handleSubmitForm = async (data: InsertRentalPostDataType) => {
+  const handleSubmitForm = async (data: InsertWantedPostDataType) => {
     setLoading(true);
     const toastId = toast.loading('Đang đăng tải bài viết của bạn. Vui lòng chờ...');
 
@@ -294,7 +296,7 @@ const RentalPostPage = () => {
       const { code: wardCode, name: wardName } = parseAddress(data.addressWard);
 
       // Chuẩn bị payload
-      const postPayload: InsertRentalPostDataType = {
+      const postPayload: InsertWantedPostDataType = {
         ...data,
         addressCode: `${provinceCode}-${districtCode}-${wardCode}`,
         addressProvince: provinceName,
@@ -323,7 +325,7 @@ const RentalPostPage = () => {
 
       // Gửi request
       if (mode === 'create') {
-        await postService.createRentalPost(formData as any);
+        await postService.createWantedPost(formData as any);
       } else if (mode === 'edit') {
         await postService.updateRentalPost(post.id, formData as any);
       }
@@ -351,7 +353,7 @@ const RentalPostPage = () => {
         <form onSubmit={methods.handleSubmit(handleSubmitForm)}>
           {/* Header */}
           <header>
-            <Typography level='h4'>Tạo bài viết mới</Typography>
+            <Typography level='h4'>{mode === 'create' ? 'Tạo bài viết mới' : 'Chỉnh sửa bài viết'}</Typography>
             <Typography level='body-sm'>
               Hãy hoàn thành những thông tin được yêu cầu dưới đây để tiến hành đăng bài viết mới.
             </Typography>
@@ -369,14 +371,14 @@ const RentalPostPage = () => {
                 </Divider>
                 <div className='tw-space-y-4'>
                   {/* Title */}
-                  <RHFInput<InsertRentalPostDataType>
+                  <RHFInput<InsertWantedPostDataType>
                     name='title'
                     label='Tiêu đề:'
                     placeholder='Nhập tiêu đề bài viết...'
                     required
                   />
                   {/* Description */}
-                  <RHFRichText<InsertRentalPostDataType>
+                  <RHFRichText<InsertWantedPostDataType>
                     control={control}
                     name='description'
                     label='Mô tả thêm:'
@@ -385,13 +387,13 @@ const RentalPostPage = () => {
                   {/* Expiration time */}
                   <div className='tw-space-y-2'>
                     <div className='tw-flex tw-flex-col tablet:tw-flex-row tablet:tw-items-center tw-gap-2'>
-                      <RHFNumberInput<InsertRentalPostDataType>
+                      <RHFNumberInput<InsertWantedPostDataType>
                         name='expirationAfter'
                         label='Ẩn bài viết sau:'
                         placeholder='Vd: 2'
                         min={0}
                       />
-                      <RHFSelect<InsertRentalPostDataType>
+                      <RHFSelect<InsertWantedPostDataType>
                         control={control}
                         name='expirationAfterUnit'
                         label='Đơn vị thời gian'
@@ -410,7 +412,7 @@ const RentalPostPage = () => {
                     </div>
                   </div>
                   {/* Note */}
-                  <RHFTextArea<InsertRentalPostDataType>
+                  <RHFTextArea<InsertWantedPostDataType>
                     control={control}
                     name='note'
                     label='Ghi chú thêm:'
@@ -423,7 +425,7 @@ const RentalPostPage = () => {
                 <Divider sx={{ '--Divider-childPosition': `${0}%`, margin: '8px 0 8px 0' }}>
                   <div className='tw-inline-flex tw-items-center tw-gap-2'>
                     <Typography variant='plain' color='primary' level='title-sm'>
-                      Thông tin về phòng cho thuê
+                      Thông tin về phòng muốn thuê
                     </Typography>
                   </div>
                 </Divider>
@@ -431,7 +433,7 @@ const RentalPostPage = () => {
                   {/* Price */}
                   <div className='tw-flex tw-flex-col tablet:tw-flex-row tw-flex-wrap tablet:tw-items-start tw-gap-2'>
                     <div className='tw-flex-1'>
-                      <RHFCurrencyInput<InsertRentalPostDataType>
+                      <RHFCurrencyInput<InsertWantedPostDataType>
                         startDecorator={'VNĐ'}
                         name='priceStart'
                         required
@@ -440,7 +442,7 @@ const RentalPostPage = () => {
                       />
                     </div>
                     <div className='tw-flex-1'>
-                      <RHFCurrencyInput<InsertRentalPostDataType>
+                      <RHFCurrencyInput<InsertWantedPostDataType>
                         startDecorator={'VNĐ'}
                         name='priceEnd'
                         label='Giá kết thúc (/tháng):'
@@ -448,50 +450,32 @@ const RentalPostPage = () => {
                       />
                     </div>
                   </div>
-                  {/* Number Room Available */}
+                  {/* Move ind Date */}
                   <div className='tablet:tw-flex tw-flex-1 tablet:tw-items-center tw-gap-2 tw-flex-wrap'>
-                    <RHFNumberInput<InsertRentalPostDataType>
-                      name='numberRoomAvailable'
-                      label='Số phòng có sẵn:'
-                      placeholder='Nhập số phòng có sẵn...'
-                      min={0}
+                    <RHFDatePicker<InsertWantedPostDataType>
+                      name='moveInDate'
+                      label='Ngày có thể chuyển vào:'
+                      placeholder='Nhập ngày có thể chuyển vào...'
+                      minDate={timeInVietNam().toDate()}
                       required
                     />
                   </div>
                   {/* Total area */}
                   <div className='tw-flex tw-flex-col tablet:tw-flex-row tablet:tw-items-center tw-gap-2 tw-flex-wrap'>
-                    <RHFNumberInput<InsertRentalPostDataType>
+                    <RHFNumberInput<InsertWantedPostDataType>
                       name='totalArea'
-                      label='Tổng diện tích:'
+                      label='Diện tích mong muốn:'
                       placeholder='Vd: 25'
                       min={0}
                       required
                     />
-                    <RHFSelect<InsertRentalPostDataType>
+                    <RHFSelect<InsertWantedPostDataType>
                       control={control}
                       name='totalAreaUnit'
                       label='Đơn vị diện tích'
                       placeholder='Chọn đơn vị diện tích'
                       minWidth={200}
                       options={totalAreaUnitOptions}
-                    />
-                  </div>
-                  {/* Lease term */}
-                  <div className='tw-flex tw-flex-col tablet:tw-flex-row tablet:tw-items-center tw-gap-2 tw-flex-wrap'>
-                    <RHFNumberInput<InsertRentalPostDataType>
-                      name='minLeaseTerm'
-                      label='Thời gian thuê tối thiểu:'
-                      placeholder='Vd: 6'
-                      min={0}
-                      required
-                    />
-                    <RHFSelect<InsertRentalPostDataType>
-                      control={control}
-                      name='minLeaseTermUnit'
-                      label='Đơn vị thời gian'
-                      placeholder='Chọn đơn vị thời gian'
-                      minWidth={200}
-                      options={minLeaseTermUnitOptions}
                     />
                   </div>
                   {/* Room Amenities */}
@@ -503,7 +487,7 @@ const RentalPostPage = () => {
                     </div>
                   </Divider>
                   <div className='tw-grid tw-grid-cols-1 tablet:tw-grid-cols-2 tw-gap-2 tw-gap-x-4'>
-                    <RHFRadioGroup<InsertRentalPostDataType>
+                    <RHFRadioGroup<InsertWantedPostDataType>
                       control={control}
                       name='hasFurniture'
                       label='Có sẵn nội thất cơ bản (Giường, tủ quần áo):'
@@ -519,7 +503,7 @@ const RentalPostPage = () => {
                         },
                       ]}
                     />
-                    <RHFRadioGroup<InsertRentalPostDataType>
+                    <RHFRadioGroup<InsertWantedPostDataType>
                       control={control}
                       name='hasAirConditioner'
                       label='Có điều hoà:'
@@ -535,7 +519,7 @@ const RentalPostPage = () => {
                         },
                       ]}
                     />
-                    <RHFRadioGroup<InsertRentalPostDataType>
+                    <RHFRadioGroup<InsertWantedPostDataType>
                       control={control}
                       name='hasElevator'
                       label='Có thang máy:'
@@ -551,7 +535,7 @@ const RentalPostPage = () => {
                         },
                       ]}
                     />
-                    <RHFRadioGroup<InsertRentalPostDataType>
+                    <RHFRadioGroup<InsertWantedPostDataType>
                       control={control}
                       name='hasParking'
                       label='Có bãi đỗ xe:'
@@ -567,7 +551,7 @@ const RentalPostPage = () => {
                         },
                       ]}
                     />
-                    <RHFRadioGroup<InsertRentalPostDataType>
+                    <RHFRadioGroup<InsertWantedPostDataType>
                       control={control}
                       name='hasPrivateBathroom'
                       label='Có phòng vệ sinh riêng:'
@@ -583,7 +567,7 @@ const RentalPostPage = () => {
                         },
                       ]}
                     />
-                    <RHFRadioGroup<InsertRentalPostDataType>
+                    <RHFRadioGroup<InsertWantedPostDataType>
                       control={control}
                       name='hasRefrigerator'
                       label='Có sẵn tủ lạnh:'
@@ -599,7 +583,7 @@ const RentalPostPage = () => {
                         },
                       ]}
                     />
-                    <RHFRadioGroup<InsertRentalPostDataType>
+                    <RHFRadioGroup<InsertWantedPostDataType>
                       control={control}
                       name='hasSecurity'
                       label='Có bảo vệ:'
@@ -615,7 +599,7 @@ const RentalPostPage = () => {
                         },
                       ]}
                     />
-                    <RHFRadioGroup<InsertRentalPostDataType>
+                    <RHFRadioGroup<InsertWantedPostDataType>
                       control={control}
                       name='hasWashingMachine'
                       label='Có máy giặt:'
@@ -631,7 +615,7 @@ const RentalPostPage = () => {
                         },
                       ]}
                     />
-                    <RHFRadioGroup<InsertRentalPostDataType>
+                    <RHFRadioGroup<InsertWantedPostDataType>
                       control={control}
                       name='hasInternet'
                       label='Có sẵn Internet:'
@@ -647,7 +631,7 @@ const RentalPostPage = () => {
                         },
                       ]}
                     />
-                    <RHFRadioGroup<InsertRentalPostDataType>
+                    <RHFRadioGroup<InsertWantedPostDataType>
                       control={control}
                       name='allowPets'
                       label='Cho phép nuôi thú cưng (pet):'
@@ -710,7 +694,7 @@ const RentalPostPage = () => {
                           <MdDeleteOutline className='tw-text-[18px]' />
                         </Chip>
                       </div>
-                      <RHFImageUploadPreview<InsertRentalPostDataType>
+                      <RHFImageUploadPreview<InsertWantedPostDataType>
                         control={control}
                         name={`assets.${index}`}
                         ratio='1/1'
@@ -735,7 +719,7 @@ const RentalPostPage = () => {
               type='submit'
               fullWidth
             >
-              Đăng tải bài viết
+              {mode === 'create' ? 'Đăng tải bài viết' : 'Lưu lại thông tin'}
             </Button>
           </footer>
         </form>
@@ -745,4 +729,4 @@ const RentalPostPage = () => {
   );
 };
 
-export default RentalPostPage;
+export default WantedPostPage;
