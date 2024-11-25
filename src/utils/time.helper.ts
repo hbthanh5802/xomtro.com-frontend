@@ -16,7 +16,7 @@ export const timeInVietNam = () => dayjs.utc().add(7, 'hour');
 
 // Format time to VN
 export const formatTimeForVietnamese = (
-  date: dayjs.Dayjs | Date,
+  date: dayjs.Dayjs | Date | string,
   format: 'HH:mm:ss DD/MM/YYYY' | 'DD/MM/YYYY' = 'DD/MM/YYYY',
 ) => {
   const dayjsDate = dayjs.isDayjs(date) ? date : dayjs.utc(date);

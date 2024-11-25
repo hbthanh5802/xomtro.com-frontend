@@ -217,8 +217,6 @@ const WantedPostPage = () => {
 
   const defaultAddressCode = post?.addressCode?.split('-')!;
 
-  console.log({ post, detail });
-
   const methods = useForm<InsertWantedPostDataType>({
     defaultValues: {
       type: 'wanted',
@@ -327,7 +325,7 @@ const WantedPostPage = () => {
       if (mode === 'create') {
         await postService.createWantedPost(formData as any);
       } else if (mode === 'edit') {
-        await postService.updateRentalPost(post.id, formData as any);
+        await postService.updateWantedPost(post.id, formData as any);
       }
 
       // Thông báo thành công

@@ -9,7 +9,7 @@ const PostTime = (props: PostTimeProps) => {
 
   return (
     <div className='tw-flex tw-flex-col tw-gap-1'>
-      {`Ngày tạo: ${formatTimeForVietnamese(post.createdAt!, 'HH:mm:ss DD/MM/YYYY')}`} <br></br>
+      {`Ngày đăng bài: ${formatTimeForVietnamese(post.createdAt!, 'HH:mm:ss DD/MM/YYYY')}`} <br></br>
       {`Cập nhật mới nhất: ${formatTimeForVietnamese(post.updatedAt!, 'HH:mm:ss DD/MM/YYYY')}`}
     </div>
   );
