@@ -2,6 +2,7 @@ import { queryClient } from '@/App';
 import RHFSelect from '@/components/RHFSelect';
 import useUrl from '@/hooks/useUrl.hook';
 import UserJoinPostTab from '@/pages/UserPage/components/UserJoinPostTab';
+import UserPassPostTab from '@/pages/UserPage/components/UserPassPostTab';
 import UserRentalPostTab from '@/pages/UserPage/components/UserRentalPostTab';
 import UserWantedPostTab from '@/pages/UserPage/components/UserWantedPostTab';
 import { OrderConditionType, WhereConditionType } from '@/store/postFilterSlice';
@@ -19,10 +20,6 @@ export interface PostTabProps {
   orderConditions: OrderConditionType;
   userData?: UserDetailSelectSchemaType;
   userAvatarData?: AssetSelectSchemaType;
-}
-
-function PassPost() {
-  return <p>PassPost</p>;
 }
 
 interface UserPostPageFilterProps {
@@ -89,7 +86,7 @@ const UserPostPageFilter = React.memo((props: UserPostPageFilterProps) => {
 const UserPostPage: React.FC = () => {
   const [tabIndex, setTabIndex] = React.useState(0);
   const { userId } = useUrl().params;
-  const { userData, userAvatarData } = useOutletContext() as {
+  const { userData } = useOutletContext() as {
     userData: UserDetailSelectSchemaType;
     userAvatarData: AssetSelectSchemaType;
   };
@@ -166,12 +163,20 @@ const UserPostPage: React.FC = () => {
                 }}
               >
                 {userData && userData?.role === 'landlord' && (
-                  <Tab indicatorInset>
-                    Cho thuê{' '}
-                    <Chip size='sm' variant='soft' color={tabIndex === 0 ? 'primary' : 'neutral'}>
-                      14
-                    </Chip>
-                  </Tab>
+                  <>
+                    <Tab indicatorInset>
+                      Cho thuê{' '}
+                      <Chip size='sm' variant='soft' color={tabIndex === 0 ? 'primary' : 'neutral'}>
+                        14
+                      </Chip>
+                    </Tab>
+                    <Tab indicatorInset>
+                      Pass đồ{' '}
+                      <Chip size='sm' variant='soft' color={tabIndex === 1 ? 'primary' : 'neutral'}>
+                        8
+                      </Chip>
+                    </Tab>
+                  </>
                 )}
                 {userData && userData?.role === 'renter' && (
                   <>
@@ -182,13 +187,13 @@ const UserPostPage: React.FC = () => {
                       </Chip>
                     </Tab>
                     <Tab indicatorInset>
-                      Tìm người ở ghép{' '}
+                      Pass đồ{' '}
                       <Chip size='sm' variant='soft' color={tabIndex === 1 ? 'primary' : 'neutral'}>
                         8
                       </Chip>
                     </Tab>
                     <Tab indicatorInset>
-                      Pass đồ{' '}
+                      Tìm người ở ghép{' '}
                       <Chip size='sm' variant='soft' color={tabIndex === 2 ? 'primary' : 'neutral'}>
                         8
                       </Chip>
@@ -208,14 +213,15 @@ const UserPostPage: React.FC = () => {
       {userData && userData?.role === 'landlord' && (
         <div className='tw-mt-[40px]'>
           {tabIndex === 0 && <UserRentalPostTab whereConditions={whereConditions} orderConditions={orderConditions} />}
+          {tabIndex === 1 && <UserPassPostTab whereConditions={whereConditions} orderConditions={orderConditions} />}
         </div>
       )}
 
       {userData && userData?.role === 'renter' && (
         <div className='tw-mt-[40px]'>
           {tabIndex === 0 && <UserWantedPostTab whereConditions={whereConditions} orderConditions={orderConditions} />}
-          {tabIndex === 1 && <UserJoinPostTab whereConditions={whereConditions} orderConditions={orderConditions} />}
-          {tabIndex === 2 && <PassPost />}
+          {tabIndex === 1 && <UserPassPostTab whereConditions={whereConditions} orderConditions={orderConditions} />}
+          {tabIndex === 2 && <UserJoinPostTab whereConditions={whereConditions} orderConditions={orderConditions} />}
         </div>
       )}
     </React.Fragment>

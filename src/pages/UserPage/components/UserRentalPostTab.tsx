@@ -11,7 +11,7 @@ export default function UserRentalPostTab(props: PostTabProps) {
 
   const handleFetchPosts = async ({ pageParam }: { pageParam: number }) => {
     const response = await postService.searchRentalPost({
-      whereConditions: whereConditions,
+      whereConditions: { ...whereConditions, ownerId: Number(userId) },
       orderConditions: orderConditions,
       pagination: { page: pageParam, pageSize: 10 },
     });

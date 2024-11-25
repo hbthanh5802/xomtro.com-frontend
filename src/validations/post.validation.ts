@@ -1,4 +1,4 @@
-import { joinPosts, posts, rentalPosts, wantedPosts } from '@/configs/schema.config';
+import { joinPosts, passPostItems, passPosts, posts, rentalPosts, wantedPosts } from '@/configs/schema.config';
 import { dateValidation, imageFileValidation } from '@/validations/common.validation';
 import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
@@ -79,4 +79,34 @@ export const insertJoinPostValidation = createInsertSchema(joinPosts, {
       message: '"Giá kết thúc" không thể thấp hơn "Giá khởi điểm"',
       path: ['priceEnd'], // Chỉ định trường lỗi
     },
+  );
+
+export const insertPassPostItemValidation = createInsertSchema(passPostItems, {
+  passItemPrice: z.preprocess((value) => {
+    if (typeof value === 'string' && !isNaN(Number(value))) {
+      return Number(value);
+    }
+    return value;
+  }, z.number()),
+}).pick({
+  passItemName: true,
+  passItemPrice: true,
+  passItemStatus: true,
+});
+
+export const insertPassPostValidation = createInsertSchema(passPosts)
+  .omit({
+    postId: true,
+    priceStart: true,
+    priceEnd: true,
+    priceUnit: true,
+  })
+  .and(insertPostValidation)
+  .and(
+    z.object({
+      passItems: z.array(insertPassPostItemValidation).min(1, {
+        message: 'passItems phải có ít nhất một phần tử',
+      }),
+      assets: z.array(imageFileValidation).optional(),
+    }),
   );

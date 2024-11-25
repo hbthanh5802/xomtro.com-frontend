@@ -92,6 +92,12 @@ const Header = () => {
                         Cho thuê phòng
                       </div>
                     </MenuItem>
+                    <MenuItem>
+                      <div onClick={() => navigate('/posts/pass/create')} className='tw-flex tw-items-center tw-gap-2'>
+                        <FaHandsHoldingCircle className='tw-flex tw-text-lg tw-text-slate-600' />
+                        Pass đồ
+                      </div>
+                    </MenuItem>
                   </React.Fragment>
                 )}
               </Menu>

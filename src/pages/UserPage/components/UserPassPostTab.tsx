@@ -5,12 +5,12 @@ import postService from '@/services/post.service';
 import { Button, Divider, LinearProgress, Skeleton } from '@mui/joy';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-export default function UserJoinPostTab(props: PostTabProps) {
+export default function UserPassPostTab(props: PostTabProps) {
   const { userId } = useUrl().params;
   const { whereConditions, orderConditions } = props;
 
   const handleFetchPosts = async ({ pageParam }: { pageParam: number }) => {
-    const response = await postService.searchJoinPost({
+    const response = await postService.searchPassPost({
       whereConditions: { ...whereConditions, ownerId: Number(userId) },
       orderConditions: orderConditions,
       pagination: { page: pageParam, pageSize: 10 },
@@ -20,7 +20,7 @@ export default function UserJoinPostTab(props: PostTabProps) {
   };
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ['users', 'posts', 'join', { userId: Number(userId) }],
+    queryKey: ['users', 'posts', 'pass', { userId: Number(userId) }],
     queryFn: handleFetchPosts,
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
