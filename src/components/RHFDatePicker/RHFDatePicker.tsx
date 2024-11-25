@@ -25,7 +25,7 @@ const RHFDatePicker = <T extends FieldValues>(props: RHFDatePickerProps<T>) => {
         control={props.control}
         name={props.name}
         rules={{
-          required: props.required ? 'This field is required' : false,
+          required: props.required ? 'Thông tin này là bắt buộc.' : false,
           validate: (value) => validateDateRange(value, minDate, maxDate),
         }}
         render={({ field, fieldState }) => (

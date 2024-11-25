@@ -1,6 +1,6 @@
 import { axiosAuthRequest, axiosRequest } from '@/configs/axios.config';
 import { OrderConditionType, PaginationType, WhereConditionType } from '@/store/postFilterSlice';
-import { InsertRentalPostDataType } from '@/types/post.type';
+import { InsertRentalPostDataType, InsertWantedPostDataType } from '@/types/post.type';
 import {
   AssetSelectSchemaType,
   JoinPostSelectSchemaType,
@@ -18,14 +18,8 @@ type searchPostProps = {
 };
 
 // Type
-export type FullPostResponseType<
-  T extends
-    | RentalPostSelectSchemaType
-    | WantedPostSelectSchemaType
-    | JoinPostSelectSchemaType
-    | PassPostSelectSchemaType,
-> = {
-  post: PostSelectSchemaType;
+type FullPostResponseType<T> = {
+  post: PostSelectSchemaType & { type: 'rental' | 'join' | 'wanted' | 'pass' };
   detail: T;
   assets: AssetSelectSchemaType[];
   passItems?: PassPostItemSelectSchemaType[];
@@ -63,10 +57,29 @@ class postServices {
     });
   }
 
+  createWantedPost(data: InsertWantedPostDataType) {
+    return axiosAuthRequest({
+      method: 'POST',
+      url: '/posts/wanted',
+      data,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
+
   searchRentalPost({ whereConditions = {}, orderConditions = {}, pagination = {} }: searchPostProps) {
     return axiosRequest<searchPostResponseType<RentalPostSelectSchemaType>>({
       method: 'POST',
       url: '/posts/search/rental',
+      data: { whereConditions, orderConditions, pagination },
+    });
+  }
+
+  searchWantedPost({ whereConditions = {}, orderConditions = {}, pagination = {} }: searchPostProps) {
+    return axiosRequest<searchPostResponseType<WantedPostSelectSchemaType>>({
+      method: 'POST',
+      url: '/posts/search/wanted',
       data: { whereConditions, orderConditions, pagination },
     });
   }

@@ -1,4 +1,6 @@
+import { queryClient } from '@/App';
 import RHFImageInput from '@/components/RHFImageInput';
+import useUrl from '@/hooks/useUrl.hook';
 import userService from '@/services/user.service';
 import { useAppStore } from '@/store/store';
 import { UpdateAvatarDataType } from '@/types/user.type';
@@ -12,6 +14,7 @@ import { toast } from 'sonner';
 import { useShallow } from 'zustand/react/shallow';
 
 const ChangeAvatar = (props: { onSuccess?: () => void }) => {
+  const { userId } = useUrl().params;
   const [preview, setPreview] = useState<string | null>(null);
 
   const handlePreview = (fileList: FileList) => {
@@ -52,6 +55,7 @@ const ChangeAvatar = (props: { onSuccess?: () => void }) => {
     const toastId = toast.loading('Đăng thay đổi ảnh đại diện. Vui lòng chờ...');
     try {
       await updateAvatarMutation.mutateAsync(formData);
+      queryClient.invalidateQueries({ queryKey: ['user-avatar', { userId: Number(userId) }] });
       fetchUserAvatar();
       if (props?.onSuccess) props.onSuccess();
       toast.success('Thay đổi ảnh đại diện thành công!', {

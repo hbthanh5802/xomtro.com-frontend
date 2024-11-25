@@ -3,16 +3,19 @@ import ModalLayout from '@/components/ModalLayout';
 import PostImages from '@/components/PostCard/components/PostImages';
 import PostTime from '@/components/PostCard/components/PostTime';
 import RentalDetail from '@/components/PostCard/components/RentalDetail';
+import WantedDetail from '@/components/PostCard/components/WantedDetail';
 import ShareButtons from '@/components/ShareButton/ShareButton';
 import useUserApiHook from '@/hooks/useUserApi.hook';
 import postService from '@/services/post.service';
 import { useAppStore } from '@/store/store';
 import {
   AssetSelectSchemaType,
+  JoinPostSelectSchemaType,
   PassPostItemSelectSchemaType,
   PassPostSelectSchemaType,
   PostSelectSchemaType,
   RentalPostSelectSchemaType,
+  WantedPostSelectSchemaType,
 } from '@/types/schema.type';
 import { getTimeAgo } from '@/utils/time.helper';
 import {
@@ -39,13 +42,40 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useShallow } from 'zustand/react/shallow';
 
-export type PostCardDataType = {
-  post: PostSelectSchemaType;
-  detail: RentalPostSelectSchemaType & PassPostSelectSchemaType;
-  assets: AssetSelectSchemaType[];
-  passItems?: PassPostItemSelectSchemaType[];
-  distance?: number;
-};
+// export type PostCardDataType<T> = {
+//   post: PostSelectSchemaType;
+//   detail: T;
+//   assets: AssetSelectSchemaType[];
+//   passItems?: PassPostItemSelectSchemaType[];
+//   distance?: number;
+// };
+
+export type PostCardDataType =
+  | {
+      post: PostSelectSchemaType & { type: 'rental' };
+      detail: RentalPostSelectSchemaType;
+      assets: AssetSelectSchemaType[];
+      distance?: number;
+    }
+  | {
+      post: PostSelectSchemaType & { type: 'join' };
+      detail: JoinPostSelectSchemaType;
+      assets: AssetSelectSchemaType[];
+      distance?: number;
+    }
+  | {
+      post: PostSelectSchemaType & { type: 'wanted' };
+      detail: WantedPostSelectSchemaType;
+      assets: AssetSelectSchemaType[];
+      distance?: number;
+    }
+  | {
+      post: PostSelectSchemaType & { type: 'pass' };
+      detail: PassPostSelectSchemaType;
+      assets: AssetSelectSchemaType[];
+      passItems: PassPostItemSelectSchemaType[];
+      distance?: number;
+    };
 
 interface PostCardWrapperProps {
   data: PostCardDataType;
@@ -76,7 +106,7 @@ function DeletePostDialog(props: { postId: number; onSuccess?: () => void }) {
         <span className='tw-flex tw-items-center tw-justify-center'>
           <MdOutlineInfo />
         </span>
-        Xác nhận bài đăng?
+        Xác nhận xoá bài đăng?
       </DialogTitle>
       <div className='tw-my-2'>
         <Divider />
@@ -174,7 +204,7 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
                     '--ListItem-radius': 'var(--joy-radius-sm)',
                   }}
                 >
-                  <MenuItem onClick={() => navigate('/posts/rental/edit', { state: { postData: props.data } })}>
+                  <MenuItem onClick={() => navigate(`/posts/${post.type}/edit`, { state: { postData: props.data } })}>
                     <div className='tw-flex tw-items-center tw-gap-2'>
                       <MdEdit className='tw-flex tw-text-lg tw-text-slate-600' />
                       Chỉnh sửa bài viết
@@ -204,7 +234,9 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
         </header>
         {loading ? <LinearProgress variant='solid' /> : <Divider orientation='horizontal' />}
         <main className='tw-mt-[24px]'>
-          <RentalDetail data={props.data} />
+          {post.type === 'rental' && <RentalDetail data={props.data} />}
+          {post.type === 'wanted' && <WantedDetail data={props.data} />}
+
           {/* Post Images */}
           {assets.length ? (
             <PostImages data={props.data} />
