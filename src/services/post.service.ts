@@ -1,6 +1,6 @@
 import { axiosAuthRequest, axiosRequest } from '@/configs/axios.config';
 import { OrderConditionType, PaginationType, WhereConditionType } from '@/store/postFilterSlice';
-import { InsertRentalPostDataType, InsertWantedPostDataType } from '@/types/post.type';
+import { InsertJoinPostDataType, InsertRentalPostDataType, InsertWantedPostDataType } from '@/types/post.type';
 import {
   AssetSelectSchemaType,
   JoinPostSelectSchemaType,
@@ -68,6 +68,17 @@ class postServices {
     });
   }
 
+  createJoinPost(data: InsertJoinPostDataType) {
+    return axiosAuthRequest({
+      method: 'POST',
+      url: '/posts/join',
+      data,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
+
   searchRentalPost({ whereConditions = {}, orderConditions = {}, pagination = {} }: searchPostProps) {
     return axiosRequest<searchPostResponseType<RentalPostSelectSchemaType>>({
       method: 'POST',
@@ -80,6 +91,14 @@ class postServices {
     return axiosRequest<searchPostResponseType<WantedPostSelectSchemaType>>({
       method: 'POST',
       url: '/posts/search/wanted',
+      data: { whereConditions, orderConditions, pagination },
+    });
+  }
+
+  searchJoinPost({ whereConditions = {}, orderConditions = {}, pagination = {} }: searchPostProps) {
+    return axiosRequest<searchPostResponseType<JoinPostSelectSchemaType>>({
+      method: 'POST',
+      url: '/posts/search/join',
       data: { whereConditions, orderConditions, pagination },
     });
   }
@@ -121,6 +140,17 @@ class postServices {
     return axiosAuthRequest({
       method: 'PUT',
       url: `/posts/wanted/${postId}`,
+      data,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
+
+  updateJoinPost(postId: number, data: InsertJoinPostDataType) {
+    return axiosAuthRequest({
+      method: 'PUT',
+      url: `/posts/join/${postId}`,
       data,
       headers: {
         'Content-Type': 'multipart/form-data',

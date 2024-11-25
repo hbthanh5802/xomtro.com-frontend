@@ -1,5 +1,6 @@
 import { queryClient } from '@/App';
 import ModalLayout from '@/components/ModalLayout';
+import JoinDetail from '@/components/PostCard/components/JoinDetail';
 import PostImages from '@/components/PostCard/components/PostImages';
 import PostTime from '@/components/PostCard/components/PostTime';
 import RentalDetail from '@/components/PostCard/components/RentalDetail';
@@ -42,40 +43,40 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useShallow } from 'zustand/react/shallow';
 
-// export type PostCardDataType<T> = {
-//   post: PostSelectSchemaType;
-//   detail: T;
-//   assets: AssetSelectSchemaType[];
-//   passItems?: PassPostItemSelectSchemaType[];
-//   distance?: number;
-// };
+export type PostCardDataType = {
+  post: PostSelectSchemaType;
+  detail: RentalPostSelectSchemaType & JoinPostSelectSchemaType & WantedPostSelectSchemaType & PassPostSelectSchemaType;
+  assets: AssetSelectSchemaType[];
+  passItems?: PassPostItemSelectSchemaType[];
+  distance?: number;
+};
 
-export type PostCardDataType =
-  | {
-      post: PostSelectSchemaType & { type: 'rental' };
-      detail: RentalPostSelectSchemaType;
-      assets: AssetSelectSchemaType[];
-      distance?: number;
-    }
-  | {
-      post: PostSelectSchemaType & { type: 'join' };
-      detail: JoinPostSelectSchemaType;
-      assets: AssetSelectSchemaType[];
-      distance?: number;
-    }
-  | {
-      post: PostSelectSchemaType & { type: 'wanted' };
-      detail: WantedPostSelectSchemaType;
-      assets: AssetSelectSchemaType[];
-      distance?: number;
-    }
-  | {
-      post: PostSelectSchemaType & { type: 'pass' };
-      detail: PassPostSelectSchemaType;
-      assets: AssetSelectSchemaType[];
-      passItems: PassPostItemSelectSchemaType[];
-      distance?: number;
-    };
+// export type PostCardDataType =
+//   | {
+//       post: PostSelectSchemaType & { type: 'rental' };
+//       detail: RentalPostSelectSchemaType;
+//       assets: AssetSelectSchemaType[];
+//       distance?: number;
+//     }
+//   | {
+//       post: PostSelectSchemaType & { type: 'join' };
+//       detail: JoinPostSelectSchemaType;
+//       assets: AssetSelectSchemaType[];
+//       distance?: number;
+//     }
+//   | {
+//       post: PostSelectSchemaType & { type: 'wanted' };
+//       detail: WantedPostSelectSchemaType;
+//       assets: AssetSelectSchemaType[];
+//       distance?: number;
+//     }
+//   | {
+//       post: PostSelectSchemaType & { type: 'pass' };
+//       detail: PassPostSelectSchemaType;
+//       assets: AssetSelectSchemaType[];
+//       passItems: PassPostItemSelectSchemaType[];
+//       distance?: number;
+//     };
 
 interface PostCardWrapperProps {
   data: PostCardDataType;
@@ -236,6 +237,7 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
         <main className='tw-mt-[24px]'>
           {post.type === 'rental' && <RentalDetail data={props.data} />}
           {post.type === 'wanted' && <WantedDetail data={props.data} />}
+          {post.type === 'join' && <JoinDetail data={props.data} />}
 
           {/* Post Images */}
           {assets.length ? (

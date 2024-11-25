@@ -5,12 +5,12 @@ import postService from '@/services/post.service';
 import { Button, Divider, LinearProgress, Skeleton } from '@mui/joy';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-export default function UserRentalPostTab(props: PostTabProps) {
+export default function UserJoinPostTab(props: PostTabProps) {
   const { userId } = useUrl().params;
   const { whereConditions, orderConditions } = props;
 
   const handleFetchPosts = async ({ pageParam }: { pageParam: number }) => {
-    const response = await postService.searchRentalPost({
+    const response = await postService.searchJoinPost({
       whereConditions: whereConditions,
       orderConditions: orderConditions,
       pagination: { page: pageParam, pageSize: 10 },
@@ -20,7 +20,7 @@ export default function UserRentalPostTab(props: PostTabProps) {
   };
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ['users', 'posts', 'rental', { userId: Number(userId) }],
+    queryKey: ['users', 'posts', 'wanted', { userId: Number(userId) }],
     queryFn: handleFetchPosts,
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {

@@ -12,11 +12,11 @@ import locationService from '@/services/location.service';
 import postService from '@/services/post.service';
 import { useAppStore } from '@/store/store';
 import { SelectOptionItemType } from '@/types/common.type';
-import { InsertWantedPostDataType } from '@/types/post.type';
+import { InsertJoinPostDataType } from '@/types/post.type';
 import { AssetSelectSchemaType, PostSelectSchemaType, WantedPostSelectSchemaType } from '@/types/schema.type';
 import { handleAxiosError } from '@/utils/constants.helper';
 import { formatDateForInput, timeInVietNam } from '@/utils/time.helper';
-import { insertWantedPostValidation } from '@/validations/post.validation';
+import { insertJoinPostValidation } from '@/validations/post.validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AspectRatio, Button, Chip, Divider, Typography } from '@mui/joy';
 import React from 'react';
@@ -76,7 +76,7 @@ const totalAreaUnitOptions: SelectOptionItemType[] = [
 // ];
 
 interface AddressPostFormProps {
-  control: Control<InsertWantedPostDataType>;
+  control: Control<InsertJoinPostDataType>;
   mode: 'create' | 'edit';
   data?: any;
 }
@@ -154,7 +154,7 @@ function AddressPostForm(props: AddressPostFormProps) {
   return (
     <div className='tw-mt-[24px] tw-flex tw-flex-col tw-gap-4'>
       <div className='tw-grid tw-grid-cols-1 tablet:tw-grid-cols-3 tw-gap-4'>
-        <RHFSelect<InsertWantedPostDataType>
+        <RHFSelect<InsertJoinPostDataType>
           disabled={!provinceOptions.length}
           name='addressProvince'
           control={control}
@@ -164,7 +164,7 @@ function AddressPostForm(props: AddressPostFormProps) {
           required
         />
 
-        <RHFSelect<InsertWantedPostDataType>
+        <RHFSelect<InsertJoinPostDataType>
           disabled={!districtOptions.length}
           name='addressDistrict'
           control={control}
@@ -174,7 +174,7 @@ function AddressPostForm(props: AddressPostFormProps) {
           required
         />
 
-        <RHFSelect<InsertWantedPostDataType>
+        <RHFSelect<InsertJoinPostDataType>
           disabled={!wardOptions.length}
           name='addressWard'
           control={control}
@@ -185,7 +185,7 @@ function AddressPostForm(props: AddressPostFormProps) {
         />
       </div>
 
-      <RHFInput<InsertWantedPostDataType>
+      <RHFInput<InsertJoinPostDataType>
         name='addressDetail'
         label='Thông tin chi tiết:'
         placeholder='Số nhà, ngõ, xóm, đường, phố... (nếu có)'
@@ -194,7 +194,7 @@ function AddressPostForm(props: AddressPostFormProps) {
   );
 }
 
-const WantedPostPage = () => {
+const JoinPostPage = () => {
   const navigate = useNavigate();
   const { params, state } = useUrl();
   const assetId = React.useId();
@@ -217,9 +217,9 @@ const WantedPostPage = () => {
 
   const defaultAddressCode = post?.addressCode?.split('-')!;
 
-  const methods = useForm<InsertWantedPostDataType>({
+  const methods = useForm<InsertJoinPostDataType>({
     defaultValues: {
-      type: 'wanted',
+      type: 'join',
       title: mode === 'create' ? '' : post?.title,
       description: mode === 'create' ? '' : post?.description,
       expirationAfter: mode === 'create' ? null : post?.expirationAfter,
@@ -246,7 +246,7 @@ const WantedPostPage = () => {
       addressWard: mode === 'create' ? undefined : `${defaultAddressCode?.[2]}-${post?.addressWard}`,
       addressDetail: mode === 'create' ? undefined : post?.addressDetail,
     },
-    resolver: zodResolver(insertWantedPostValidation),
+    resolver: zodResolver(insertJoinPostValidation),
   });
   const {
     control,
@@ -277,7 +277,7 @@ const WantedPostPage = () => {
     }
   };
 
-  const handleSubmitForm = async (data: InsertWantedPostDataType) => {
+  const handleSubmitForm = async (data: InsertJoinPostDataType) => {
     setLoading(true);
     const toastId = toast.loading('Đang đăng tải bài viết của bạn. Vui lòng chờ...');
 
@@ -294,7 +294,7 @@ const WantedPostPage = () => {
       const { code: wardCode, name: wardName } = parseAddress(data.addressWard);
 
       // Chuẩn bị payload
-      const postPayload: InsertWantedPostDataType = {
+      const postPayload: InsertJoinPostDataType = {
         ...data,
         addressCode: `${provinceCode}-${districtCode}-${wardCode}`,
         addressProvince: provinceName,
@@ -323,9 +323,9 @@ const WantedPostPage = () => {
 
       // Gửi request
       if (mode === 'create') {
-        await postService.createWantedPost(formData as any);
+        await postService.createJoinPost(formData as any);
       } else if (mode === 'edit') {
-        await postService.updateWantedPost(post.id, formData as any);
+        await postService.updateJoinPost(post.id, formData as any);
       }
 
       // Thông báo thành công
@@ -369,14 +369,14 @@ const WantedPostPage = () => {
                 </Divider>
                 <div className='tw-space-y-4'>
                   {/* Title */}
-                  <RHFInput<InsertWantedPostDataType>
+                  <RHFInput<InsertJoinPostDataType>
                     name='title'
                     label='Tiêu đề:'
                     placeholder='Nhập tiêu đề bài viết...'
                     required
                   />
                   {/* Description */}
-                  <RHFRichText<InsertWantedPostDataType>
+                  <RHFRichText<InsertJoinPostDataType>
                     control={control}
                     name='description'
                     label='Mô tả thêm:'
@@ -385,13 +385,13 @@ const WantedPostPage = () => {
                   {/* Expiration time */}
                   <div className='tw-space-y-2'>
                     <div className='tw-flex tw-flex-col tablet:tw-flex-row tablet:tw-items-center tw-gap-2'>
-                      <RHFNumberInput<InsertWantedPostDataType>
+                      <RHFNumberInput<InsertJoinPostDataType>
                         name='expirationAfter'
                         label='Ẩn bài viết sau:'
                         placeholder='Vd: 2'
                         min={0}
                       />
-                      <RHFSelect<InsertWantedPostDataType>
+                      <RHFSelect<InsertJoinPostDataType>
                         control={control}
                         name='expirationAfterUnit'
                         label='Đơn vị thời gian'
@@ -410,7 +410,7 @@ const WantedPostPage = () => {
                     </div>
                   </div>
                   {/* Note */}
-                  <RHFTextArea<InsertWantedPostDataType>
+                  <RHFTextArea<InsertJoinPostDataType>
                     control={control}
                     name='note'
                     label='Ghi chú thêm:'
@@ -431,16 +431,16 @@ const WantedPostPage = () => {
                   {/* Price */}
                   <div className='tw-flex tw-flex-col tablet:tw-flex-row tw-flex-wrap tablet:tw-items-start tw-gap-2'>
                     <div className='tw-flex-1'>
-                      <RHFCurrencyInput<InsertWantedPostDataType>
+                      <RHFCurrencyInput<InsertJoinPostDataType>
                         startDecorator={'VNĐ'}
                         name='priceStart'
                         required
-                        label='Giá thuê khởi điểm (/tháng):'
+                        label='Giá thuê phòng (/tháng):'
                         placeholder='Nhập giá khởi điểm...'
                       />
                     </div>
                     <div className='tw-flex-1'>
-                      <RHFCurrencyInput<InsertWantedPostDataType>
+                      <RHFCurrencyInput<InsertJoinPostDataType>
                         startDecorator={'VNĐ'}
                         name='priceEnd'
                         label='Giá kết thúc (/tháng):'
@@ -450,7 +450,7 @@ const WantedPostPage = () => {
                   </div>
                   {/* Move ind Date */}
                   <div className='tablet:tw-flex tw-flex-1 tablet:tw-items-center tw-gap-2 tw-flex-wrap'>
-                    <RHFDatePicker<InsertWantedPostDataType>
+                    <RHFDatePicker<InsertJoinPostDataType>
                       name='moveInDate'
                       label='Ngày có thể chuyển vào:'
                       placeholder='Nhập ngày có thể chuyển vào...'
@@ -460,14 +460,14 @@ const WantedPostPage = () => {
                   </div>
                   {/* Total area */}
                   <div className='tw-flex tw-flex-col tablet:tw-flex-row tablet:tw-items-center tw-gap-2 tw-flex-wrap'>
-                    <RHFNumberInput<InsertWantedPostDataType>
+                    <RHFNumberInput<InsertJoinPostDataType>
                       name='totalArea'
-                      label='Diện tích mong muốn:'
+                      label='Diện tích:'
                       placeholder='Vd: 25'
                       min={0}
                       required
                     />
-                    <RHFSelect<InsertWantedPostDataType>
+                    <RHFSelect<InsertJoinPostDataType>
                       control={control}
                       name='totalAreaUnit'
                       label='Đơn vị diện tích'
@@ -485,7 +485,7 @@ const WantedPostPage = () => {
                     </div>
                   </Divider>
                   <div className='tw-grid tw-grid-cols-1 tablet:tw-grid-cols-2 tw-gap-2 tw-gap-x-4'>
-                    <RHFRadioGroup<InsertWantedPostDataType>
+                    <RHFRadioGroup<InsertJoinPostDataType>
                       control={control}
                       name='hasFurniture'
                       label='Có sẵn nội thất cơ bản (Giường, tủ quần áo):'
@@ -501,7 +501,7 @@ const WantedPostPage = () => {
                         },
                       ]}
                     />
-                    <RHFRadioGroup<InsertWantedPostDataType>
+                    <RHFRadioGroup<InsertJoinPostDataType>
                       control={control}
                       name='hasAirConditioner'
                       label='Có điều hoà:'
@@ -517,7 +517,7 @@ const WantedPostPage = () => {
                         },
                       ]}
                     />
-                    <RHFRadioGroup<InsertWantedPostDataType>
+                    <RHFRadioGroup<InsertJoinPostDataType>
                       control={control}
                       name='hasElevator'
                       label='Có thang máy:'
@@ -533,7 +533,7 @@ const WantedPostPage = () => {
                         },
                       ]}
                     />
-                    <RHFRadioGroup<InsertWantedPostDataType>
+                    <RHFRadioGroup<InsertJoinPostDataType>
                       control={control}
                       name='hasParking'
                       label='Có bãi đỗ xe:'
@@ -549,7 +549,7 @@ const WantedPostPage = () => {
                         },
                       ]}
                     />
-                    <RHFRadioGroup<InsertWantedPostDataType>
+                    <RHFRadioGroup<InsertJoinPostDataType>
                       control={control}
                       name='hasPrivateBathroom'
                       label='Có phòng vệ sinh riêng:'
@@ -565,7 +565,7 @@ const WantedPostPage = () => {
                         },
                       ]}
                     />
-                    <RHFRadioGroup<InsertWantedPostDataType>
+                    <RHFRadioGroup<InsertJoinPostDataType>
                       control={control}
                       name='hasRefrigerator'
                       label='Có sẵn tủ lạnh:'
@@ -581,7 +581,7 @@ const WantedPostPage = () => {
                         },
                       ]}
                     />
-                    <RHFRadioGroup<InsertWantedPostDataType>
+                    <RHFRadioGroup<InsertJoinPostDataType>
                       control={control}
                       name='hasSecurity'
                       label='Có bảo vệ:'
@@ -597,7 +597,7 @@ const WantedPostPage = () => {
                         },
                       ]}
                     />
-                    <RHFRadioGroup<InsertWantedPostDataType>
+                    <RHFRadioGroup<InsertJoinPostDataType>
                       control={control}
                       name='hasWashingMachine'
                       label='Có máy giặt:'
@@ -613,7 +613,7 @@ const WantedPostPage = () => {
                         },
                       ]}
                     />
-                    <RHFRadioGroup<InsertWantedPostDataType>
+                    <RHFRadioGroup<InsertJoinPostDataType>
                       control={control}
                       name='hasInternet'
                       label='Có sẵn Internet:'
@@ -629,7 +629,7 @@ const WantedPostPage = () => {
                         },
                       ]}
                     />
-                    <RHFRadioGroup<InsertWantedPostDataType>
+                    <RHFRadioGroup<InsertJoinPostDataType>
                       control={control}
                       name='allowPets'
                       label='Cho phép nuôi thú cưng (pet):'
@@ -692,7 +692,7 @@ const WantedPostPage = () => {
                           <MdDeleteOutline className='tw-text-[18px]' />
                         </Chip>
                       </div>
-                      <RHFImageUploadPreview<InsertWantedPostDataType>
+                      <RHFImageUploadPreview<InsertJoinPostDataType>
                         control={control}
                         name={`assets.${index}`}
                         ratio='1/1'
@@ -727,4 +727,4 @@ const WantedPostPage = () => {
   );
 };
 
-export default WantedPostPage;
+export default JoinPostPage;

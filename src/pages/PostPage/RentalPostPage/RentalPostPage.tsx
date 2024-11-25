@@ -238,7 +238,7 @@ const RentalPostPage = () => {
       hasInternet: mode === 'create' ? false : detail?.hasInternet,
       allowPets: mode === 'create' ? false : detail?.allowPets,
       priceStart: mode === 'create' ? undefined : detail?.priceStart,
-      priceEnd: mode === 'create' ? undefined : detail?.priceEnd,
+      priceEnd: mode === 'create' ? undefined : detail?.priceEnd === detail?.priceStart ? undefined : detail?.priceEnd,
       note: mode === 'create' ? '' : post?.note,
       addressCode: mode === 'create' ? '' : post?.addressCode,
       addressProvince: mode === 'create' ? undefined : `${defaultAddressCode[0]}-${post?.addressProvince}`,
