@@ -116,6 +116,17 @@ class postServices {
       },
     });
   }
+
+  updateWantedPost(postId: number, data: InsertWantedPostDataType) {
+    return axiosAuthRequest({
+      method: 'PUT',
+      url: `/posts/wanted/${postId}`,
+      data,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
 }
 
 export default new postServices();
