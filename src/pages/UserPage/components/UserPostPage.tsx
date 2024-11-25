@@ -1,6 +1,7 @@
 import { queryClient } from '@/App';
 import RHFSelect from '@/components/RHFSelect';
 import useUrl from '@/hooks/useUrl.hook';
+import UserJoinPostTab from '@/pages/UserPage/components/UserJoinPostTab';
 import UserRentalPostTab from '@/pages/UserPage/components/UserRentalPostTab';
 import UserWantedPostTab from '@/pages/UserPage/components/UserWantedPostTab';
 import { OrderConditionType, WhereConditionType } from '@/store/postFilterSlice';
@@ -18,10 +19,6 @@ export interface PostTabProps {
   orderConditions: OrderConditionType;
   userData?: UserDetailSelectSchemaType;
   userAvatarData?: AssetSelectSchemaType;
-}
-
-function JoinPost() {
-  return <p>JoinPost</p>;
 }
 
 function PassPost() {
@@ -217,7 +214,7 @@ const UserPostPage: React.FC = () => {
       {userData && userData?.role === 'renter' && (
         <div className='tw-mt-[40px]'>
           {tabIndex === 0 && <UserWantedPostTab whereConditions={whereConditions} orderConditions={orderConditions} />}
-          {tabIndex === 1 && <JoinPost />}
+          {tabIndex === 1 && <UserJoinPostTab whereConditions={whereConditions} orderConditions={orderConditions} />}
           {tabIndex === 2 && <PassPost />}
         </div>
       )}

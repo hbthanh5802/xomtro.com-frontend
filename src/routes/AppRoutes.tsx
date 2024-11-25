@@ -5,6 +5,7 @@ import ForbiddenPage from '@/pages/ForbiddenPage';
 import ForgotPasswordPage from '@/pages/ForgotPasswordPage';
 import HomePage from '@/pages/HomePage';
 import LoginPage from '@/pages/LoginPage';
+import JoinPostPage from '@/pages/PostPage/JoinPostPage';
 import PostPageWrapper from '@/pages/PostPage/PostPageWrapper';
 import RentalPostPage from '@/pages/PostPage/RentalPostPage';
 import WantedPostPage from '@/pages/PostPage/WantedPostPage';
@@ -86,6 +87,7 @@ const AppRoutes: React.FC = () => {
           children: [
             { path: 'rental/:mode', element: <RentalPostPage /> },
             { path: 'wanted/:mode', element: <WantedPostPage /> },
+            { path: 'join/:mode', element: <JoinPostPage /> },
           ],
         },
         { path: '/', element: <HomePage /> },
