@@ -1,6 +1,11 @@
 import { axiosAuthRequest, axiosRequest } from '@/configs/axios.config';
 import { OrderConditionType, PaginationType, WhereConditionType } from '@/store/postFilterSlice';
-import { InsertJoinPostDataType, InsertRentalPostDataType, InsertWantedPostDataType } from '@/types/post.type';
+import {
+  InsertJoinPostDataType,
+  InsertPassPostDataType,
+  InsertRentalPostDataType,
+  InsertWantedPostDataType,
+} from '@/types/post.type';
 import {
   AssetSelectSchemaType,
   JoinPostSelectSchemaType,
@@ -79,6 +84,17 @@ class postServices {
     });
   }
 
+  createPassPost(data: InsertPassPostDataType) {
+    return axiosAuthRequest({
+      method: 'POST',
+      url: '/posts/pass',
+      data,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
+
   searchRentalPost({ whereConditions = {}, orderConditions = {}, pagination = {} }: searchPostProps) {
     return axiosRequest<searchPostResponseType<RentalPostSelectSchemaType>>({
       method: 'POST',
@@ -99,6 +115,14 @@ class postServices {
     return axiosRequest<searchPostResponseType<JoinPostSelectSchemaType>>({
       method: 'POST',
       url: '/posts/search/join',
+      data: { whereConditions, orderConditions, pagination },
+    });
+  }
+
+  searchPassPost({ whereConditions = {}, orderConditions = {}, pagination = {} }: searchPostProps) {
+    return axiosRequest<searchPostResponseType<PassPostSelectSchemaType>>({
+      method: 'POST',
+      url: '/posts/search/pass',
       data: { whereConditions, orderConditions, pagination },
     });
   }
@@ -151,6 +175,17 @@ class postServices {
     return axiosAuthRequest({
       method: 'PUT',
       url: `/posts/join/${postId}`,
+      data,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
+
+  updatePassPost(postId: number, data: InsertPassPostDataType) {
+    return axiosAuthRequest({
+      method: 'PUT',
+      url: `/posts/pass/${postId}`,
       data,
       headers: {
         'Content-Type': 'multipart/form-data',

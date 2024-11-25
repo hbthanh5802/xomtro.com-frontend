@@ -6,6 +6,7 @@ import ForgotPasswordPage from '@/pages/ForgotPasswordPage';
 import HomePage from '@/pages/HomePage';
 import LoginPage from '@/pages/LoginPage';
 import JoinPostPage from '@/pages/PostPage/JoinPostPage';
+import PassPostPage from '@/pages/PostPage/PassPostPage';
 import PostPageWrapper from '@/pages/PostPage/PostPageWrapper';
 import RentalPostPage from '@/pages/PostPage/RentalPostPage';
 import WantedPostPage from '@/pages/PostPage/WantedPostPage';
@@ -88,6 +89,7 @@ const AppRoutes: React.FC = () => {
             { path: 'rental/:mode', element: <RentalPostPage /> },
             { path: 'wanted/:mode', element: <WantedPostPage /> },
             { path: 'join/:mode', element: <JoinPostPage /> },
+            { path: 'pass/:mode', element: <PassPostPage /> },
           ],
         },
         { path: '/', element: <HomePage /> },

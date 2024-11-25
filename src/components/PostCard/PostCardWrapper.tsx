@@ -1,6 +1,7 @@
 import { queryClient } from '@/App';
 import ModalLayout from '@/components/ModalLayout';
 import JoinDetail from '@/components/PostCard/components/JoinDetail';
+import PassDetail from '@/components/PostCard/components/PassDetail';
 import PostImages from '@/components/PostCard/components/PostImages';
 import PostTime from '@/components/PostCard/components/PostTime';
 import RentalDetail from '@/components/PostCard/components/RentalDetail';
@@ -129,7 +130,7 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
   const navigate = useNavigate();
   const [openShare, setOpenShare] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
-  const { post, detail, assets } = props.data;
+  const { post, assets } = props.data;
   const { ownerId } = post;
   const [showDeleteModal, setShowDeleteModal] = React.useState(false);
 
@@ -238,6 +239,7 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
           {post.type === 'rental' && <RentalDetail data={props.data} />}
           {post.type === 'wanted' && <WantedDetail data={props.data} />}
           {post.type === 'join' && <JoinDetail data={props.data} />}
+          {post.type === 'pass' && <PassDetail data={props.data} />}
 
           {/* Post Images */}
           {assets.length ? (

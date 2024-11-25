@@ -40,6 +40,7 @@ const RentalDetail = (props: RentalDetailProps) => {
             </Typography>
             {detail.priceEnd && detail.priceEnd !== detail.priceStart && (
               <>
+                <span>-</span>
                 <Typography level='body-md' variant='soft' color='success'>{`${formatCurrencyVND(
                   detail.priceEnd,
                 )}/tháng`}</Typography>
