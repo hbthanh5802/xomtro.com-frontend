@@ -41,3 +41,18 @@ export type geocodingReverseResponseType = {
   longitude: number;
   latitude: number;
 };
+
+export type AutoCompleteResponseType = {
+  description: string;
+  placeId: string;
+  googleMapReference: string;
+  province: string;
+  district: string;
+  ward: string;
+  matches: {
+    offset: number;
+    value: string;
+  }[];
+  mainText: string;
+  subText: string;
+};

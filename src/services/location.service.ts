@@ -1,8 +1,21 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { axiosRequest } from '@/configs/axios.config';
-import { geocodingReverseResponseType, GetDistrictListType, GetProvincesListType } from '@/types/location.type';
+import {
+  AutoCompleteResponseType,
+  geocodingReverseResponseType,
+  GetDistrictListType,
+  GetProvincesListType,
+} from '@/types/location.type';
 import { useQuery } from '@tanstack/react-query';
 import { TanstackQueryOptions } from './../types/common.type';
+
+export type GetAutoCompleteProps = {
+  searchValue: string;
+  longitude?: number;
+  latitude?: number;
+  limit?: number;
+  radius?: number;
+};
 
 class locationServices {
   getAllProvinces(options: TanstackQueryOptions) {
@@ -48,6 +61,14 @@ class locationServices {
       method: 'GET',
       url: '/location/geocode/reverse',
       params: { latitude, longitude },
+    });
+  }
+
+  getAutoComplete(props: GetAutoCompleteProps) {
+    return axiosRequest<AutoCompleteResponseType[]>({
+      method: 'GET',
+      url: '/location/auto-complete',
+      params: props,
     });
   }
 }

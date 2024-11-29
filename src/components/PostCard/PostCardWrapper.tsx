@@ -24,6 +24,7 @@ import {
   Avatar,
   Button,
   ButtonGroup,
+  Chip,
   DialogActions,
   DialogTitle,
   Divider,
@@ -131,13 +132,14 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
   const navigate = useNavigate();
   const [openShare, setOpenShare] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
-  const { post, assets } = props.data;
+  const { post, assets, distance } = props.data;
   const { ownerId } = post;
   const [showDeleteModal, setShowDeleteModal] = React.useState(false);
 
-  const { currentUser } = useAppStore(
+  const { currentUser, whereConditions } = useAppStore(
     useShallow((state) => ({
       currentUser: state.currentUser,
+      whereConditions: state.whereConditions,
     })),
   );
   const { data: UserDetailResponse } = useUserApiHook.useUserDetail(Number(ownerId), {
@@ -203,52 +205,78 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
               </Tooltip>
             </div>
           </div>
-          {currentUser?.userId === Number(ownerId) && (
+          <div className='tw-flex tw-gap-1'>
             <div>
-              <Dropdown>
-                <MenuButton variant='plain' size='sm' sx={{ borderRadius: 99999 }}>
-                  <MdOutlineMoreHoriz className='tw-text-[24px]' />
-                </MenuButton>
-                <Menu
-                  placement='bottom-end'
-                  size='sm'
-                  sx={{
-                    zIndex: '99999',
-                    p: 1,
-                    gap: 1,
-                    '--ListItem-radius': 'var(--joy-radius-sm)',
-                  }}
-                >
-                  <MenuItem onClick={() => navigate(`/posts/${post.type}/edit`, { state: { postData: props.data } })}>
-                    <div className='tw-flex tw-items-center tw-gap-2'>
-                      <MdEdit className='tw-flex tw-text-lg tw-text-slate-600' />
-                      Chỉnh sửa bài viết
-                    </div>
-                  </MenuItem>
-                  <MenuItem onClick={handleChangePostStatusClick}>
-                    <div className='tw-flex tw-items-center tw-gap-2'>
-                      {post.status === 'actived' ? (
-                        <FaRegEyeSlash className='tw-flex tw-text-lg tw-text-slate-600' />
-                      ) : (
-                        <FaRegEye className='tw-flex tw-text-lg tw-text-slate-600' />
-                      )}
-                      {post.status === 'actived' ? 'Tạm ẩn bài đăng' : 'Bỏ ẩn'}
-                    </div>
-                  </MenuItem>
-                  <ListDivider />
-                  <MenuItem color='danger' onClick={handleDeleteClick}>
-                    <div className='tw-flex tw-items-center tw-gap-2'>
-                      <MdDeleteForever className='tw-flex tw-text-lg ' />
-                      Xoá bài đăng
-                    </div>
-                  </MenuItem>
-                </Menu>
-              </Dropdown>
+              {distance && (
+                <Chip color='primary' variant='solid'>
+                  {`~ ${distance.toPrecision(4)} km`}
+                </Chip>
+              )}
             </div>
-          )}
+            {currentUser?.userId === Number(ownerId) && (
+              <div>
+                <Dropdown>
+                  <MenuButton variant='plain' size='sm' sx={{ borderRadius: 99999 }}>
+                    <MdOutlineMoreHoriz className='tw-text-[24px]' />
+                  </MenuButton>
+                  <Menu
+                    placement='bottom-end'
+                    size='sm'
+                    sx={{
+                      zIndex: '99999',
+                      p: 1,
+                      gap: 1,
+                      '--ListItem-radius': 'var(--joy-radius-sm)',
+                    }}
+                  >
+                    <MenuItem onClick={() => navigate(`/posts/${post.type}/edit`, { state: { postData: props.data } })}>
+                      <div className='tw-flex tw-items-center tw-gap-2'>
+                        <MdEdit className='tw-flex tw-text-lg tw-text-slate-600' />
+                        Chỉnh sửa bài viết
+                      </div>
+                    </MenuItem>
+                    <MenuItem onClick={handleChangePostStatusClick}>
+                      <div className='tw-flex tw-items-center tw-gap-2'>
+                        {post.status === 'actived' ? (
+                          <FaRegEyeSlash className='tw-flex tw-text-lg tw-text-slate-600' />
+                        ) : (
+                          <FaRegEye className='tw-flex tw-text-lg tw-text-slate-600' />
+                        )}
+                        {post.status === 'actived' ? 'Tạm ẩn bài đăng' : 'Bỏ ẩn'}
+                      </div>
+                    </MenuItem>
+                    <ListDivider />
+                    <MenuItem color='danger' onClick={handleDeleteClick}>
+                      <div className='tw-flex tw-items-center tw-gap-2'>
+                        <MdDeleteForever className='tw-flex tw-text-lg ' />
+                        Xoá bài đăng
+                      </div>
+                    </MenuItem>
+                  </Menu>
+                </Dropdown>
+              </div>
+            )}
+          </div>
         </header>
         {loading ? <LinearProgress variant='solid' /> : <Divider orientation='horizontal' />}
-        <main className='tw-mt-[24px]'>
+        <main className='tw-mt-[12px]'>
+          <div className='tw-px-[24px] tw-pb-[12px] tw-flex tw-items-center tw-flex-wrap tw-gap-2'>
+            {post.addressProvince && (
+              <Chip color='danger' variant={whereConditions.provinceName ? 'solid' : 'soft'}>
+                {post.addressProvince}
+              </Chip>
+            )}
+            {post.addressDistrict && (
+              <Chip color='warning' variant={whereConditions.districtName ? 'solid' : 'soft'}>
+                {post.addressDistrict}
+              </Chip>
+            )}
+            {post.addressWard && (
+              <Chip color='success' variant={whereConditions.wardName ? 'solid' : 'soft'}>
+                {post.addressWard}
+              </Chip>
+            )}
+          </div>
           {post.type === 'rental' && <RentalDetail data={props.data} />}
           {post.type === 'wanted' && <WantedDetail data={props.data} />}
           {post.type === 'join' && <JoinDetail data={props.data} />}

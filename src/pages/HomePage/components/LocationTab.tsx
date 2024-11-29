@@ -83,18 +83,28 @@ const LocationTab = () => {
     checkPermission();
   }, [checkPermission]);
 
-  const getUserLocation = React.useCallback(async () => {
-    try {
-      if (!location.latitude || !location.longitude) return;
-      await fetchUserLocation(location.latitude, location.longitude);
-    } catch (error) {
-      console.log(handleAxiosError(error));
-    }
-  }, [location.longitude, location.latitude, fetchUserLocation]);
+  const getUserLocation = React.useCallback(
+    async (location: { latitude: null | number; longitude: null | number }) => {
+      try {
+        console.log('Get location', location);
+        if (!location.latitude || !location.longitude) return;
+        await fetchUserLocation(location.latitude, location.longitude);
+      } catch (error) {
+        console.log(handleAxiosError(error));
+      }
+    },
+    [fetchUserLocation],
+  );
 
   React.useEffect(() => {
-    // getUserLocation();
-  }, [location.longitude, location.latitude, getUserLocation]);
+    console.log({ userLocation, location });
+    if (location.longitude && location.latitude) {
+      if (userLocation?.latitude !== location.latitude || userLocation?.longitude !== location.longitude) {
+        // getUserLocation(location);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.longitude, location.latitude, userLocation?.longitude, userLocation?.latitude]);
 
   return (
     <div className='tw-p-[8px] tw-border tw-border-primaryColor tw-rounded-md tw-shadow-sm tw-shadow-primaryColor/50'>
