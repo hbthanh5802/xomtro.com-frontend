@@ -8,10 +8,12 @@ import {
   defaultOrderFilter,
   defaultWhereFilter,
 } from '@/store/postFilterSlice';
+import { useAppStore } from '@/store/store';
 import { Button } from '@mui/joy';
 import React from 'react';
 import { MdFilterAlt } from 'react-icons/md';
 import { Outlet } from 'react-router-dom';
+import { useShallow } from 'zustand/react/shallow';
 
 const HomePage = () => {
   const [filterMobileOpen, setFilterMobileOpen] = React.useState(false);
@@ -20,6 +22,22 @@ const HomePage = () => {
 
   const handleSetWhereConditions = React.useCallback(setWhereConditions, [setWhereConditions]);
   const handleSetOrderConditions = React.useCallback(setOrderConditions, [setOrderConditions]);
+
+  const { setGlobalWhereConditions, setGlobalOrderConditions } = useAppStore(
+    useShallow((state) => ({
+      setGlobalWhereConditions: state.setWhereConditionFilter,
+      setGlobalOrderConditions: state.setOrderConditionFilter,
+    })),
+  );
+
+  React.useEffect(() => {
+    if (whereConditions) {
+      setGlobalWhereConditions(whereConditions);
+    }
+    // if (orderConditions) {
+    //   setGlobalOrderConditions(orderConditions);
+    // }
+  }, [whereConditions, setGlobalWhereConditions, setGlobalOrderConditions]);
 
   return (
     <React.Fragment>

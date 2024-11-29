@@ -18,6 +18,7 @@ interface RHFNumberInputProps<T extends FieldValues> {
   step?: number;
   startDecorator?: ReactNode;
   endDecorator?: ReactNode;
+  size?: 'sm' | 'md' | 'lg';
 }
 
 interface CustomProps {
@@ -51,7 +52,7 @@ const NumericFormatAdapter = React.forwardRef<NumericFormatProps, CustomProps>(f
 });
 
 const RHFNumberInput = <T extends FieldValues>(props: RHFNumberInputProps<T>) => {
-  const { minWidth = 0, min, max, step, startDecorator, endDecorator } = props;
+  const { minWidth = 0, min, max, step, startDecorator, endDecorator, size = 'md' } = props;
 
   return (
     <>
@@ -68,6 +69,7 @@ const RHFNumberInput = <T extends FieldValues>(props: RHFNumberInputProps<T>) =>
                 </FormLabel>
               )}
               <Input
+                size={size}
                 startDecorator={startDecorator}
                 endDecorator={endDecorator}
                 sx={{ minWidth: `${minWidth}px` }}

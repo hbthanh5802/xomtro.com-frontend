@@ -289,7 +289,7 @@ const FilterBar = (props: FilterBarProps) => {
               <AccordionDetails>
                 <div className='tw-py-[8px] tw-space-y-1'>
                   <Divider>Theo giá phòng</Divider>
-                  <div className='tw-grid tw-grid-cols-1 tablet:tw-grid-cols-2 tw-gap-2'>
+                  <div className='tw-grid tw-grid-cols-1 tw-gap-2'>
                     <RHFCurrencyInput<FilterDataType>
                       name='priceStart'
                       label='Giá khởi điểm:'

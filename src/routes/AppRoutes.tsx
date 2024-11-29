@@ -16,6 +16,7 @@ import PostPageWrapper from '@/pages/PostPage/PostPageWrapper';
 import RentalPostPage from '@/pages/PostPage/RentalPostPage';
 import WantedPostPage from '@/pages/PostPage/WantedPostPage';
 import RolePage from '@/pages/RolePage';
+import SearchPage from '@/pages/SearchPage';
 import UserPage from '@/pages/UserPage';
 import AddressPage from '@/pages/UserPage/components/AddressPage';
 import SettingPage from '@/pages/UserPage/components/SettingPage';
@@ -115,6 +116,10 @@ const AppRoutes: React.FC = () => {
             { path: 'pass', element: <PassSearch /> },
             { path: 'join', element: <JoinSearch /> },
           ],
+        },
+        {
+          path: '/search',
+          element: <SearchPage />,
         },
       ],
     },
