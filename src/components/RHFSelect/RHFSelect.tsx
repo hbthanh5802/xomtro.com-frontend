@@ -1,8 +1,18 @@
 import { SelectOptionItemType } from '@/types/common.type';
-import { FormControl, FormHelperText, FormLabel, Option, Select, Typography, selectClasses } from '@mui/joy';
+import {
+  FormControl,
+  FormHelperText,
+  FormLabel,
+  IconButton,
+  Option,
+  Select,
+  SelectStaticProps,
+  Typography,
+  selectClasses,
+} from '@mui/joy';
 import React, { ReactNode } from 'react';
 import { Control, Controller, FieldValues, Path, useController } from 'react-hook-form';
-import { MdOutlineInfo } from 'react-icons/md';
+import { MdClose, MdOutlineInfo } from 'react-icons/md';
 
 interface RHFSelectProps<T extends FieldValues> {
   label?: ReactNode | string;
@@ -16,11 +26,13 @@ interface RHFSelectProps<T extends FieldValues> {
   width?: string;
   options: SelectOptionItemType[];
   size?: 'md' | 'lg' | 'sm';
+  allowClear?: boolean;
 }
 
 const RHFSelect = <T extends FieldValues>(props: RHFSelectProps<T>) => {
   const optionId = React.useId();
-  const { name, control, required = false, size = 'sm', minWidth = 150 } = props;
+  const action: SelectStaticProps['action'] = React.useRef(null);
+  const { name, control, required = false, size = 'sm', minWidth = 150, allowClear = false } = props;
   const { field } = useController({ name, control });
 
   const handleChange = (
@@ -80,6 +92,24 @@ const RHFSelect = <T extends FieldValues>(props: RHFSelectProps<T>) => {
                       },
                     },
                   }}
+                  {...(field.value &&
+                    allowClear && {
+                      endDecorator: (
+                        <IconButton
+                          onMouseDown={(event) => {
+                            // don't open the popup when clicking on this button
+                            event.stopPropagation();
+                          }}
+                          onClick={() => {
+                            field.onChange(null);
+                            action.current?.focusVisible();
+                          }}
+                        >
+                          <MdClose className='tw-text-[18px]' />
+                        </IconButton>
+                      ),
+                      indicator: null,
+                    })}
                 >
                   {props.options.map((optionItem, index) => (
                     <Option key={`option-${optionId}-${index}`} value={optionItem.value}>

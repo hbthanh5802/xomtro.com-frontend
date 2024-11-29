@@ -4,19 +4,21 @@ export default {
   theme: {
     extend: {
       colors: {
-        backgroundColor: '#F2F4F7',
+        // backgroundColor: '#F2F4F7',
+        backgroundColor: '#F5F5FA',
         primaryColor: '#0B6BCB',
       },
     },
     screens: {
       tablet: '640px',
       // => @media (min-width: 640px) { ... }
+      tabletMd: '768px', // @media (min-width: 768px)
+      tabletLg: '896px', // @media (min-width: 896px)
       laptop: '1024px',
       // => @media (min-width: 1024px) { ... }
       desktop: '1280px',
-      // => @media (min-width: 1280px) { ... }
     },
   },
-  plugins: [require('tailwindcss-animated')],
+  plugins: [require('tailwindcss-animated'), require('tailwind-scrollbar')],
   prefix: 'tw-',
 };

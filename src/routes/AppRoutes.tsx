@@ -1,9 +1,14 @@
+import useUrl from '@/hooks/useUrl.hook';
 import BlankLayout from '@/layouts/BlankLayout';
 import MainLayout from '@/layouts/MainLayout';
 import AuthPage from '@/pages/AuthPage';
 import ForbiddenPage from '@/pages/ForbiddenPage';
 import ForgotPasswordPage from '@/pages/ForgotPasswordPage';
 import HomePage from '@/pages/HomePage';
+import JoinSearch from '@/pages/HomePage/components/JoinSearch';
+import PassSearch from '@/pages/HomePage/components/PassSearch';
+import RentalSearch from '@/pages/HomePage/components/RentalSearch';
+import WantedSearch from '@/pages/HomePage/components/WantedSearch';
 import LoginPage from '@/pages/LoginPage';
 import JoinPostPage from '@/pages/PostPage/JoinPostPage';
 import PassPostPage from '@/pages/PostPage/PassPostPage';
@@ -17,12 +22,21 @@ import SettingPage from '@/pages/UserPage/components/SettingPage';
 import ProfilePage from '@/pages/UserPage/components/UserPostPage';
 import VerifyPage from '@/pages/VerifyPage';
 import React, { lazy } from 'react';
-import { useRoutes } from 'react-router-dom';
+import { useNavigate, useRoutes } from 'react-router-dom';
 
 const NotFountPage = lazy(() => import('@/pages/NotFoundPage'));
 const RegisterPage = lazy(() => import('@/pages/RegisterPage'));
 
 const AppRoutes: React.FC = () => {
+  const { pathname } = useUrl();
+  const navigate = useNavigate();
+
+  React.useLayoutEffect(() => {
+    if (pathname === '/' || pathname === '/home') {
+      navigate('/home/rental');
+    }
+  }, [pathname, navigate]);
+
   const routes = useRoutes([
     {
       path: '/auth',
@@ -92,7 +106,16 @@ const AppRoutes: React.FC = () => {
             { path: 'pass/:mode', element: <PassPostPage /> },
           ],
         },
-        { path: '/', element: <HomePage /> },
+        {
+          path: '/home',
+          element: <HomePage />,
+          children: [
+            { path: 'wanted', element: <WantedSearch /> },
+            { path: 'rental', element: <RentalSearch /> },
+            { path: 'pass', element: <PassSearch /> },
+            { path: 'join', element: <JoinSearch /> },
+          ],
+        },
       ],
     },
     {

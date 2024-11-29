@@ -1,4 +1,4 @@
-import { queryClient } from '@/App';
+import { queryClient } from '@/configs/tanstackQuery.config';
 import authService from '@/services/auth.service';
 import { useAppStore } from '@/store/store';
 import type { UserDetailSelectSchemaType } from '@/types/schema.type';
@@ -39,7 +39,7 @@ export const createAuthSlice: StateCreator<authSlice, AuthMiddlewares, [], authS
     } else if (!userDetail.role) {
       if (allowRedirect) history.push('/auth/role', { userDetail });
     } else {
-      if (allowRedirect) history.push('/');
+      if (allowRedirect) history.push('/home/rental');
       useAppStore.getState().fetchUserAvatar();
       return set((state) => {
         state.currentUser = userDetail;
@@ -55,7 +55,7 @@ export const createAuthSlice: StateCreator<authSlice, AuthMiddlewares, [], authS
       });
       queryClient.invalidateQueries();
       useAppStore.getState().resetUserState();
-      history.push('/');
+      history.push('/home/rental');
       return set(initialState);
     } catch (error) {
       toast.error('Có lỗi xảy ra. Vui lòng thử lại sau!', {

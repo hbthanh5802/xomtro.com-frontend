@@ -36,6 +36,7 @@ export default function UserJoinPostTab(props: PostTabProps) {
       {data?.pages.map((page, index) => (
         <div key={index} className='tw-space-y-[40px]'>
           {page.results.map((post) => (
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             <PostCard key={post.post.id} data={post as any} />
           ))}
         </div>
@@ -79,9 +80,11 @@ export default function UserJoinPostTab(props: PostTabProps) {
           )}
         </>
       ) : (
-        <Divider>
-          <div className='tw-text-lg tw-font-semibold tw-text-slate-600'>Không còn bài đăng để hiển thị thêm</div>
-        </Divider>
+        <div className='tw-pb-[24px]'>
+          <Divider>
+            <div className='tw-text-lg tw-font-semibold tw-text-slate-600'>Không còn bài đăng để hiển thị thêm</div>
+          </Divider>
+        </div>
       )}
     </div>
   );

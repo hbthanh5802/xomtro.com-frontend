@@ -4,15 +4,19 @@ import { StateCreator } from 'zustand';
 export type WhereConditionType = {
   ownerId?: number;
   title?: string;
+  priceStart?: number;
+  priceEnd?: number;
   status?: 'actived' | 'unactived';
   provinceName?: string;
   districtName?: string;
   wardName?: string;
-  nearest?: {
-    latitude: number;
-    longitude: number;
-    radius: number;
-  };
+  nearest?:
+    | {
+        latitude: number;
+        longitude: number;
+        radius?: number;
+      }
+    | boolean;
   hasFurniture?: boolean;
   hasAirConditioner?: boolean;
   hasWashingMachine?: boolean;
@@ -23,7 +27,8 @@ export type WhereConditionType = {
   hasElevator?: boolean;
   hasInternet?: boolean;
   allowPets?: boolean;
-  totalArea?: number;
+  totalAreaStart?: number;
+  totalAreaEnd?: number;
   totalAreaUnit?: 'm2' | 'cm2';
   dateStart?: string;
   dateEnd?: string;
@@ -33,6 +38,7 @@ export type WhereConditionType = {
 
 export type OrderConditionType = {
   createdAt?: OrderDirectionType;
+  updatedAt?: OrderDirectionType;
   price?: OrderDirectionType;
 };
 
@@ -57,11 +63,36 @@ type postFilterActions = {
   updatePagination: (key: keyof PaginationType, value: PaginationType[keyof PaginationType]) => void;
 };
 
+export const defaultWhereFilter: WhereConditionType = Object.freeze({
+  provinceName: undefined,
+  districtName: undefined,
+  wardName: undefined,
+  priceStart: undefined,
+  priceEnd: undefined,
+  totalAreaStart: undefined,
+  totalAreaEnd: undefined,
+  hasFurniture: false,
+  hasAirConditioner: false,
+  hasWashingMachine: false,
+  hasRefrigerator: false,
+  hasPrivateBathroom: false,
+  hasParking: false,
+  hasSecurity: false,
+  hasElevator: false,
+  hasInternet: false,
+  allowPets: false,
+  nearest: false,
+  status: 'actived',
+});
+
+export const defaultOrderFilter: OrderConditionType = Object.freeze({
+  updatedAt: 'desc',
+  createdAt: 'desc',
+});
+
 const initialState: postFilterState = {
-  whereConditions: {},
-  orderConditions: {
-    createdAt: 'desc',
-  },
+  whereConditions: defaultWhereFilter,
+  orderConditions: defaultOrderFilter,
   pagination: {
     page: 1,
     pageSize: 10,

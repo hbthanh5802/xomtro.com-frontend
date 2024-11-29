@@ -1,5 +1,5 @@
-import { queryClient } from '@/App';
 import RHFSelect from '@/components/RHFSelect';
+import { queryClient } from '@/configs/tanstackQuery.config';
 import useUrl from '@/hooks/useUrl.hook';
 import UserJoinPostTab from '@/pages/UserPage/components/UserJoinPostTab';
 import UserPassPostTab from '@/pages/UserPage/components/UserPassPostTab';
@@ -115,14 +115,14 @@ const UserPostPage: React.FC = () => {
       <div className='tw-shadow-md tw-rounded-lg tw-bg-white tw-overflow-hidden'>
         <Box sx={{ flexGrow: 1, overflowX: 'hidden', backgroundColor: 'background.body' }}>
           <div className='tw-p-[24px] tw-space-y-4'>
-            <div className='tw-flex tw-justify-between tw-items-center'>
+            <div className='tw-flex tw-flex-col tablet:tw-flex-row tw-gap-4 tw-justify-between tw-items-start tablet:tw-items-center'>
               <Typography
                 level='h4'
-                endDecorator={
-                  <Chip size='sm' variant='solid' color='primary'>
-                    20
-                  </Chip>
-                }
+                // endDecorator={
+                //   <Chip size='sm' variant='solid' color='primary'>
+                //     20
+                //   </Chip>
+                // }
               >
                 Bài đăng
               </Typography>
@@ -166,15 +166,15 @@ const UserPostPage: React.FC = () => {
                   <>
                     <Tab indicatorInset>
                       Cho thuê{' '}
-                      <Chip size='sm' variant='soft' color={tabIndex === 0 ? 'primary' : 'neutral'}>
+                      {/* <Chip size='sm' variant='soft' color={tabIndex === 0 ? 'primary' : 'neutral'}>
                         14
-                      </Chip>
+                      </Chip> */}
                     </Tab>
                     <Tab indicatorInset>
                       Pass đồ{' '}
-                      <Chip size='sm' variant='soft' color={tabIndex === 1 ? 'primary' : 'neutral'}>
+                      {/* <Chip size='sm' variant='soft' color={tabIndex === 1 ? 'primary' : 'neutral'}>
                         8
-                      </Chip>
+                      </Chip> */}
                     </Tab>
                   </>
                 )}
@@ -182,21 +182,21 @@ const UserPostPage: React.FC = () => {
                   <>
                     <Tab indicatorInset>
                       Tìm phòng{' '}
-                      <Chip size='sm' variant='soft' color={tabIndex === 0 ? 'primary' : 'neutral'}>
+                      {/* <Chip size='sm' variant='soft' color={tabIndex === 0 ? 'primary' : 'neutral'}>
                         20
-                      </Chip>
+                      </Chip> */}
                     </Tab>
                     <Tab indicatorInset>
                       Pass đồ{' '}
-                      <Chip size='sm' variant='soft' color={tabIndex === 1 ? 'primary' : 'neutral'}>
+                      {/* <Chip size='sm' variant='soft' color={tabIndex === 1 ? 'primary' : 'neutral'}>
                         8
-                      </Chip>
+                      </Chip> */}
                     </Tab>
                     <Tab indicatorInset>
                       Tìm người ở ghép{' '}
-                      <Chip size='sm' variant='soft' color={tabIndex === 2 ? 'primary' : 'neutral'}>
+                      {/* <Chip size='sm' variant='soft' color={tabIndex === 2 ? 'primary' : 'neutral'}>
                         8
-                      </Chip>
+                      </Chip> */}
                     </Tab>
                   </>
                 )}

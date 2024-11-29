@@ -1,7 +1,7 @@
 import { authSlice } from '@/store/authSlice';
 import { userSlice } from '@/store/userSlice';
 import { create } from 'zustand';
-import { createJSONStorage, devtools, persist } from 'zustand/middleware';
+import { createJSONStorage, devtools, persist, subscribeWithSelector } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 import { createAuthSlice } from './authSlice';
 import { createPostFilterSlice, postFilterSlice } from './postFilterSlice';
@@ -32,11 +32,13 @@ type Store = authSlice & userSlice & postFilterSlice;
 export const useAppStore = create<Store>()(
   devtools(
     persist(
-      immer((...a) => ({
-        ...createAuthSlice(...a),
-        ...createUserSlice(...a),
-        ...createPostFilterSlice(...a),
-      })),
+      immer(
+        subscribeWithSelector((...a) => ({
+          ...createAuthSlice(...a),
+          ...createUserSlice(...a),
+          ...createPostFilterSlice(...a),
+        })),
+      ),
       {
         name: 'xomtro.com',
         storage: createJSONStorage(() => localStorage),

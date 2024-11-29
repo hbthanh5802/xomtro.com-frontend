@@ -1,4 +1,4 @@
-import LogoIcon from '@/assets/LogoIcon';
+import LogoIcon2 from '@/assets/LogoIcon2';
 import RHFInput from '@/components/RHFInput';
 import RHFPasswordInput from '@/components/RHFPasswordInput';
 import Timer from '@/components/Timer';
@@ -7,7 +7,7 @@ import { ForgotPasswordDataType } from '@/types/auth.type';
 import { handleAxiosError } from '@/utils/constants.helper';
 import { forgotPasswordValidation } from '@/validations/auth.validation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button, IconButton, Typography } from '@mui/joy';
+import { Box, Button, Typography } from '@mui/joy';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
@@ -103,11 +103,12 @@ const ForgotPasswordPage = () => {
           }}
         >
           <Box component='header' sx={{ py: 3, display: 'flex', justifyContent: 'space-between' }}>
-            <Link to={'/'}>
+            <Link to={'/home/rental'}>
               <Box sx={{ gap: 2, display: 'flex', alignItems: 'center' }}>
-                <IconButton variant='soft' color='primary' size='md'>
-                  <LogoIcon width='24px' color='#185EA5' />
-                </IconButton>
+                {/* <IconButton variant='soft' color='primary' size='md'> */}
+                {/* <LogoIcon width='24px' color='#185EA5' /> */}
+                <LogoIcon2 width={32} height={32} />
+                {/* </IconButton> */}
                 <Typography
                   level='title-lg'
                   sx={(theme) => ({

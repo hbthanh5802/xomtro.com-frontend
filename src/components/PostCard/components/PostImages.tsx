@@ -4,7 +4,6 @@ import React from 'react';
 import { Gallery, Image, ThumbnailImageComponentImageProps } from 'react-grid-gallery';
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
-import LazyLoad from 'react-lazyload';
 // import { AspectRatio } from '@mui/joy';
 
 interface PostImagesProps {
@@ -12,11 +11,12 @@ interface PostImagesProps {
 }
 
 const LazyThumbnail = ({ imageProps }: { imageProps: ThumbnailImageComponentImageProps }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { key, ...other } = imageProps;
   return (
-    <LazyLoad height={200} offset={100}>
-      <img {...other} title={imageProps.title || undefined} />
-    </LazyLoad>
+    // <LazyLoad height={200} offset={100}>
+    <img {...other} loading='lazy' title={imageProps.title || undefined} />
+    // </LazyLoad>
   );
 };
 
@@ -85,7 +85,8 @@ const PostImages = (props: PostImagesProps) => {
       acc.push(imageProps);
       return acc;
     }, [] as Image[]);
-  }, [assets]);
+  }, [assets, post.title]);
+
   const dynamicImages = generateDynamicImageSizes(images);
   const dynamicRowHeight = getDynamicRowHeight(images);
 
@@ -112,7 +113,6 @@ const PostImages = (props: PostImagesProps) => {
         thumbnailImageComponent={({ imageProps }) => <LazyThumbnail imageProps={imageProps} />}
       />
       {!!currentImage && (
-        /* @ts-ignore */
         <Lightbox
           mainSrc={currentImage.src}
           imageTitle={currentImage.caption}

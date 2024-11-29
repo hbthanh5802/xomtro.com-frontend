@@ -1,4 +1,3 @@
-import { queryClient } from '@/App';
 import ModalLayout from '@/components/ModalLayout';
 import JoinDetail from '@/components/PostCard/components/JoinDetail';
 import PassDetail from '@/components/PostCard/components/PassDetail';
@@ -7,6 +6,7 @@ import PostTime from '@/components/PostCard/components/PostTime';
 import RentalDetail from '@/components/PostCard/components/RentalDetail';
 import WantedDetail from '@/components/PostCard/components/WantedDetail';
 import ShareButtons from '@/components/ShareButton/ShareButton';
+import { queryClient } from '@/configs/tanstackQuery.config';
 import useUserApiHook from '@/hooks/useUserApi.hook';
 import postService from '@/services/post.service';
 import { useAppStore } from '@/store/store';
@@ -95,6 +95,7 @@ function DeletePostDialog(props: { postId: number; onSuccess?: () => void }) {
       queryClient.invalidateQueries({ queryKey: ['users', 'posts'] });
       toast.success('Xoá bài đăng thành công!', { duration: 1000, id: toastId });
       onSuccess();
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error('Xoá bài đăng không thành công. Vui lòng thử lại sau!', { duration: 1500, id: toastId });
     } finally {
@@ -163,6 +164,7 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
       await postService.togglePostStatus(post.id);
       queryClient.invalidateQueries({ queryKey: ['users', 'posts'] });
       toast.success('Thành công! Bài đăng của bạn đã được ẩn.', { duration: 1000, id: toastId });
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error('Có vẻ có lỗi xảy ra. Vui lòng thử lại sau.', { duration: 1500, id: toastId });
     } finally {
@@ -172,13 +174,24 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
 
   return (
     <React.Fragment>
-      <div className='tw-shadow-md tw-rounded-lg tw-bg-white tw-overflow-hidden tw-pt-[24px]'>
+      <div className='tw-shadow-md tw-rounded-lg tw-bg-white tw-overflow-hidden tw-pt-[18px]'>
         <header className='tw-p-[14px] tw-pt-0 tw-flex tw-justify-between tw-items-center'>
-          <div className='tw-flex tw-gap-4 tw-items-start'>
+          <div
+            className='tw-flex tw-gap-4 tw-items-center tw-cursor-pointer'
+            onClick={() => navigate(`/users/${ownerId}/profile`)}
+          >
             <Avatar
               size='lg'
               alt={`${userDetail?.firstName || ''} ${userDetail?.lastName || ''}`}
               src={userAvatar?.url}
+              sx={(theme) => ({
+                border: '1px #F2F4F7 black',
+                boxShadow: 'sm',
+                [theme.breakpoints.down('sm')]: {
+                  width: 42,
+                  height: 42,
+                },
+              })}
             />
             <div>
               <Typography level='title-md'>{`${userDetail?.firstName || ''} ${userDetail?.lastName || ''}`}</Typography>
@@ -193,7 +206,7 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
           {currentUser?.userId === Number(ownerId) && (
             <div>
               <Dropdown>
-                <MenuButton variant='plain' size='sm'>
+                <MenuButton variant='plain' size='sm' sx={{ borderRadius: 99999 }}>
                   <MdOutlineMoreHoriz className='tw-text-[24px]' />
                 </MenuButton>
                 <Menu
@@ -259,7 +272,7 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
         </main>
 
         <footer className='tw-p-[12px]'>
-          <ButtonGroup size='lg' buttonFlex={1} aria-label='flex button group'>
+          <ButtonGroup size='md' buttonFlex={1} aria-label='flex button group'>
             <Button color='primary' variant='solid'>
               One
             </Button>

@@ -18,22 +18,22 @@ const PassDetail = (props: PassDetailProps) => {
   return (
     <div>
       <div className={`PostCard__post-info tw-px-[24px] ${showMore ? '' : 'tw-h-[200px] tw-overflow-hidden'}`}>
-        <Typography color='primary' level='h4'>
+        <Typography color='primary' level='title-lg'>
           {post.title}
         </Typography>
 
         <div className='tw-mt-4 tw-flex tw-items-end tw-gap-2'>
-          <Typography startDecorator={<PiMoneyWavy className='tw-text-[20px] tw-text-slate-600' />} level='title-md'>
+          <Typography startDecorator={<PiMoneyWavy className='tw-text-[20px] tw-text-slate-600' />} level='title-sm'>
             Giá pass giao động:
           </Typography>
           <div className='tw-flex tw-items-center tw-gap-3'>
-            <Typography level='body-md' variant='soft' color='success'>
+            <Typography level='body-sm' variant='soft' color='success'>
               {formatCurrencyVND(detail.priceStart)}
             </Typography>
             {detail.priceEnd && detail.priceEnd !== detail.priceStart && (
               <>
                 <span>-</span>
-                <Typography level='body-md' variant='soft' color='success'>{`${formatCurrencyVND(
+                <Typography level='body-sm' variant='soft' color='success'>{`${formatCurrencyVND(
                   detail.priceEnd,
                 )}`}</Typography>
               </>
@@ -44,11 +44,11 @@ const PassDetail = (props: PassDetailProps) => {
         <div className='tw-mt-4 tw-flex tw-items-start tw-gap-2 tw-flex-wrap'>
           <Typography
             startDecorator={<IoLocationOutline className='tw-text-slate-600 tw-text-[18px]' />}
-            level='title-md'
+            level='title-sm'
           >
             Địa chỉ:
           </Typography>
-          <Typography level='body-md'>{`${post.addressDetail ? post.addressDetail + ', ' : ''}${post.addressWard}, ${
+          <Typography level='body-sm'>{`${post.addressDetail ? post.addressDetail + ', ' : ''}${post.addressWard}, ${
             post.addressDistrict
           }, ${post.addressProvince}.`}</Typography>
         </div>
@@ -56,14 +56,14 @@ const PassDetail = (props: PassDetailProps) => {
         <div className='tw-mt-4 tw-flex tw-items-start tw-gap-2 tw-flex-wrap'>
           <Typography
             startDecorator={<MdOutlineNoteAdd className='tw-text-slate-600 tw-text-[18px]' />}
-            level='title-md'
+            level='title-sm'
           >
             Mô tả thêm:
           </Typography>
           {post.description ? (
-            <div className='' dangerouslySetInnerHTML={{ __html: post.description }}></div>
+            <div className='tw-text-[14px]' dangerouslySetInnerHTML={{ __html: post.description }}></div>
           ) : (
-            <Typography level='body-md'>Chưa có thông tin</Typography>
+            <Typography level='body-sm'>Chưa có thông tin</Typography>
           )}
         </div>
 
