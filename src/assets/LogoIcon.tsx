@@ -1,26 +1,38 @@
 import React from 'react';
 
-interface LogoIconProps {
-  width?: string;
-  height?: string;
-  color?: string;
+interface IconProps {
+  size?: number; // Kích thước của icon (cả chiều rộng và chiều cao)
 }
 
-const LogoIcon: React.FC<LogoIconProps> = ({ width = '100%', height = '100%', color = '#ffffff' }) => (
-  <svg
-    xmlns='http://www.w3.org/2000/svg'
-    version='1.1'
-    xlinkHref='http://www.w3.org/1999/xlink'
-    width={width}
-    height={height}
-    viewBox='2.501 11.16 94.999 77.679'
-  >
-    <g fill={color}>
-      <path d='M96.18 42.621c-1.316 1.145-3.258 1.2-4.688.2L59.365 19.608 41.669 32.386a26.549 26.549 0 0 0-6.72-4.488L57.162 11.89c1.316-.973 3.086-.973 4.43 0l12.921 9.32v-4.8c0-1 .829-1.829 1.828-1.829h5.633c1 0 1.801.828 1.801 1.828v11.492l12.148 8.778c2 1.43 2.113 4.344.258 5.945z'></path>
-      <path d='M59.359 26.355l-13.98 10.09c3.172 4.29 5.059 9.547 5.23 15.18.114 4.973-1.117 9.863-3.601 14.121l-.059.113-.086.114-6.547 10.148h41.535c2.715 0 4.918-2.2 4.918-4.887V46.136L59.355 26.355z'></path>
-      <path d='M44.887 51.762c-.281-10.914-9.082-19.996-19.98-20.598-12.258-.676-22.406 9.059-22.406 21.16 0 3.852 1.027 7.457 2.824 10.559L21.18 87.465c1.18 1.832 3.86 1.832 5.043 0l15.848-24.582a20.977 20.977 0 0 0 2.817-11.117zM23.696 62.66c-5.727 0-10.363-4.644-10.363-10.363 0-5.727 4.637-10.375 10.363-10.375 5.73 0 10.371 4.652 10.371 10.375 0 5.719-4.637 10.363-10.371 10.363z'></path>
-    </g>
-  </svg>
-);
+const LogoIcon: React.FC<IconProps> = ({ size = 512 }) => {
+  return (
+    <svg height={size} width={size} viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'>
+      <g id='Layer_2' data-name='Layer 2'>
+        <g id='InterfaceIcon'>
+          <g id='_01.Home' data-name='01.Home'>
+            <rect
+              id='Background'
+              fill='#41a5ee'
+              height='512'
+              rx='131.96'
+              transform='matrix(0 1 -1 0 512 0)'
+              width='512'
+            />
+            <path
+              d='m512 340.79v39.21a132 132 0 0 1 -132 132h-110.42l-126.51-126.51 12.64-84.05-43.16-43.16 286-30.9z'
+              opacity='.25'
+            />
+            <path
+              id='_01.Home-2'
+              d='m398.59 227.38-116.25-97.38a41 41 0 0 0 -52.69 0l-116.24 97.38c-14.75 12.36-6 36.4 13.23 36.4h10.54v107.33a20.51 20.51 0 0 0 20.51 20.51h58.76v-69.32a39.54 39.54 0 0 1 39.55-39.55 39.55 39.55 0 0 1 39.55 39.55v69.32h58.76a20.51 20.51 0 0 0 20.51-20.51v-107.33h10.53c19.25 0 27.99-24.04 13.24-36.4z'
+              fill='#fff'
+              data-name='01.Home'
+            />
+          </g>
+        </g>
+      </g>
+    </svg>
+  );
+};
 
 export default LogoIcon;

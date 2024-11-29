@@ -1,18 +1,23 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import PostCard from '@/components/PostCard';
-import useUrl from '@/hooks/useUrl.hook';
-import { PostTabProps } from '@/pages/UserPage/components/UserPostPage';
+import { queryClient } from '@/configs/tanstackQuery.config';
 import postService from '@/services/post.service';
+import { OrderConditionType, WhereConditionType } from '@/store/postFilterSlice';
 import { Button, Divider, LinearProgress, Skeleton } from '@mui/joy';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
+import React from 'react';
+import { useOutletContext } from 'react-router-dom';
 
-export default function UserPassPostTab(props: PostTabProps) {
-  const { userId } = useUrl().params;
-  const { whereConditions, orderConditions } = props;
+const PassSearch = () => {
+  const { whereConditions, orderConditions } = useOutletContext() as {
+    whereConditions: WhereConditionType;
+    orderConditions: OrderConditionType;
+  };
 
   const handleFetchPosts = async ({ pageParam }: { pageParam: number }) => {
     const response = await postService.searchPassPost({
-      whereConditions: { ...whereConditions, ownerId: Number(userId) },
-      orderConditions: orderConditions,
+      whereConditions: { ...whereConditions, status: 'actived' },
+      orderConditions: { updatedAt: 'desc', ...orderConditions },
       pagination: { page: pageParam, pageSize: 10 },
     });
 
@@ -20,23 +25,27 @@ export default function UserPassPostTab(props: PostTabProps) {
   };
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ['users', 'posts', 'pass', { userId: Number(userId) }],
+    queryKey: ['search', 'posts', 'pass'],
     queryFn: handleFetchPosts,
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       if (lastPage.pagination.canNext) {
         return lastPage.pagination.currentPage + 1;
       }
-      return undefined; // Không còn trang tiếp theo
+      return undefined;
     },
+    placeholderData: keepPreviousData,
   });
 
+  React.useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ['search', 'posts', 'pass'] });
+  }, [whereConditions]);
+
   return (
-    <div className='tw-space-y-4'>
+    <div className='tw-space-y-[40px]'>
       {data?.pages.map((page, index) => (
         <div key={index} className='tw-space-y-[40px]'>
           {page.results.map((post) => (
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             <PostCard key={post.post.id} data={post as any} />
           ))}
         </div>
@@ -88,4 +97,6 @@ export default function UserPassPostTab(props: PostTabProps) {
       )}
     </div>
   );
-}
+};
+
+export default PassSearch;

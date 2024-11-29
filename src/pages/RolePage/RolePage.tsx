@@ -1,4 +1,5 @@
-import LogoIcon from '@/assets/LogoIcon';
+/* eslint-disable react-hooks/rules-of-hooks */
+import LogoIcon2 from '@/assets/LogoIcon2';
 import RHFRoleChoices from '@/components/RHFRoleChoices';
 import useUrl from '@/hooks/useUrl.hook';
 import authService from '@/services/auth.service';
@@ -7,9 +8,9 @@ import { useAppStore } from '@/store/store';
 import { UserRoleDataType } from '@/types/user.type';
 import { updateUserRoleValidation } from '@/validations/auth.validation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button, IconButton, Typography } from '@mui/joy';
+import { Box, Button, Typography } from '@mui/joy';
 import { useMutation } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -53,21 +54,22 @@ const RolePage = () => {
     await verifyMutation.mutateAsync(data);
   };
 
-  const handleSendVerifyEmail = async () => {
+  const handleSendVerifyEmail = React.useCallback(async () => {
     try {
       await authService.getVerifyUser(userDetail.email);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error('Có lỗi xảy ra. Vui lòng thử lại.');
     } finally {
       setCanResend(false);
     }
-  };
+  }, [userDetail.email]);
 
   useEffect(() => {
     if (canResend) {
       handleSendVerifyEmail();
     }
-  }, []);
+  }, [handleSendVerifyEmail, canResend]);
 
   return (
     <>
@@ -97,11 +99,12 @@ const RolePage = () => {
           }}
         >
           <Box component='header' sx={{ py: 3, display: 'flex', justifyContent: 'space-between' }}>
-            <Link to={'/'}>
+            <Link to={'/home/rental'}>
               <Box sx={{ gap: 2, display: 'flex', alignItems: 'center' }}>
-                <IconButton variant='soft' color='primary' size='md'>
-                  <LogoIcon width='24px' color='#185EA5' />
-                </IconButton>
+                {/* <IconButton variant='soft' color='primary' size='md'> */}
+                {/* <LogoIcon width='24px' color='#185EA5' /> */}
+                <LogoIcon2 width={32} height={32} />
+                {/* </IconButton> */}
                 <Typography
                   level='title-lg'
                   sx={(theme) => ({

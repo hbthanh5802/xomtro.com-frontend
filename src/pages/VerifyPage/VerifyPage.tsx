@@ -1,4 +1,6 @@
-import LogoIcon from '@/assets/LogoIcon';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-hooks/rules-of-hooks */
+import LogoIcon2 from '@/assets/LogoIcon2';
 import RHFInput from '@/components/RHFInput';
 import Timer from '@/components/Timer';
 import useUrl from '@/hooks/useUrl.hook';
@@ -7,9 +9,9 @@ import { useAppStore } from '@/store/store';
 import { VerifyUserDataType } from '@/types/auth.type';
 import { verifyUserValidation } from '@/validations/auth.validation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button, IconButton, Typography } from '@mui/joy';
+import { Box, Button, Typography } from '@mui/joy';
 import { useMutation } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -24,8 +26,8 @@ const VerifyPage = () => {
     return <>Forbidden</>;
   }
 
-  const [canResend, setCanResend] = useState(true);
-  const [isSending, setIsSending] = useState(false);
+  const [canResend, setCanResend] = React.useState(true);
+  const [isSending, setIsSending] = React.useState(false);
   const { setAccessToken, setCurrentUser } = useAppStore(
     useShallow((state) => ({ setAccessToken: state.setAccessToken, setCurrentUser: state.setCurrentUser })),
   );
@@ -60,7 +62,7 @@ const VerifyPage = () => {
     await verifyMutation.mutateAsync(data);
   };
 
-  const handleSendVerifyEmail = async () => {
+  const handleSendVerifyEmail = React.useCallback(async () => {
     setIsSending(true);
     try {
       await authService.getVerifyUser(userDetail.email);
@@ -70,13 +72,13 @@ const VerifyPage = () => {
     } finally {
       setIsSending(false);
     }
-  };
+  }, [userDetail]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (canResend) {
       handleSendVerifyEmail();
     }
-  }, []);
+  }, [canResend, handleSendVerifyEmail]);
 
   return (
     <>
@@ -106,11 +108,12 @@ const VerifyPage = () => {
           }}
         >
           <Box component='header' sx={{ py: 3, display: 'flex', justifyContent: 'space-between' }}>
-            <Link to={'/'}>
+            <Link to={'/home/rental'}>
               <Box sx={{ gap: 2, display: 'flex', alignItems: 'center' }}>
-                <IconButton variant='soft' color='primary' size='md'>
-                  <LogoIcon width='24px' color='#185EA5' />
-                </IconButton>
+                {/* <IconButton variant='soft' color='primary' size='md'> */}
+                {/* <LogoIcon width='24px' color='#185EA5' /> */}
+                <LogoIcon2 width={32} height={32} />
+                {/* </IconButton> */}
                 <Typography
                   level='title-lg'
                   sx={(theme) => ({

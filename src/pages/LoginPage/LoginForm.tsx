@@ -56,7 +56,7 @@ const LoginForm: React.FC = () => {
         const { accessToken } = meta;
         setCurrentUser(userDetail);
         setAccessToken(accessToken);
-        navigate('/');
+        navigate('/home');
       }
     },
   });

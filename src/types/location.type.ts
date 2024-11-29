@@ -32,3 +32,12 @@ export type GetProvincesListType = LocationResponseType & {
 export type GetDistrictListType = DistrictResponseType & {
   wards: DistrictResponseType[];
 };
+
+export type geocodingReverseResponseType = {
+  placeId: string;
+  googleMapsReference?: string;
+  displayAddress: string;
+  addressComponents: string[];
+  longitude: number;
+  latitude: number;
+};

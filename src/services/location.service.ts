@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { axiosRequest } from '@/configs/axios.config';
-import { GetDistrictListType, GetProvincesListType } from '@/types/location.type';
+import { geocodingReverseResponseType, GetDistrictListType, GetProvincesListType } from '@/types/location.type';
 import { useQuery } from '@tanstack/react-query';
 import { TanstackQueryOptions } from './../types/common.type';
 
@@ -39,6 +40,14 @@ class locationServices {
         }),
       ...options,
       enabled: !!districtCode,
+    });
+  }
+
+  getGeoCodingReverse(latitude: number, longitude: number) {
+    return axiosRequest<geocodingReverseResponseType>({
+      method: 'GET',
+      url: '/location/geocode/reverse',
+      params: { latitude, longitude },
     });
   }
 }

@@ -1,5 +1,5 @@
-import { queryClient } from '@/App';
 import RHFImageInput from '@/components/RHFImageInput';
+import { queryClient } from '@/configs/tanstackQuery.config';
 import useUrl from '@/hooks/useUrl.hook';
 import userService from '@/services/user.service';
 import { useAppStore } from '@/store/store';
@@ -45,7 +45,7 @@ const ChangeAvatar = (props: { onSuccess?: () => void }) => {
   } = methods;
 
   const updateAvatarMutation = useMutation({
-    mutationFn: (data: any) => userService.updateUserAvatar(data),
+    mutationFn: (data: unknown) => userService.updateUserAvatar(data as UpdateAvatarDataType),
   });
 
   const handleSubmitAvatar = async (data: UpdateAvatarDataType) => {
@@ -62,7 +62,8 @@ const ChangeAvatar = (props: { onSuccess?: () => void }) => {
         duration: 1500,
         id: toastId,
       });
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error: unknown) {
       toast.error('Có lỗi xảy ra. Vui lòng thử ảnh khác hoặc thử lại sau.', { id: toastId });
     }
   };

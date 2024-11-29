@@ -1,3 +1,7 @@
+:root {
+  --header-height: 60px;
+}
+
 /* Ẩn thanh cuộn ngang nhưng vẫn cuộn được */
 html {
   overflow-y: auto; /* Chỉ hiển thị thanh cuộn dọc */
@@ -19,4 +23,21 @@ html {
 *::-webkit-scrollbar-thumb {
   border-radius: 8px;
   background-color: #333;
+}
+
+/* Custom styles */
+.tw-primary-gradient {
+  @apply tw-bg-gradient-to-r tw-from-blue-800 tw-to-indigo-900;
+}
+
+.tw-primary-gradient-lighter {
+  @apply tw-bg-gradient-to-r tw-from-violet-400 tw-to-indigo-400;
+}
+
+.tw-primary-gradient-lightest {
+  @apply tw-bg-gradient-to-r tw-from-violet-300 tw-to-indigo-400;
+}
+
+.tw-gradient-text {
+  @apply tw-bg-clip-text tw-text-transparent;
 }

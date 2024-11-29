@@ -18,6 +18,7 @@ const JoinDetail = (props: JoinDetailProps) => {
   const [showMore, setShowMore] = React.useState(false);
 
   const hasAmenities = React.useMemo(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     () => Object.keys(room_amenities).some((key: string) => (detail as any)[key as keyof typeof detail] as boolean),
     [detail],
   );
@@ -25,22 +26,22 @@ const JoinDetail = (props: JoinDetailProps) => {
   return (
     <div>
       <div className={`PostCard__post-info tw-px-[24px] ${showMore ? '' : 'tw-h-[200px] tw-overflow-hidden'}`}>
-        <Typography color='primary' level='h4'>
+        <Typography color='primary' level='title-lg'>
           {post.title}
         </Typography>
 
         <div className='tw-mt-4 tw-flex tw-items-end tw-gap-2'>
-          <Typography startDecorator={<PiMoneyWavy className='tw-text-[20px] tw-text-slate-600' />} level='title-md'>
-            Giá thuê:
+          <Typography startDecorator={<PiMoneyWavy className='tw-text-[20px] tw-text-slate-600' />} level='title-sm'>
+            Giá phòng thuê:
           </Typography>
           <div className='tw-flex tw-items-center tw-gap-3'>
-            <Typography level='body-md' variant='soft' color='success'>
+            <Typography level='body-sm' variant='soft' color='success'>
               ~{formatCurrencyVND(detail.priceStart)}/tháng
             </Typography>
             {detail.priceEnd && detail.priceEnd !== detail.priceStart && (
               <>
                 <span>-</span>
-                <Typography level='body-md' variant='soft' color='success'>{`~${formatCurrencyVND(
+                <Typography level='body-sm' variant='soft' color='success'>{`~${formatCurrencyVND(
                   detail.priceEnd,
                 )}/tháng`}</Typography>
               </>
@@ -49,10 +50,10 @@ const JoinDetail = (props: JoinDetailProps) => {
         </div>
 
         <div className='tw-mt-2 tw-flex tw-items-start tw-gap-2 tw-flex-wrap'>
-          <Typography startDecorator={<LuAreaChart className='tw-text-slate-600 tw-text-[18px]' />} level='title-md'>
+          <Typography startDecorator={<LuAreaChart className='tw-text-slate-600 tw-text-[18px]' />} level='title-sm'>
             Diện tích:
           </Typography>
-          <Typography level='body-md'>
+          <Typography level='body-sm'>
             {detail.totalArea} {detail.totalAreaUnit === 'm2' ? 'm' : detail.totalAreaUnit === 'cm2' ? 'cm' : 'km'}
             <sup>2</sup>
           </Typography>
@@ -61,80 +62,80 @@ const JoinDetail = (props: JoinDetailProps) => {
         <div className='tw-mt-4 tw-flex tw-items-start tw-gap-2 tw-flex-wrap'>
           <Typography
             startDecorator={<MdMiscellaneousServices className='tw-text-slate-600 tw-text-[18px]' />}
-            level='title-md'
+            level='title-sm'
           >
             Dịch vụ:
           </Typography>
           {!hasAmenities ? (
-            <Typography level='body-md'>Chưa có thông tin</Typography>
+            <Typography level='body-sm'>Chưa có thông tin</Typography>
           ) : (
             <div className='tw-flex tw-flex-wrap tw-gap-2'>
               {detail.hasFurniture && (
                 <div className='tw-mx-[4px]'>
-                  <Typography level='body-md' variant='soft'>
+                  <Typography level='body-sm' variant='soft'>
                     Nội thất cơ bản
                   </Typography>
                 </div>
               )}
               {detail.hasInternet && (
                 <div className='tw-mx-[4px]'>
-                  <Typography level='body-md' variant='soft'>
+                  <Typography level='body-sm' variant='soft'>
                     Kết nối internet
                   </Typography>
                 </div>
               )}
               {detail.hasSecurity && (
                 <div className='tw-mx-[4px]'>
-                  <Typography level='body-md' variant='soft'>
+                  <Typography level='body-sm' variant='soft'>
                     Bảo vệ
                   </Typography>
                 </div>
               )}
               {detail.hasAirConditioner && (
                 <div className='tw-mx-[4px]'>
-                  <Typography level='body-md' variant='soft'>
+                  <Typography level='body-sm' variant='soft'>
                     Điều hoà
                   </Typography>
                 </div>
               )}
               {detail.hasElevator && (
                 <div className='tw-mx-[4px]'>
-                  <Typography level='body-md' variant='soft'>
+                  <Typography level='body-sm' variant='soft'>
                     Thang máy
                   </Typography>
                 </div>
               )}
               {detail.hasPrivateBathroom && (
                 <div className='tw-mx-[4px]'>
-                  <Typography level='body-md' variant='soft'>
+                  <Typography level='body-sm' variant='soft'>
                     Vệ sinh khép kín
                   </Typography>
                 </div>
               )}
               {detail.hasRefrigerator && (
                 <div className='tw-mx-[4px]'>
-                  <Typography level='body-md' variant='soft'>
+                  <Typography level='body-sm' variant='soft'>
                     Tủ lạnh
                   </Typography>
                 </div>
               )}
               {detail.hasWashingMachine && (
                 <div className='tw-mx-[4px]'>
-                  <Typography level='body-md' variant='soft'>
+                  <Typography level='body-sm' variant='soft'>
                     Máy giặt
                   </Typography>
                 </div>
               )}
               {detail.hasParking && (
                 <div className='tw-mx-[4px]'>
-                  <Typography level='body-md' variant='soft'>
+                  <Typography level='body-sm' variant='soft'>
                     Chỗ để xe
                   </Typography>
                 </div>
               )}
               {detail.allowPets && (
                 <div className='tw-mx-[4px]'>
-                  <Typography level='body-md' variant='soft'>
+                  <Typography level='body-sm' variant='soft'>
                     Cho phép nuôi thú cưng
                   </Typography>
                 </div>
@@ -146,21 +147,21 @@ const JoinDetail = (props: JoinDetailProps) => {
         <div className='tw-mt-2 tw-flex tw-items-start tw-gap-2 tw-flex-wrap'>
           <Typography
             startDecorator={<MdOutlineAccessTime className='tw-text-slate-600 tw-text-[18px]' />}
-            level='title-md'
+            level='title-sm'
           >
             Thời gian có thể chuyển vào:
           </Typography>
-          <Typography level='body-md'>{formatTimeForVietnamese(detail.moveInDate)}</Typography>
+          <Typography level='body-sm'>{formatTimeForVietnamese(detail.moveInDate)}</Typography>
         </div>
 
         <div className='tw-mt-4 tw-flex tw-items-start tw-gap-2 tw-flex-wrap'>
           <Typography
             startDecorator={<IoLocationOutline className='tw-text-slate-600 tw-text-[18px]' />}
-            level='title-md'
+            level='title-sm'
           >
             Địa chỉ:
           </Typography>
-          <Typography level='body-md'>{`${post.addressDetail ? post.addressDetail + ', ' : ''}${post.addressWard}, ${
+          <Typography level='body-sm'>{`${post.addressDetail ? post.addressDetail + ', ' : ''}${post.addressWard}, ${
             post.addressDistrict
           }, ${post.addressProvince}.`}</Typography>
         </div>
@@ -168,14 +169,14 @@ const JoinDetail = (props: JoinDetailProps) => {
         <div className='tw-mt-4 tw-flex tw-items-start tw-gap-2 tw-flex-wrap'>
           <Typography
             startDecorator={<MdOutlineNoteAdd className='tw-text-slate-600 tw-text-[18px]' />}
-            level='title-md'
+            level='title-sm'
           >
             Mô tả thêm:
           </Typography>
           {post.description ? (
-            <div className='' dangerouslySetInnerHTML={{ __html: post.description }}></div>
+            <div className='tw-text-[14px]' dangerouslySetInnerHTML={{ __html: post.description }}></div>
           ) : (
-            <Typography level='body-md'>Chưa có thông tin</Typography>
+            <Typography level='body-sm'>Chưa có thông tin</Typography>
           )}
         </div>
 

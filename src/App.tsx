@@ -1,17 +1,10 @@
 import GlobalStyles from '@/components/GlobalStyles';
+import { queryClient } from '@/configs/tanstackQuery.config';
 import AppRoutes from '@/routes/AppRoutes';
 import { Typography } from '@mui/joy';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Suspense } from 'react';
-
-export const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false, // default: true
-    },
-  },
-});
 
 function App() {
   return (
