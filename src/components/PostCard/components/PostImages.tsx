@@ -129,7 +129,7 @@ const PostImages = (props: PostImagesProps) => {
 
       {dynamicImages.length > 6 && (
         <Button variant='soft' onClick={() => handleClick(6)}>
-          Xem thêm {dynamicImages.length - 6} ảnh
+          Xem thêm ảnh
         </Button>
       )}
     </div>

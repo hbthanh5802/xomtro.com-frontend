@@ -2,7 +2,8 @@
 import { axiosRequest } from '@/configs/axios.config';
 import {
   AutoCompleteResponseType,
-  geocodingReverseResponseType,
+  GeocodingForwardResponseType,
+  GeocodingReverseResponseType,
   GetDistrictListType,
   GetProvincesListType,
 } from '@/types/location.type';
@@ -56,8 +57,16 @@ class locationServices {
     });
   }
 
+  getGeocodingForward(address: string) {
+    return axiosRequest<GeocodingForwardResponseType>({
+      method: 'GET',
+      url: '/location/geocode/forward',
+      params: { address },
+    });
+  }
+
   getGeoCodingReverse(latitude: number, longitude: number) {
-    return axiosRequest<geocodingReverseResponseType>({
+    return axiosRequest<GeocodingReverseResponseType>({
       method: 'GET',
       url: '/location/geocode/reverse',
       params: { latitude, longitude },

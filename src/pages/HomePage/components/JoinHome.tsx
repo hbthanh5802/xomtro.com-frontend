@@ -8,7 +8,7 @@ import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 import React from 'react';
 import { useOutletContext } from 'react-router-dom';
 
-const JoinSearch = () => {
+const JoinHome = () => {
   const { whereConditions, orderConditions } = useOutletContext() as {
     whereConditions: WhereConditionType;
     orderConditions: OrderConditionType;
@@ -25,7 +25,7 @@ const JoinSearch = () => {
   };
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ['search', 'posts', 'join'],
+    queryKey: ['home', 'posts', 'join'],
     queryFn: handleFetchPosts,
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
@@ -38,7 +38,7 @@ const JoinSearch = () => {
   });
 
   React.useEffect(() => {
-    queryClient.invalidateQueries({ queryKey: ['search', 'posts', 'join'] });
+    queryClient.invalidateQueries({ queryKey: ['home', 'posts', 'join'] });
   }, [whereConditions]);
 
   return (
@@ -99,4 +99,4 @@ const JoinSearch = () => {
   );
 };
 
-export default JoinSearch;
+export default JoinHome;

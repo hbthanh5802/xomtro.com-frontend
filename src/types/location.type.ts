@@ -33,7 +33,16 @@ export type GetDistrictListType = DistrictResponseType & {
   wards: DistrictResponseType[];
 };
 
-export type geocodingReverseResponseType = {
+export type GeocodingForwardResponseType = {
+  longitude: number;
+  latitude: number;
+  displayName?: string;
+  googleMapReference?: string;
+  placeId?: string;
+  accuracy?: number;
+};
+
+export type GeocodingReverseResponseType = {
   placeId: string;
   googleMapsReference?: string;
   displayAddress: string;

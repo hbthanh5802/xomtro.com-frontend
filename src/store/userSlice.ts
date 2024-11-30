@@ -1,19 +1,19 @@
 import locationService from '@/services/location.service';
 import userService from '@/services/user.service';
-import { geocodingReverseResponseType } from '@/types/location.type';
+import { GeocodingReverseResponseType } from '@/types/location.type';
 import { AssetSelectSchemaType } from '@/types/schema.type';
 import { StateCreator } from 'zustand';
 
 type userState = {
   userAvatar: AssetSelectSchemaType | null;
-  userLocation: geocodingReverseResponseType | null;
+  userLocation: GeocodingReverseResponseType | null;
 };
 
 type userActions = {
   setUserAvatar: (avatarData: AssetSelectSchemaType) => void;
   fetchUserAvatar: () => Promise<void>;
   fetchUserLocation: (latitude: number, longitude: number) => Promise<void>;
-  setUserLocation: (userLocation: geocodingReverseResponseType) => void;
+  setUserLocation: (userLocation: GeocodingReverseResponseType) => void;
   resetUserState: () => void;
 };
 
@@ -32,7 +32,7 @@ export const createUserSlice: StateCreator<userSlice, UserMiddlewares, [], userS
     set((state) => {
       state.userAvatar = data;
     }),
-  setUserLocation: (data: geocodingReverseResponseType) =>
+  setUserLocation: (data: GeocodingReverseResponseType) =>
     set((state) => {
       state.userLocation = data;
     }),

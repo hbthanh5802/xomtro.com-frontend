@@ -8,7 +8,7 @@ import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 import React from 'react';
 import { useOutletContext } from 'react-router-dom';
 
-const PassSearch = () => {
+const PassHome = () => {
   const { whereConditions, orderConditions } = useOutletContext() as {
     whereConditions: WhereConditionType;
     orderConditions: OrderConditionType;
@@ -25,7 +25,7 @@ const PassSearch = () => {
   };
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ['search', 'posts', 'pass'],
+    queryKey: ['home', 'posts', 'pass'],
     queryFn: handleFetchPosts,
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
@@ -38,7 +38,7 @@ const PassSearch = () => {
   });
 
   React.useEffect(() => {
-    queryClient.invalidateQueries({ queryKey: ['search', 'posts', 'pass'] });
+    queryClient.invalidateQueries({ queryKey: ['home', 'posts', 'pass'] });
   }, [whereConditions]);
 
   return (
@@ -99,4 +99,4 @@ const PassSearch = () => {
   );
 };
 
-export default PassSearch;
+export default PassHome;
