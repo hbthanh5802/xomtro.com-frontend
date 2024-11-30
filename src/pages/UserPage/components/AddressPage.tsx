@@ -32,6 +32,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useShallow } from 'zustand/react/shallow';
 // Icons
+import { handleAxiosError } from '@/utils/constants.helper';
 import { FaHouseFlag } from 'react-icons/fa6';
 import { IoIosMore } from 'react-icons/io';
 import { MdAdd, MdDeleteForever, MdEdit, MdOutlineInfo } from 'react-icons/md';
@@ -47,17 +48,13 @@ function AddressForm(props: AddressFormProps) {
   const { onSuccess, mode, addressData } = props;
   const [loading, setLoading] = React.useState(false);
 
-  if (mode === 'edit' && !addressData) {
-    return <Typography level='body-xs'>Chưa lấy được dữ liệu. Vui lòng thử lại sau.</Typography>;
-  }
-
-  const defaultAddressCode = addressData?.addressCode?.split('-')!;
+  const defaultAddressCode = addressData?.addressCode?.split('-');
 
   const methods = useForm<InsertAddressDataType>({
     defaultValues: {
-      provinceName: mode === 'add' ? '' : `${defaultAddressCode[0]}-${addressData?.provinceName}`,
-      districtName: mode === 'add' ? '' : `${defaultAddressCode[1]}-${addressData?.districtName}`,
-      wardName: mode === 'add' ? '' : `${defaultAddressCode[2]}-${addressData?.wardName}`,
+      provinceName: mode === 'add' ? '' : `${defaultAddressCode?.[0]}-${addressData?.provinceName}`,
+      districtName: mode === 'add' ? '' : `${defaultAddressCode?.[1]}-${addressData?.districtName}`,
+      wardName: mode === 'add' ? '' : `${defaultAddressCode?.[2]}-${addressData?.wardName}`,
       detail: mode === 'add' ? '' : addressData?.detail,
     },
     mode: 'all',
@@ -152,6 +149,7 @@ function AddressForm(props: AddressFormProps) {
       queryClient.invalidateQueries({ queryKey: ['users', 'addresses'] });
       if (onSuccess) onSuccess();
     } catch (error) {
+      console.log(handleAxiosError(error));
       toast.error('Lưu lại không thành công. Hãy kiêm tra lại thông tin hoặc thử lại sau.', {
         duration: 1500,
         id: toastId,
@@ -160,6 +158,10 @@ function AddressForm(props: AddressFormProps) {
       setLoading(false);
     }
   };
+
+  if (mode === 'edit' && !addressData) {
+    return <Typography level='body-xs'>Chưa lấy được dữ liệu. Vui lòng thử lại sau.</Typography>;
+  }
 
   return (
     <div className='tw-w-[400px]'>
@@ -239,6 +241,7 @@ function DeleteAddressForm(props: Omit<AddressFormProps, 'mode'>) {
       queryClient.invalidateQueries({ queryKey: ['users', 'addresses'] });
       onSuccess();
     } catch (error) {
+      console.log(handleAxiosError(error));
       toast.error('Xoá không thành công. Hãy thử lại sau!', { duration: 1500, id: toastId });
     } finally {
       setLoading(false);
@@ -307,6 +310,7 @@ const AddressPage = () => {
       queryClient.invalidateQueries({ queryKey: ['users', 'addresses'] });
       queryClient.invalidateQueries({ queryKey: ['users', 'addresses', { isDefault: true }] });
     } catch (error) {
+      console.log(handleAxiosError(error));
       toast.error('Có lỗi xảy ra. Vui lòng thử lại sau!', { duration: 1500, id: toastId });
     }
   };
@@ -319,9 +323,9 @@ const AddressPage = () => {
 
   React.useEffect(() => {
     if (currentUser && Number(params.userId) !== currentUser?.userId) {
-      navigate('/403');
+      navigate('/404');
     }
-  }, [currentUser]);
+  }, [currentUser, navigate, params.userId]);
 
   return (
     <React.Fragment>
@@ -362,7 +366,6 @@ const AddressPage = () => {
             </Divider>
             <div className='tw-py-4 tw-space-y-4'>
               {userAddressList?.map((address, index) => {
-                const {} = address;
                 return (
                   <div
                     key={`address-${addressId}-${index}`}

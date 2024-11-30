@@ -83,6 +83,7 @@ const LocationTab = () => {
     checkPermission();
   }, [checkPermission]);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const getUserLocation = React.useCallback(
     async (location: { latitude: null | number; longitude: null | number }) => {
       try {
@@ -99,14 +100,14 @@ const LocationTab = () => {
   React.useEffect(() => {
     if (location.longitude && location.latitude) {
       if (userLocation?.latitude !== location.latitude || userLocation?.longitude !== location.longitude) {
-        getUserLocation(location);
+        // getUserLocation(location);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.longitude, location.latitude, userLocation?.longitude, userLocation?.latitude]);
 
   return (
-    <div className='tw-p-[8px] tw-border tw-border-primaryColor tw-rounded-md tw-shadow-sm tw-shadow-primaryColor/50'>
+    <div className='tw-border tw-bg-white tw-rounded tw-shadow tw-m-2 tw-ml-[12px] tw-p-2'>
       <div className='tw-flex tw-gap-4 tw-items-start'>
         <div className='tw-relative tw-mt-[6px]'>
           <span

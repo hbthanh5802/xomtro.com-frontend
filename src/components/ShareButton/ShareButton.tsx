@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import React from 'react';
 import { FaRegClipboard } from 'react-icons/fa6';
 import {
   FacebookIcon,
@@ -18,7 +19,7 @@ interface ShareButtonProps {
   url?: string;
   onShareWindowClose?: () => void;
 }
-const ShareButtons = (props: ShareButtonProps) => {
+const ShareButtons = React.forwardRef<HTMLDivElement, ShareButtonProps>((props: ShareButtonProps, ref) => {
   const { url, onShareWindowClose = () => {} } = props;
   const shareUrl = url || 'https://www.google.com.vn/?hl=vi';
 
@@ -34,7 +35,7 @@ const ShareButtons = (props: ShareButtonProps) => {
   };
 
   return (
-    <div className='tw-flex tw-flex-col tw-gap-[4px] tw-p-[4px]'>
+    <div ref={ref} className='tw-flex tw-flex-col tw-gap-[4px] tw-p-[4px]'>
       <button
         className='tw-flex tw-items-center tw-py-[8px] tw-px-[12px] tw-rounded tw-gap-2 hover:tw-bg-black/5 active:tw-bg-black/15 tw-text-[14px]'
         onClick={handleCopy}
@@ -79,6 +80,5 @@ const ShareButtons = (props: ShareButtonProps) => {
       </TelegramShareButton>
     </div>
   );
-};
-
+});
 export default ShareButtons;

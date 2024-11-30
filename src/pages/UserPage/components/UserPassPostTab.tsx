@@ -1,4 +1,5 @@
 import PostCard from '@/components/PostCard';
+import PostCardSkeleton from '@/components/PostCardSkeleton';
 import useUrl from '@/hooks/useUrl.hook';
 import { PostTabProps } from '@/pages/UserPage/components/UserPostPage';
 import postService from '@/services/post.service';
@@ -33,6 +34,7 @@ export default function UserPassPostTab(props: PostTabProps) {
 
   return (
     <div className='tw-space-y-4'>
+      {!data && <PostCardSkeleton />}
       {data?.pages.map((page, index) => (
         <div key={index} className='tw-space-y-[40px]'>
           {page.results.map((post) => (
@@ -72,8 +74,8 @@ export default function UserPassPostTab(props: PostTabProps) {
               </main>
             </div>
           ) : (
-            <div className='tw-flex tw-justify-center'>
-              <Button variant='plain' onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
+            <div className='tw-flex tw-justify-center tw-py-[24px]'>
+              <Button variant='outlined' onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
                 Hiển thị thêm
               </Button>
             </div>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import ModalLayout from '@/components/ModalLayout';
 import RHFPasswordInput from '@/components/RHFPasswordInput';
 import RHFLoginPasswordInput from '@/components/RHFPasswordInput/RHFLoginPasswordInput';

@@ -7,6 +7,7 @@ import RentalDetail from '@/components/PostCard/components/RentalDetail';
 import WantedDetail from '@/components/PostCard/components/WantedDetail';
 import ShareButtons from '@/components/ShareButton/ShareButton';
 import { queryClient } from '@/configs/tanstackQuery.config';
+import useClickOutside from '@/hooks/useClickOutside';
 import useUserApiHook from '@/hooks/useUserApi.hook';
 import postService from '@/services/post.service';
 import { useAppStore } from '@/store/store';
@@ -135,6 +136,9 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
   const { post, assets, distance } = props.data;
   const { ownerId } = post;
   const [showDeleteModal, setShowDeleteModal] = React.useState(false);
+  const shareButtonRef = React.useRef(null);
+
+  useClickOutside(shareButtonRef, () => setOpenShare(false));
 
   const { currentUser, whereConditions } = useAppStore(
     useShallow((state) => ({
@@ -306,7 +310,7 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
             </Button>
             <Button>Two</Button>
             <Tooltip
-              title={<ShareButtons onShareWindowClose={() => setOpenShare(false)} />}
+              title={<ShareButtons ref={shareButtonRef} onShareWindowClose={() => setOpenShare(false)} />}
               variant='outlined'
               arrow
               open={openShare}

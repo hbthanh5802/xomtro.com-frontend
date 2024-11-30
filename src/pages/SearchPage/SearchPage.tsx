@@ -133,7 +133,7 @@ const SearchPage = () => {
   return (
     <div className='tw-relative tw-flex tw-bg-backgroundColor tw-h-dvh tw-overflow-y-auto tw-flex-col tw-items-center tw-scroll-pt-[var(--header-height)]'>
       <div className='tw-container'>
-        <header className='tw-mt-[40px] tw-mb-[20px]'>
+        <header className='tw-mt-[40px] tw-mb-[20px] tw-mx-[12px] tablet:tw-mx-0'>
           <Typography startDecorator={<MdLocationPin />} level='body-lg'>
             Kết quả tìm kiếm gần khu vực:
           </Typography>
@@ -143,7 +143,7 @@ const SearchPage = () => {
         </header>
         <Divider></Divider>
         <div className='tw-flex tw-flex-col laptop:tw-flex-row laptop:tw-items-start tw-mt-[24px]'>
-          <div className='laptop:tw-z-10 laptop:tw-top-[40px] laptop:tw-left-0 laptop:tw-sticky'>
+          <div className='laptop:tw-z-10 laptop:tw-top-[8px] laptop:tw-left-0 laptop:tw-sticky'>
             <div className='laptop:tw-w-[400px] tw-shadow-md tw-rounded-lg tw-mt-[12px] tw-bg-white tw-p-[24px] tw-space-y-2'>
               <Typography level='title-md'>Loại bài đăng:</Typography>
               <ButtonGroup size='lg' orientation='vertical' variant='plain' aria-label='vertical outlined button group'>
@@ -199,7 +199,7 @@ const SearchPage = () => {
             </div>
           </div>
           <Divider sx={{ mx: 2, mt: 4 }} orientation='vertical' />
-          <div className='tw-flex-1 tw-mt-[24px] laptop:tw-m-[14px] laptop:tw-mr-0 laptop:tw-max-w-[calc(100%-412px)]'>
+          <div className='tw-flex-1 tw-mt-[24px] laptop:tw-m-[14px] laptop:tw-mr-0 laptop:tw-max-w-[calc(100%-444px)]'>
             {loading ? (
               <PostCardSkeleton />
             ) : (

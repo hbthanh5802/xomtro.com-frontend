@@ -31,10 +31,7 @@ const Header = () => {
   const handleSetSearchNavOpen = React.useCallback(setSearchNavOpen, [setSearchNavOpen]);
 
   return (
-    <header
-      className='tw-h-[var(--header-height)] tw-max-h-[var(--header-height)] tw-min-h-[var(--header-height)] tw-flex tw-items-center tw-fixed tw-top-0 tw-inset-x-0 tw-z-[999] tw-bg-white tw-shadow-sm
-     tw-border-b-[1px] tw-border-b-slate-100'
-    >
+    <header className='tw-h-[var(--header-height)] tw-max-h-[var(--header-height)] tw-min-h-[var(--header-height)] tw-flex tw-items-center tw-fixed tw-top-0 tw-inset-x-0 tw-z-[999] tw-backdrop-filter tw-backdrop-blur-[20px] tw-bg-white/80 tw-shadow-sm'>
       {/* Mobile Nav */}
       <DrawerWrapper open={navSideOpen} closeButton onClose={() => setNavSideOpen(false)}>
         <NavBar />
