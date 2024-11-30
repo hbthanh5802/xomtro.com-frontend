@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import PostCard from '@/components/PostCard';
 import { queryClient } from '@/configs/tanstackQuery.config';
 import postService from '@/services/post.service';
@@ -6,16 +5,17 @@ import { OrderConditionType, WhereConditionType } from '@/store/postFilterSlice'
 import { Button, Divider, LinearProgress, Skeleton } from '@mui/joy';
 import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 import React from 'react';
-import { useOutletContext } from 'react-router-dom';
 
-const RentalSearch = () => {
-  const { whereConditions, orderConditions } = useOutletContext() as {
-    whereConditions: WhereConditionType;
-    orderConditions: OrderConditionType;
-  };
+interface SearchPostTabProps {
+  whereConditions: WhereConditionType;
+  orderConditions: OrderConditionType;
+}
+
+const SearchJoinPost = (props: SearchPostTabProps) => {
+  const { whereConditions, orderConditions } = props;
 
   const handleFetchPosts = async ({ pageParam }: { pageParam: number }) => {
-    const response = await postService.searchRentalPost({
+    const response = await postService.searchJoinPost({
       whereConditions: { ...whereConditions, status: 'actived' },
       orderConditions: { updatedAt: 'desc', ...orderConditions },
       pagination: { page: pageParam, pageSize: 10 },
@@ -25,7 +25,7 @@ const RentalSearch = () => {
   };
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ['search', 'posts', 'rental'],
+    queryKey: ['search', 'posts', 'join'],
     queryFn: handleFetchPosts,
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
@@ -38,14 +38,15 @@ const RentalSearch = () => {
   });
 
   React.useEffect(() => {
-    queryClient.invalidateQueries({ queryKey: ['search', 'posts', 'rental'] });
-  }, [whereConditions]);
+    queryClient.invalidateQueries({ queryKey: ['search', 'posts', 'join'] });
+  }, [whereConditions, orderConditions]);
 
   return (
     <div className='tw-space-y-[40px]'>
       {data?.pages.map((page, index) => (
         <div key={index} className='tw-space-y-[40px]'>
           {page.results.map((post) => (
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             <PostCard key={post.post.id} data={post as any} />
           ))}
         </div>
@@ -99,4 +100,4 @@ const RentalSearch = () => {
   );
 };
 
-export default RentalSearch;
+export default SearchJoinPost;

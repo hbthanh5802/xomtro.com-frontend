@@ -5,10 +5,10 @@ import AuthPage from '@/pages/AuthPage';
 import ForbiddenPage from '@/pages/ForbiddenPage';
 import ForgotPasswordPage from '@/pages/ForgotPasswordPage';
 import HomePage from '@/pages/HomePage';
-import JoinSearch from '@/pages/HomePage/components/JoinSearch';
-import PassSearch from '@/pages/HomePage/components/PassSearch';
-import RentalSearch from '@/pages/HomePage/components/RentalSearch';
-import WantedSearch from '@/pages/HomePage/components/WantedSearch';
+import { default as JoinHome } from '@/pages/HomePage/components/JoinHome';
+import { default as PassHome } from '@/pages/HomePage/components/PassHome';
+import { default as RentalHome } from '@/pages/HomePage/components/RentalHome';
+import { default as WantedHome } from '@/pages/HomePage/components/WantedHome';
 import LoginPage from '@/pages/LoginPage';
 import JoinPostPage from '@/pages/PostPage/JoinPostPage';
 import PassPostPage from '@/pages/PostPage/PassPostPage';
@@ -111,10 +111,10 @@ const AppRoutes: React.FC = () => {
           path: '/home',
           element: <HomePage />,
           children: [
-            { path: 'wanted', element: <WantedSearch /> },
-            { path: 'rental', element: <RentalSearch /> },
-            { path: 'pass', element: <PassSearch /> },
-            { path: 'join', element: <JoinSearch /> },
+            { path: 'wanted', element: <WantedHome /> },
+            { path: 'rental', element: <RentalHome /> },
+            { path: 'pass', element: <PassHome /> },
+            { path: 'join', element: <JoinHome /> },
           ],
         },
         {

@@ -125,7 +125,11 @@ const SearchBar: React.FC = () => {
     }
     handleReset();
     setTooltipOpen(false);
-    const qr = queryString.stringify({ searchValue: debounceSearchValue, searchResult: searchResultValue.description });
+    const qr = queryString.stringify({
+      searchType,
+      searchValue: debounceSearchValue,
+      searchResult: searchResultValue.description,
+    });
     navigate(`/search?${qr}`);
   };
 

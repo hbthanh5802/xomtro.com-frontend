@@ -75,7 +75,11 @@ const MobileSearchBar = (props: MobileSearchBarProps) => {
     }
     handleReset();
     setSearchNavOpen(false);
-    const qr = queryString.stringify({ searchValue: debounceSearchValue, searchResult: searchResultValue.description });
+    const qr = queryString.stringify({
+      searchType,
+      searchValue: debounceSearchValue,
+      searchResult: searchResultValue.description,
+    });
     navigate(`/search?${qr}`);
   };
 

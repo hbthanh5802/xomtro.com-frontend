@@ -97,10 +97,9 @@ const LocationTab = () => {
   );
 
   React.useEffect(() => {
-    console.log({ userLocation, location });
     if (location.longitude && location.latitude) {
       if (userLocation?.latitude !== location.latitude || userLocation?.longitude !== location.longitude) {
-        // getUserLocation(location);
+        getUserLocation(location);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
