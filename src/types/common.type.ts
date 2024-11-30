@@ -16,6 +16,7 @@ export type SelectOptionItemType = {
 export type TanstackQueryOptions = {
   staleTime?: number;
   gcTime?: number;
+  enabled?: boolean;
 };
 
 export type OrderDirectionType = 'desc' | 'asc';

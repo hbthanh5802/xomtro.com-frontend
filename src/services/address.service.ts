@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { axiosAuthRequest, axiosRequest } from '@/configs/axios.config';
 import { InsertAddressDataType } from '@/types/address.type';
 import { TanstackQueryOptions } from '@/types/common.type';

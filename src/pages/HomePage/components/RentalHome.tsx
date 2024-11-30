@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import PostCard from '@/components/PostCard';
+import PostCardSkeleton from '@/components/PostCardSkeleton';
 import { queryClient } from '@/configs/tanstackQuery.config';
 import postService from '@/services/post.service';
 import { OrderConditionType, WhereConditionType } from '@/store/postFilterSlice';
@@ -43,6 +44,7 @@ const RentalHome = () => {
 
   return (
     <div className='tw-space-y-[40px]'>
+      {!data && <PostCardSkeleton />}
       {data?.pages.map((page, index) => (
         <div key={index} className='tw-space-y-[40px]'>
           {page.results.map((post) => (
@@ -81,8 +83,8 @@ const RentalHome = () => {
               </main>
             </div>
           ) : (
-            <div className='tw-flex tw-justify-center'>
-              <Button variant='plain' onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
+            <div className='tw-flex tw-justify-center tw-py-[24px]'>
+              <Button variant='outlined' onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
                 Hiển thị thêm
               </Button>
             </div>
