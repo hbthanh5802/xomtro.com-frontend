@@ -1,11 +1,16 @@
+import useUrl from '@/hooks/useUrl.hook';
 import { useAppStore } from '@/store/store';
 import { Avatar, Badge, Box, Dropdown, ListDivider, Menu, MenuButton, MenuItem, Typography } from '@mui/joy';
+import React from 'react';
 import { FaAngleDown, FaClipboardUser } from 'react-icons/fa6';
-import { MdOutlineHelp, MdOutlineLogout, MdSettings } from 'react-icons/md';
+import { IoMdHeart } from 'react-icons/io';
+import { MdOutlineHelp, MdOutlineLogout } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import { useShallow } from 'zustand/react/shallow';
 
 const Account = () => {
+  const { pathname } = useUrl();
+  const accountItemId = React.useId();
   const navigate = useNavigate();
   const { currentUser, userAvatar, logoutUser } = useAppStore(
     useShallow((state) => ({
@@ -13,6 +18,30 @@ const Account = () => {
       userAvatar: state.userAvatar,
       logoutUser: state.logoutUser,
     })),
+  );
+
+  const accountItems = React.useMemo(
+    () => [
+      {
+        label: 'Thông tin tài khoản',
+        icon: <FaClipboardUser className='tw-flex tw-text-lg' />,
+        path: `/users/${currentUser?.userId}/profile`,
+        disabled: false,
+      },
+      {
+        label: 'Bài viết đã lưu',
+        icon: <IoMdHeart className='tw-flex tw-text-lg' />,
+        path: `/users/${currentUser?.userId}/interested`,
+        disabled: false,
+      },
+      {
+        label: 'Trợ giúp',
+        icon: <MdOutlineHelp className='tw-flex tw-text-lg' />,
+        path: `/users/${currentUser?.userId}/settings`,
+        disabled: false,
+      },
+    ],
+    [currentUser],
   );
 
   return (
@@ -56,24 +85,21 @@ const Account = () => {
           </Box>
         </MenuItem>
         <ListDivider />
-        <MenuItem onClick={() => navigate(`/users/${currentUser?.userId}/profile`)}>
-          <div className='tw-flex tw-items-center tw-gap-2'>
-            <FaClipboardUser className='tw-flex tw-text-lg tw-text-slate-600' />
-            Thông tin tài khoản
-          </div>
-        </MenuItem>
-        <MenuItem onClick={() => navigate('/help')}>
-          <div className='tw-flex tw-items-center tw-gap-2'>
-            <MdOutlineHelp className='tw-flex tw-text-lg tw-text-slate-600' />
-            Trợ giúp
-          </div>
-        </MenuItem>
-        <MenuItem onClick={() => navigate(`/users/${currentUser?.userId}/settings`)}>
-          <div className='tw-flex tw-items-center tw-gap-2'>
-            <MdSettings className='tw-flex tw-text-lg tw-text-slate-600' />
-            Cài đặt tài khoản
-          </div>
-        </MenuItem>
+        {accountItems.map((accountItem, index) => {
+          return (
+            <MenuItem
+              disabled={accountItem.disabled}
+              variant={pathname === accountItem.path ? 'soft' : 'plain'}
+              key={`account-item-${accountItemId}-${index}`}
+              onClick={() => navigate(accountItem.path)}
+            >
+              <div className='tw-flex tw-items-center tw-gap-2'>
+                {accountItem.icon}
+                {accountItem.label}
+              </div>
+            </MenuItem>
+          );
+        })}
         <ListDivider />
         <MenuItem onClick={() => logoutUser()} color='danger'>
           <div className='tw-flex tw-items-center tw-gap-2'>

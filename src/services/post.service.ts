@@ -23,7 +23,7 @@ type searchPostProps = {
 };
 
 // Type
-type FullPostResponseType<T> = {
+export type FullPostResponseType<T> = {
   post: PostSelectSchemaType & { type: 'rental' | 'join' | 'wanted' | 'pass' };
   detail: T;
   assets: AssetSelectSchemaType[];
@@ -190,6 +190,32 @@ class postServices {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
+    });
+  }
+
+  createPostInterested(data: { postId: number }) {
+    return axiosAuthRequest({
+      method: 'POST',
+      url: '/posts/interested',
+      data,
+    });
+  }
+
+  removeInterestedPost(postId: number) {
+    return axiosAuthRequest({
+      method: 'DELETE',
+      url: `/posts/interested/${postId}`,
+    });
+  }
+
+  getFullPost(postId: number) {
+    return axiosRequest<
+      FullPostResponseType<
+        RentalPostSelectSchemaType | WantedPostSelectSchemaType | JoinPostSelectSchemaType | PassPostSelectSchemaType
+      >[]
+    >({
+      method: 'GET',
+      url: `/posts/${postId}`,
     });
   }
 }
