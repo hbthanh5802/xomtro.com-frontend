@@ -25,9 +25,10 @@ import { useNavigate } from 'react-router-dom';
 import { useShallow } from 'zustand/react/shallow';
 // Icons
 import addressService from '@/services/address.service';
+import { BsPostcardFill } from 'react-icons/bs';
 import { FaRegEdit } from 'react-icons/fa';
 import { FaCameraRotate, FaCircleCheck, FaClipboardUser, FaHouseFlag, FaRegEye, FaRegEyeSlash } from 'react-icons/fa6';
-import { IoIosMore } from 'react-icons/io';
+import { IoIosMore, IoMdHeart } from 'react-icons/io';
 import { IoCalendarSharp } from 'react-icons/io5';
 import { MdEmail, MdLocalPhone, MdLocationPin, MdSettings } from 'react-icons/md';
 
@@ -70,7 +71,7 @@ const InfoTab = (props: InfoTabProps) => {
   };
 
   return (
-    <div className='tw-w-full'>
+    <div className='tw-w-full tw-shadow tw-rounded-lg tw-mt-[12px] tw-bg-white tw-p-[24px]'>
       {/* Change Avatar Modal */}
       <ModalLayout
         onCloseModal={handleCloseChangeAvatarModal}
@@ -157,46 +158,61 @@ const InfoTab = (props: InfoTabProps) => {
             <Typography level='body-sm'>{userData?.bio || 'Chưa có tiểu sử'}</Typography>
           </div>
           <Divider orientation='horizontal' sx={{ '--Divider-childPosition': `${100}%` }}>
-            {Number(userId) === currentUser?.userId && (
-              <Dropdown>
-                <MenuButton
-                  variant='plain'
-                  size='sm'
-                  sx={{ maxWidth: '32px', maxHeight: '32px', borderRadius: '9999999px' }}
-                >
-                  <Tooltip title='Thiệt lập thêm' arrow placement='top-start'>
-                    <Chip size='sm' color='primary' variant='solid'>
-                      <IoIosMore />
-                    </Chip>
-                  </Tooltip>
-                </MenuButton>
-                <Menu
-                  placement='bottom-end'
-                  size='sm'
-                  sx={{
-                    zIndex: '99999',
-                    p: 1,
-                    gap: 1,
-                    '--ListItem-radius': 'var(--joy-radius-sm)',
-                  }}
-                >
-                  {/* Settings */}
+            <Dropdown>
+              <MenuButton
+                variant='plain'
+                size='sm'
+                sx={{ maxWidth: '32px', maxHeight: '32px', borderRadius: '9999999px' }}
+              >
+                <Tooltip title='Thiệt lập thêm' arrow placement='top-start'>
+                  <Chip size='sm' color='primary' variant='solid'>
+                    <IoIosMore />
+                  </Chip>
+                </Tooltip>
+              </MenuButton>
+              <Menu
+                placement='bottom-end'
+                size='sm'
+                sx={{
+                  zIndex: '99999',
+                  p: 1,
+                  gap: 1,
+                  '--ListItem-radius': 'var(--joy-radius-sm)',
+                }}
+              >
+                {/* Settings */}
+                <MenuItem onClick={() => navigate(`/users/${userId}/profile`)}>
+                  <div className='tw-flex tw-items-center tw-gap-2'>
+                    <BsPostcardFill className='tw-flex tw-text-lg' />
+                    Danh sách bài viết
+                  </div>
+                </MenuItem>
+                {Number(userId) === currentUser?.userId && (
                   <MenuItem onClick={() => navigate(`/users/${currentUser?.userId}/settings`)}>
                     <div className='tw-flex tw-items-center tw-gap-2'>
-                      <MdSettings className='tw-flex tw-text-lg tw-text-slate-600' />
+                      <MdSettings className='tw-flex tw-text-lg' />
                       Cài đặt tài khoản
                     </div>
                   </MenuItem>
-                  {/* Addresses */}
+                )}
+                {Number(userId) === currentUser?.userId && (
+                  <MenuItem onClick={() => navigate(`/users/${currentUser?.userId}/interested`)}>
+                    <div className='tw-flex tw-items-center tw-gap-2'>
+                      <IoMdHeart className='tw-flex tw-text-lg' />
+                      Bài viết đã lưu
+                    </div>
+                  </MenuItem>
+                )}
+                {Number(userId) === currentUser?.userId && (
                   <MenuItem onClick={() => navigate(`/users/${currentUser?.userId}/addresses`)}>
                     <div className='tw-flex tw-items-center tw-gap-2'>
-                      <MdLocationPin className='tw-flex tw-text-lg tw-text-slate-600' />
+                      <MdLocationPin className='tw-flex tw-text-lg' />
                       Thiết lập địa chỉ
                     </div>
                   </MenuItem>
-                </Menu>
-              </Dropdown>
-            )}
+                )}
+              </Menu>
+            </Dropdown>
           </Divider>
           <Typography level='title-lg'>Giới thiệu</Typography>
           <div className='tw-flex tw-items-center tw-gap-2 tw-flex-wrap'>

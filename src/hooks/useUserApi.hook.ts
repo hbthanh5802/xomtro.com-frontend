@@ -29,6 +29,14 @@ class useUserApi {
       ...queryOptions,
     });
   }
+
+  useUserContacts(userId: number, queryOptions?: TanstackQueryOptions) {
+    return useQuery({
+      queryKey: ['users', 'contacts', { userId }],
+      queryFn: () => userService.getUserContacts(userId),
+      ...queryOptions,
+    });
+  }
 }
 
 export default new useUserApi();

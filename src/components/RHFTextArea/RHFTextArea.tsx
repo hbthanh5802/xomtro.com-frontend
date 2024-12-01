@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { MdOutlineInfo } from 'react-icons/md';
 
-interface RHFInputProps<T extends FieldValues> {
+interface RHFTextAreaProps<T extends FieldValues> {
   label?: ReactNode | string;
   name: Path<T>;
   control?: Control<T>;
@@ -16,7 +16,7 @@ interface RHFInputProps<T extends FieldValues> {
   size?: 'sm' | 'lg' | 'md';
 }
 
-const RHFInput = <T extends FieldValues>(props: RHFInputProps<T>) => {
+const RHFTextArea = <T extends FieldValues>(props: RHFTextAreaProps<T>) => {
   const { size = 'sm' } = props;
   return (
     <>
@@ -57,4 +57,4 @@ const RHFInput = <T extends FieldValues>(props: RHFInputProps<T>) => {
   );
 };
 
-export default RHFInput;
+export default RHFTextArea;

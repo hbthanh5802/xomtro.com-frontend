@@ -33,8 +33,8 @@ export const generateSlug = (str: string) => {
   return str;
 };
 
-export const cleanObject = (obj: Record<string, any>) => {
-  const parseValue = (value: any) => {
+export const cleanObject = (obj: Record<string, unknown>) => {
+  const parseValue = (value: unknown) => {
     if (value === 'true') return true;
     if (value === 'false') return false;
     if (value === 'null') return null;
@@ -47,7 +47,7 @@ export const cleanObject = (obj: Record<string, any>) => {
   transformedData = Object.fromEntries(
     Object.entries(transformedData)
       .filter(
-        ([_, value]) =>
+        ([, value]) =>
           value !== null && value !== '' && !Number.isNaN(value) && value !== undefined && value !== 'undefined',
       )
       .map(([key, value]) => [key, parseValue(value)]),
@@ -78,4 +78,38 @@ export const formatCurrencyVND = (amount: number): string => {
     currency: 'VND',
     minimumFractionDigits: 0, // Không hiển thị phần lẻ
   }).format(amount);
+};
+
+// Hàm để tạo dữ liệu cho ImageGallery
+export const generateCloudinaryImageOptimizer = (
+  cloudinaryUrl: string,
+  thumbnailWidth = 250,
+  thumbnailHeight = 150,
+) => {
+  const [baseUrl, imagePath] = cloudinaryUrl.split('/upload/');
+  const thumbnailUrl = `${baseUrl}/upload/c_scale,w_${thumbnailWidth},h_${thumbnailHeight}/${imagePath}`;
+  return {
+    original: cloudinaryUrl,
+    thumbnail: thumbnailUrl,
+  };
+};
+
+// Hàm generate HTML
+export const generateContactHTML = (contactType: string, contactContent: string) => {
+  if (!contactType || !contactContent) {
+    return ``;
+  }
+
+  switch (contactType) {
+    case 'facebook':
+      return `<a href="${contactContent}" target="_blank" rel="noopener noreferrer">Facebook</a>`;
+    case 'zalo':
+      return `<a href="https://zalo.me/${contactContent}" target="_blank" rel="noopener noreferrer">Liên hệ Zalo</a>`;
+    case 'email':
+      return `<a href="mailto:${contactContent}">${contactContent}</a>`;
+    case 'phone':
+      return `<a href="tel:${contactContent}">${contactContent}</a>`;
+    default:
+      return `<span>${contactContent}</span>`;
+  }
 };

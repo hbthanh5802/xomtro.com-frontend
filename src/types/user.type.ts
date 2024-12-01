@@ -1,5 +1,9 @@
 import { changeUserPasswordValidation, updateUserRoleValidation } from '@/validations/auth.validation';
-import { updateAvatarValidation, updateUserDetailValidation } from '@/validations/user.validation';
+import {
+  insertUserContactValidation,
+  updateAvatarValidation,
+  updateUserDetailValidation,
+} from '@/validations/user.validation';
 import { z } from 'zod';
 
 export type UserRoleDataType = z.infer<typeof updateUserRoleValidation>;
@@ -20,3 +24,5 @@ export type GetUserInterestedPostsDataType = {
     updatedAt?: 'asc' | 'desc';
   };
 };
+
+export type InsertUserContactDataType = z.infer<typeof insertUserContactValidation>;

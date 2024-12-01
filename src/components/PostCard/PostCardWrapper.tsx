@@ -211,7 +211,7 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
             </div>
           </div>
           <div className='tw-flex tw-gap-1'>
-            <div>
+            <div className='tw-flex tw-items-center tw-gap-1'>
               {distance && (
                 <Chip color='primary' variant='solid'>
                   {`~ ${distance.toPrecision(4)} km`}
