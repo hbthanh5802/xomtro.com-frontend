@@ -21,6 +21,14 @@ class useUserApi {
       ...queryOptions,
     });
   }
+
+  useUserInterestedPosts(userId: number, queryOptions?: TanstackQueryOptions) {
+    return useQuery({
+      queryKey: ['users', 'interested', { userId }],
+      queryFn: () => userService.getUserInterestedPosts(),
+      ...queryOptions,
+    });
+  }
 }
 
 export default new useUserApi();

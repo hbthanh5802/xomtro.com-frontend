@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import RHFCurrencyInput from '@/components/RHFCurrencyInput';
 import RHFDatePicker from '@/components/RHFDatePicker';
 import RHFImageUploadPreview from '@/components/RHFImageUploadPreview';
@@ -78,14 +80,11 @@ const totalAreaUnitOptions: SelectOptionItemType[] = [
 interface AddressPostFormProps {
   control: Control<InsertJoinPostDataType>;
   mode: 'create' | 'edit';
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data?: any;
 }
 function AddressPostForm(props: AddressPostFormProps) {
   const { control, mode, data } = props;
-
-  if (mode === 'edit' && !data) {
-    return <Typography level='body-xs'>Chưa lấy được dữ liệu. Vui lòng thử lại sau.</Typography>;
-  }
 
   const defaultAddressCode = data?.addressCode?.split('-')!;
 
@@ -151,6 +150,10 @@ function AddressPostForm(props: AddressPostFormProps) {
     return [];
   }, [getWardResponse]);
 
+  if (mode === 'edit' && !data) {
+    return <Typography level='body-xs'>Chưa lấy được dữ liệu. Vui lòng thử lại sau.</Typography>;
+  }
+
   return (
     <div className='tw-mt-[24px] tw-flex tw-flex-col tw-gap-4'>
       <div className='tw-grid tw-grid-cols-1 tablet:tw-grid-cols-3 tw-gap-4'>
@@ -204,14 +207,6 @@ const JoinPostPage = () => {
   const post: PostSelectSchemaType = mode === 'edit' && postData ? postData.post : null;
   const assets: AssetSelectSchemaType[] = mode === 'edit' && postData ? postData.assets : [];
   const [assetList, setAssetList] = React.useState(() => (mode === 'edit' && assets ? assets : []));
-
-  if (!['create', 'edit'].includes(mode)) {
-    return <Navigate to={'/404'} />;
-  }
-
-  if (mode === 'edit' && !postData) {
-    return <Navigate to={'/404'} />;
-  }
 
   const [loading, setLoading] = React.useState(false);
 
@@ -344,6 +339,14 @@ const JoinPostPage = () => {
       setLoading(false);
     }
   };
+
+  if (!['create', 'edit'].includes(mode)) {
+    return <Navigate to={'/404'} />;
+  }
+
+  if (mode === 'edit' && !postData) {
+    return <Navigate to={'/404'} />;
+  }
 
   return (
     <div className='tw-container tw-bg-white tw-shadow tw-p-[24px] tw-rounded tw-min-h-[100px] tw-mt-[40px]'>

@@ -1,4 +1,5 @@
 import ModalLayout from '@/components/ModalLayout';
+import AddToInterested from '@/components/PostCard/components/AddToInterestedButton';
 import JoinDetail from '@/components/PostCard/components/JoinDetail';
 import PassDetail from '@/components/PostCard/components/PassDetail';
 import PostImages from '@/components/PostCard/components/PostImages';
@@ -216,6 +217,23 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
                   {`~ ${distance.toPrecision(4)} km`}
                 </Chip>
               )}
+              {currentUser?.userId !== Number(post.ownerId) && <AddToInterested postId={post.id} />}
+              {/* {isFetched && (
+                <Tooltip title='Thêm vào danh sách quan tâm' arrow placement='left'>
+                  <IconButton
+                    loading={addToInterestedMutation.isPending}
+                    variant='plain'
+                    color='danger'
+                    onClick={() => handleAddToInterestedClick(post.id)}
+                  >
+                    {addToInterestedMutation.isSuccess || !!isAddedToInterested ? (
+                      <IoMdHeart className='tw-text-[24px]' />
+                    ) : (
+                      <IoMdHeartEmpty className='tw-text-[24px]' />
+                    )}
+                  </IconButton>
+                </Tooltip>
+              )} */}
             </div>
             {currentUser?.userId === Number(ownerId) && (
               <div>

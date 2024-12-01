@@ -1,6 +1,11 @@
 import { axiosAuthRequest, axiosRequest } from '@/configs/axios.config';
-import { AssetSelectSchemaType, UserDetailInsertSchemaType, UserDetailSelectSchemaType } from '@/types/schema.type';
-import { UpdateAvatarDataType, UpdateUserPasswordDataType } from '@/types/user.type';
+import {
+  AssetSelectSchemaType,
+  UserDetailInsertSchemaType,
+  UserDetailSelectSchemaType,
+  UserInterestedPostSelectSchemaType,
+} from '@/types/schema.type';
+import { GetUserInterestedPostsDataType, UpdateAvatarDataType, UpdateUserPasswordDataType } from '@/types/user.type';
 
 class userServices {
   updateUserDetail(data: Partial<UserDetailInsertSchemaType>) {
@@ -48,6 +53,15 @@ class userServices {
       method: 'PUT',
       url: `/users/password`,
       data,
+    });
+  }
+
+  getUserInterestedPosts(data?: GetUserInterestedPostsDataType) {
+    const { whereConditions = {}, orderConditions = { createdAt: 'desc', updatedAt: 'desc' } } = data || {};
+    return axiosAuthRequest<UserInterestedPostSelectSchemaType[]>({
+      method: 'POST',
+      url: '/users/interested',
+      data: { whereConditions, orderConditions },
     });
   }
 }

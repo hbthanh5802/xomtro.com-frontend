@@ -2,7 +2,7 @@ import { LinearProgress, Skeleton } from '@mui/joy';
 
 const PostCardSkeleton = () => {
   return (
-    <div className='tw-shadow-md tw-w-full tw-rounded-lg tw-bg-white tw-overflow-hidden tw-py-[24px]'>
+    <div className='tw-shadow-sm tw-w-full tw-rounded-lg tw-bg-white/50 tw-overflow-hidden tw-py-[24px]'>
       <header className='tw-p-[14px] tw-pt-0 tw-flex tw-justify-between tw-items-center'>
         <div className='tw-flex tw-items-center tw-gap-4'>
           <Skeleton animation='wave' variant='circular' width={50} height={50} />

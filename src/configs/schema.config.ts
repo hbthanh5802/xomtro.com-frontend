@@ -166,6 +166,7 @@ export const posts = mysqlTable('posts', {
   addressDistrict: varchar('address_district', { length: 255 }).notNull(),
   addressDetail: varchar('address_detail', { length: 255 }),
   addressWard: varchar('address_ward', { length: 255 }).notNull(),
+  addressSlug: varchar('address_slug', { length: 255 }),
   addressLongitude: decimal('address_longitude', { precision: 11, scale: 8 }),
   addressLatitude: decimal('address_latitude', { precision: 10, scale: 8 }),
   ...timestamps,
@@ -292,6 +293,13 @@ export const userPostReactions = mysqlTable(
   }),
 );
 
+// export const postTags = mysqlTable('post_tags', {
+//   id: int().primaryKey().autoincrement(),
+//   label: varchar({ length: 25 }).notNull(),
+//   usedCount: int('used_count').notNull().default(1),
+//   ...timestamps
+// });
+
 export const postComments = mysqlTable('post_comments', {
   id: int().primaryKey().autoincrement(),
   content: text().notNull(),
@@ -334,6 +342,20 @@ export const postCommentClosures = mysqlTable(
     idxAncestorId: index('idx_post_comment_closures_ancestor_id').on(table.ancestorId),
   }),
 );
+
+export const userPostsInterested = mysqlTable('user_posts_interested', {
+  id: int().primaryKey().autoincrement(),
+  postId: int('post_id').references(() => posts.id),
+  userId: int('user_id').references(() => users.id),
+  ...timestamps,
+});
+
+export const userFollowing = mysqlTable('user_following', {
+  id: int().primaryKey().autoincrement(),
+  userId: int('user_id').references(() => users.id),
+  followingUserId: int('following_user_id').references(() => users.id),
+  ...timestamps,
+});
 
 export const chats = mysqlTable('chats', {
   id: int().primaryKey().autoincrement(),

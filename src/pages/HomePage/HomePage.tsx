@@ -44,8 +44,8 @@ const HomePage = () => {
   }, [whereConditions, setGlobalWhereConditions, setGlobalOrderConditions]);
 
   const { data: getUserDefaultAddressData } = addressService.getUserDefaultAddress(Number(currentUser?.userId), {
-    gcTime: 30 * 60 * 60,
-    staleTime: 15 * 60 * 60,
+    gcTime: 30 * 60 * 1000,
+    staleTime: 15 * 60 * 1000,
     enabled: !!Number(currentUser?.userId) && !userAddress,
   });
 

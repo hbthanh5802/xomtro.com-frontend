@@ -19,9 +19,11 @@ import RolePage from '@/pages/RolePage';
 import SearchPage from '@/pages/SearchPage';
 import UserPage from '@/pages/UserPage';
 import AddressPage from '@/pages/UserPage/components/AddressPage';
+import InterestedPosts from '@/pages/UserPage/components/InterestedPosts';
 import SettingPage from '@/pages/UserPage/components/SettingPage';
 import ProfilePage from '@/pages/UserPage/components/UserPostPage';
 import VerifyPage from '@/pages/VerifyPage';
+import ViewPostDetailPage from '@/pages/ViewPostDetailPage';
 import React, { lazy } from 'react';
 import { useNavigate, useRoutes } from 'react-router-dom';
 
@@ -95,7 +97,12 @@ const AppRoutes: React.FC = () => {
             { path: 'profile', element: <ProfilePage /> },
             { path: 'settings', element: <SettingPage /> },
             { path: 'addresses', element: <AddressPage /> },
+            { path: 'interested', element: <InterestedPosts /> },
           ],
+        },
+        {
+          path: 'posts/:postId/view',
+          element: <ViewPostDetailPage />,
         },
         {
           path: 'posts',
