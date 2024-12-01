@@ -323,7 +323,7 @@ const AddressPage = () => {
 
   React.useEffect(() => {
     if (currentUser && Number(params.userId) !== currentUser?.userId) {
-      navigate('/404');
+      navigate('/403');
     }
   }, [currentUser, navigate, params.userId]);
 

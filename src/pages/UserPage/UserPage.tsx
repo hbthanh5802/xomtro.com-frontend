@@ -2,6 +2,7 @@ import useUrl from '@/hooks/useUrl.hook';
 import useUserApiHook from '@/hooks/useUserApi.hook';
 import InfoTab from '@/pages/UserPage/components/InfoTab';
 import ProfileHeader from '@/pages/UserPage/components/ProfileHeader';
+import UserContacts from '@/pages/UserPage/components/UserContacts';
 import { useAppStore } from '@/store/store';
 import { AssetSelectSchemaType, UserDetailSelectSchemaType } from '@/types/schema.type';
 import React from 'react';
@@ -32,9 +33,13 @@ const ProfilePage = () => {
 
   React.useEffect(() => {
     resetPostFilterState();
-    setUserData(userDetail);
-    setUserAvatarData(userAvatar);
-  }, [userDetail, userAvatar, Number(userId)]);
+    if (userDetail) {
+      setUserData(userDetail);
+    }
+    if (userAvatar) {
+      setUserAvatarData(userAvatar);
+    }
+  }, [userDetail, userAvatar, resetPostFilterState]);
 
   return (
     <div className='tw-flex tw-flex-col tw-items-center tw-bg-backgroundColor'>
@@ -44,8 +49,9 @@ const ProfilePage = () => {
         </header>
         <div className='tw-flex tw-flex-col laptop:tw-flex-row laptop:tw-items-start'>
           {/* Sidebar */}
-          <div className='laptop:tw-w-[400px] tw-shadow-md tw-rounded-lg tw-mt-[12px] tw-bg-white tw-p-[24px]'>
+          <div className='laptop:tw-w-[400px]'>
             <InfoTab userData={userData!} userAvatarData={userAvatarData!} />
+            <UserContacts />
           </div>
           {/* Main content */}
           <div className='tw-flex-1 tw-mt-[24px] laptop:tw-m-[14px] laptop:tw-mr-0 laptop:tw-max-w-[calc(100%-412px)]'>

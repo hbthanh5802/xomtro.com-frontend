@@ -1,11 +1,17 @@
 import { axiosAuthRequest, axiosRequest } from '@/configs/axios.config';
 import {
   AssetSelectSchemaType,
+  UserContactsSelectSchemaType,
   UserDetailInsertSchemaType,
   UserDetailSelectSchemaType,
   UserInterestedPostSelectSchemaType,
 } from '@/types/schema.type';
-import { GetUserInterestedPostsDataType, UpdateAvatarDataType, UpdateUserPasswordDataType } from '@/types/user.type';
+import {
+  GetUserInterestedPostsDataType,
+  InsertUserContactDataType,
+  UpdateAvatarDataType,
+  UpdateUserPasswordDataType,
+} from '@/types/user.type';
 
 class userServices {
   updateUserDetail(data: Partial<UserDetailInsertSchemaType>) {
@@ -62,6 +68,36 @@ class userServices {
       method: 'POST',
       url: '/users/interested',
       data: { whereConditions, orderConditions },
+    });
+  }
+
+  getUserContacts(userId: number) {
+    return axiosRequest<UserContactsSelectSchemaType[]>({
+      method: 'GET',
+      url: `/users/${userId}/contacts`,
+    });
+  }
+
+  createUserContact(data: InsertUserContactDataType) {
+    return axiosAuthRequest({
+      method: 'POST',
+      url: '/users/contacts',
+      data,
+    });
+  }
+
+  updateUserContact(contactId: number, data: InsertUserContactDataType) {
+    return axiosAuthRequest({
+      method: 'PUT',
+      url: `/users/contacts/${contactId}`,
+      data,
+    });
+  }
+
+  removeUserContact(contactId: number) {
+    return axiosAuthRequest({
+      method: 'DELETE',
+      url: `/users/contacts/${contactId}`,
     });
   }
 }

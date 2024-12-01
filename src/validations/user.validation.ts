@@ -1,4 +1,4 @@
-import { userDetail } from '@/configs/schema.config';
+import { userContacts, userDetail } from '@/configs/schema.config';
 import { dateValidation, imageFileValidation, phoneValidation } from '@/validations/common.validation';
 import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
@@ -23,3 +23,7 @@ export const updateUserDetailValidation = createInsertSchema(userDetail, {
     dob: true,
   })
   .strip();
+
+export const insertUserContactValidation = createInsertSchema(userContacts, {
+  contactContent: z.string().min(1, { message: 'Thông tin này không được để trống.' }),
+}).omit({ userId: true });

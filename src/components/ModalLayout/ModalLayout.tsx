@@ -7,10 +7,11 @@ interface ModalLayoutProps {
   children: ReactNode;
   title?: ReactNode | string;
   content?: ReactNode | string;
+  maxWidth?: number;
 }
 
 const ModalLayout = (props: ModalLayoutProps) => {
-  const { isOpen, onCloseModal, children } = props;
+  const { isOpen, onCloseModal, children, maxWidth } = props;
 
   return (
     <Modal
@@ -37,14 +38,17 @@ const ModalLayout = (props: ModalLayoutProps) => {
             },
           })}
         >
-          <div className={`tw-animate-fade tw-animate-once tw-animate-duration-300 tw-animate-ease-in-out tw-w-fit`}>
+          <div
+            style={{ maxWidth }}
+            className={`tw-animate-fade tw-animate-once tw-animate-duration-300 tw-animate-ease-in-out tw-w-fit`}
+          >
             {props?.title && (
               <Typography id='nested-modal-title' level='h2'>
                 {props?.title}
               </Typography>
             )}
             {props?.content && (
-              <Typography id='nested-modal-description' textColor='text.tertiary'>
+              <Typography level='body-xs' id='nested-modal-description' textColor='text.tertiary'>
                 {props?.content}
               </Typography>
             )}
