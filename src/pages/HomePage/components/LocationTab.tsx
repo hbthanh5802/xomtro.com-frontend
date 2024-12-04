@@ -83,7 +83,6 @@ const LocationTab = () => {
     checkPermission();
   }, [checkPermission]);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const getUserLocation = React.useCallback(
     async (location: { latitude: null | number; longitude: null | number }) => {
       try {

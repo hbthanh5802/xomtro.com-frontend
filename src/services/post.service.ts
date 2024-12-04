@@ -218,6 +218,13 @@ class postServices {
       url: `/posts/${postId}`,
     });
   }
+
+  updatePostViewCount(postId: number) {
+    return axiosRequest({
+      method: 'PUT',
+      url: `/posts/${postId}/view`,
+    });
+  }
 }
 
 export default new postServices();

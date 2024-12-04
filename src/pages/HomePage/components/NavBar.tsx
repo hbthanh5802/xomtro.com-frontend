@@ -27,12 +27,18 @@ const NavBar = () => {
     });
   };
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     if (['/', '/home', '/home/rental'].includes(pathname)) {
       setTabIndex(0);
       navigate('/home/rental');
+    } else if (pathname === '/home/wanted' && tabIndex !== 1) {
+      setTabIndex(1);
+    } else if (pathname === '/home/join' && tabIndex !== 2) {
+      setTabIndex(2);
+    } else if (pathname === '/home/pass' && tabIndex !== 3) {
+      setTabIndex(3);
     }
-  }, [pathname, navigate]);
+  }, [pathname, navigate, tabIndex]);
 
   return (
     <div className='tw-h-[calc(100dvh-60px)] tw-overflow-y-auto'>

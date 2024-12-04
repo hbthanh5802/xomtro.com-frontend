@@ -32,7 +32,7 @@ const JoinDetail = (props: JoinDetailProps) => {
 
         <div className='tw-mt-4 tw-flex tw-items-end tw-gap-2'>
           <Typography startDecorator={<PiMoneyWavy className='tw-text-[20px] tw-text-slate-600' />} level='title-sm'>
-            Giá phòng thuê:
+            Giá đã thuê:
           </Typography>
           <div className='tw-flex tw-items-center tw-gap-3'>
             <Typography level='body-sm' variant='soft' color='success'>

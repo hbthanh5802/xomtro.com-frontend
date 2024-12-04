@@ -21,7 +21,7 @@ interface ShareButtonProps {
 }
 const ShareButtons = React.forwardRef<HTMLDivElement, ShareButtonProps>((props: ShareButtonProps, ref) => {
   const { url, onShareWindowClose = () => {} } = props;
-  const shareUrl = url || 'https://www.google.com.vn/?hl=vi';
+  const shareUrl = url || window.location.href;
 
   const handleCopy = async () => {
     const toastId = toast.loading('Đang sao chép...');
