@@ -115,7 +115,10 @@ const UserContactForm = (props: UserContactFormProps) => {
     },
     resolver: zodResolver(insertUserContactValidation),
   });
-  const { watch } = methods;
+  const {
+    watch,
+    formState: { isValid },
+  } = methods;
   const contactType = watch('contactType');
 
   const handleSubmit = async (formData: InsertUserContactDataType) => {
@@ -183,7 +186,7 @@ const UserContactForm = (props: UserContactFormProps) => {
         />
 
         <div className='tw-pt-[12px]'>
-          <Button fullWidth loading={loading} disabled={loading} type='submit'>
+          <Button fullWidth loading={loading} disabled={loading || !isValid} type='submit'>
             Lưu lại thông tin
           </Button>
         </div>

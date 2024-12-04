@@ -9,6 +9,7 @@ import WantedDetail from '@/components/PostCard/components/WantedDetail';
 import ShareButtons from '@/components/ShareButton/ShareButton';
 import { queryClient } from '@/configs/tanstackQuery.config';
 import useClickOutside from '@/hooks/useClickOutside';
+import useUrl from '@/hooks/useUrl.hook';
 import useUserApiHook from '@/hooks/useUserApi.hook';
 import postService from '@/services/post.service';
 import { useAppStore } from '@/store/store';
@@ -40,7 +41,7 @@ import {
   Typography,
 } from '@mui/joy';
 import React from 'react';
-import { FaRegEye, FaRegEyeSlash, FaRegImages } from 'react-icons/fa6';
+import { FaEye, FaRegCommentDots, FaRegEye, FaRegEyeSlash, FaRegImages } from 'react-icons/fa6';
 import { IoIosShareAlt } from 'react-icons/io';
 import { MdDeleteForever, MdEdit, MdOutlineInfo, MdOutlineMoreHoriz } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
@@ -132,6 +133,7 @@ function DeletePostDialog(props: { postId: number; onSuccess?: () => void }) {
 
 const PostCardWrapper = (props: PostCardWrapperProps) => {
   const navigate = useNavigate();
+  const { origin } = useUrl();
   const [openShare, setOpenShare] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const { post, assets, distance } = props.data;
@@ -218,22 +220,6 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
                 </Chip>
               )}
               {currentUser?.userId !== Number(post.ownerId) && <AddToInterested postId={post.id} />}
-              {/* {isFetched && (
-                <Tooltip title='Thêm vào danh sách quan tâm' arrow placement='left'>
-                  <IconButton
-                    loading={addToInterestedMutation.isPending}
-                    variant='plain'
-                    color='danger'
-                    onClick={() => handleAddToInterestedClick(post.id)}
-                  >
-                    {addToInterestedMutation.isSuccess || !!isAddedToInterested ? (
-                      <IoMdHeart className='tw-text-[24px]' />
-                    ) : (
-                      <IoMdHeartEmpty className='tw-text-[24px]' />
-                    )}
-                  </IconButton>
-                </Tooltip>
-              )} */}
             </div>
             {currentUser?.userId === Number(ownerId) && (
               <div>
@@ -323,12 +309,23 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
 
         <footer className='tw-p-[12px]'>
           <ButtonGroup size='md' buttonFlex={1} aria-label='flex button group'>
-            <Button color='primary' variant='solid'>
-              One
+            <Button
+              startDecorator={<FaEye className='tw-text-[16px]' />}
+              color='primary'
+              variant='solid'
+              onClick={() => navigate(`/posts/${post.id}/view`)}
+            >
+              Xem thêm chi tiết
             </Button>
-            <Button>Two</Button>
+            <Button startDecorator={<FaRegCommentDots className='tw-text-[18px]' />}>Bình luận</Button>
             <Tooltip
-              title={<ShareButtons ref={shareButtonRef} onShareWindowClose={() => setOpenShare(false)} />}
+              title={
+                <ShareButtons
+                  ref={shareButtonRef}
+                  url={`${origin}/posts/${post.id}/view`}
+                  onShareWindowClose={() => setOpenShare(false)}
+                />
+              }
               variant='outlined'
               arrow
               open={openShare}

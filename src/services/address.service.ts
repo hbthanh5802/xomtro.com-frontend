@@ -52,7 +52,7 @@ class addressServices {
 
   getUserDefaultAddress(userId: number, options?: TanstackQueryOptions) {
     return useQuery({
-      queryKey: ['users', 'addresses', { isDefault: true }],
+      queryKey: ['users', 'addresses', { isDefault: true, userId }],
       queryFn: () =>
         axiosRequest<AddressSelectSchemaType>({
           method: 'GET',

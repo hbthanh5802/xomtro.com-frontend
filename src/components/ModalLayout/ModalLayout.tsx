@@ -8,13 +8,16 @@ interface ModalLayoutProps {
   title?: ReactNode | string;
   content?: ReactNode | string;
   maxWidth?: number;
+  layout?: 'center' | 'fullscreen';
+  keepMounted?: boolean;
 }
 
 const ModalLayout = (props: ModalLayoutProps) => {
-  const { isOpen, onCloseModal, children, maxWidth } = props;
+  const { isOpen, onCloseModal, children, maxWidth, layout = 'center', keepMounted } = props;
 
   return (
     <Modal
+      keepMounted={keepMounted}
       aria-labelledby='close-modal-title'
       sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       open={isOpen}
@@ -24,6 +27,7 @@ const ModalLayout = (props: ModalLayoutProps) => {
     >
       <ModalOverflow>
         <ModalDialog
+          layout={layout}
           aria-labelledby='nested-modal-title'
           aria-describedby='nested-modal-description'
           sx={(theme) => ({

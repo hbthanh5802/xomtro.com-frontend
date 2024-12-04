@@ -99,6 +99,7 @@ const SearchBar: React.FC = () => {
     async (value: string) => {
       setLoading(true);
       try {
+        console.log({userLocation});
         const searchParams: GetAutoCompleteProps = {
           searchValue: value,
           ...(userLocation?.longitude && { longitude: userLocation.longitude }),

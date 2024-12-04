@@ -41,11 +41,11 @@ const FilterBar = () => {
         allowClear
         options={[
           {
-            label: 'Thấp đến Cao',
+            label: 'Giá tăng dần',
             value: 'asc',
           },
           {
-            label: 'Cao đến Thấp',
+            label: 'Giá giảm dần',
             value: 'desc',
           },
         ]}
