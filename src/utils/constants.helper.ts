@@ -113,3 +113,8 @@ export const generateContactHTML = (contactType: string, contactContent: string)
       return `<span>${contactContent}</span>`;
   }
 };
+
+export const roundNumber = (value: number, precision: number) => {
+  const factor = Math.pow(10, precision);
+  return Math.round(value * factor) / factor;
+};

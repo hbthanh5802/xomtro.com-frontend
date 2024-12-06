@@ -1,11 +1,15 @@
 import Header from '@/components/Header';
 import ScrollTopButton from '@/components/ScrollTopButton';
 import useScrollToTop from '@/hooks/useScrollToTop';
+import useUrl from '@/hooks/useUrl.hook';
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 
 const DefaultLayout: React.FC = () => {
+  const { pathname } = useUrl();
   useScrollToTop();
+
+  const showScrollButton = !pathname.startsWith('/conversations') && !pathname.startsWith('/home');
 
   return (
     <div className='DefaultLayout'>
@@ -13,7 +17,7 @@ const DefaultLayout: React.FC = () => {
       <main className='tw-mt-[60px]'>
         <Outlet />
       </main>
-      <ScrollTopButton />
+      {showScrollButton && <ScrollTopButton />}
       {/* <Footer /> */}
     </div>
   );

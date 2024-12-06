@@ -27,3 +27,10 @@ export const imageFileValidation = z
 export const dateValidation = z.string().refine((date) => dayjs(date, 'YYYY-MM-DD HH:mm:ss', true).isValid(), {
   message: 'Thông tin không đúng định dạng YYYY-MM-DD',
 });
+
+export const processNumberValidation = z.preprocess((value) => {
+  if (typeof value === 'string' && !isNaN(Number(value))) {
+    return Number(value);
+  }
+  return value;
+}, z.number());

@@ -1,5 +1,5 @@
 import { useAppStore } from '@/store/store';
-import { handleAxiosError } from '@/utils/constants.helper';
+import { handleAxiosError, roundNumber } from '@/utils/constants.helper';
 import { Typography } from '@mui/joy';
 import React from 'react';
 import { toast } from 'sonner';
@@ -19,6 +19,36 @@ const LocationTab = () => {
     })),
   );
 
+  const requestLocationPermission = React.useCallback(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLocation({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+      },
+      () => {
+        toast.info('Không lấy được vị trí của bạn. Cs vẻ dịch vụ định vị có vấn đề.', { duration: 1500 });
+      },
+      { enableHighAccuracy: true },
+    );
+  }, []);
+
+  const getLocation = React.useCallback(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLocation({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+      },
+      () => {
+        toast.info('Không lấy được vị trí của bạn. Cs vẻ dịch vụ định vị có vấn đề.', { duration: 1500 });
+      },
+      { enableHighAccuracy: true },
+    );
+  }, []);
+
   const checkPermission = React.useCallback(async () => {
     if (!navigator.permissions || !navigator.geolocation) {
       toast.info(
@@ -27,7 +57,6 @@ const LocationTab = () => {
       );
       return;
     }
-
     try {
       const status = await navigator.permissions.query({ name: 'geolocation' });
       setPermissionStatus(status.state); // granted, prompt, denied
@@ -43,41 +72,11 @@ const LocationTab = () => {
       } else {
         toast.info('Không lấy được vị trí của bạn. Cs vẻ dịch vụ định vị có vấn đề.', { duration: 1500 });
       }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
+      console.log(handleAxiosError(error));
       toast.info('Dịch vụ định vị chưa được uỷ quyền!.', { duration: 1500 });
     }
-  }, []);
-
-  const requestLocationPermission = () => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setLocation({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        });
-      },
-      () => {
-        toast.info('Không lấy được vị trí của bạn. Cs vẻ dịch vụ định vị có vấn đề.', { duration: 1500 });
-      },
-      { enableHighAccuracy: true },
-    );
-  };
-
-  const getLocation = () => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setLocation({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        });
-      },
-      () => {
-        toast.info('Không lấy được vị trí của bạn. Cs vẻ dịch vụ định vị có vấn đề.', { duration: 1500 });
-      },
-      { enableHighAccuracy: true },
-    );
-  };
+  }, [requestLocationPermission, getLocation]);
 
   React.useEffect(() => {
     checkPermission();
@@ -98,10 +97,18 @@ const LocationTab = () => {
 
   React.useEffect(() => {
     if (location.longitude && location.latitude) {
-      if (userLocation?.latitude !== location.latitude || userLocation?.longitude !== location.longitude) {
-        // getUserLocation(location);
+      // Làm tròn vị trí hiện tại và vị trí trong store
+      const roundedLatitude = roundNumber(location.latitude, 3);
+      const roundedLongitude = roundNumber(location.longitude, 3);
+      const roundedUserLatitude = userLocation?.latitude ? roundNumber(userLocation.latitude, 3) : null;
+      const roundedUserLongitude = userLocation?.longitude ? roundNumber(userLocation.longitude, 3) : null;
+
+      // Kiểm tra sự thay đổi vị trí
+      if (roundedLatitude !== roundedUserLatitude || roundedLongitude !== roundedUserLongitude) {
+        getUserLocation(location);
       }
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.longitude, location.latitude, userLocation?.longitude, userLocation?.latitude]);
 

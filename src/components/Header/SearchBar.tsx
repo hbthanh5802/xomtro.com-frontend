@@ -99,7 +99,7 @@ const SearchBar: React.FC = () => {
     async (value: string) => {
       setLoading(true);
       try {
-        console.log({userLocation});
+        console.log({ userLocation });
         const searchParams: GetAutoCompleteProps = {
           searchValue: value,
           ...(userLocation?.longitude && { longitude: userLocation.longitude }),
@@ -223,7 +223,7 @@ const SearchBar: React.FC = () => {
                 loading={loading}
                 variant='plain'
                 color='primary'
-                sx={{ width: 60 }}
+                sx={{ width: 60, borderRadius: '40px' }}
                 onClick={() => handleSearchValue(debounceSearchValue)}
               >
                 <IoIosSearch size={24} />
@@ -232,6 +232,7 @@ const SearchBar: React.FC = () => {
           }
           fullWidth
           sx={{
+            borderRadius: '40px',
             boxShadow: 'sx',
             '--Input-decoratorChildHeight': '38px',
           }}

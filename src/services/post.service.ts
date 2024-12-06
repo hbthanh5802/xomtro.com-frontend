@@ -1,5 +1,6 @@
 import { axiosAuthRequest, axiosRequest } from '@/configs/axios.config';
 import { OrderConditionType, PaginationType, WhereConditionType } from '@/store/postFilterSlice';
+import { PaginationResponseType } from '@/types/common.type';
 import {
   InsertJoinPostDataType,
   InsertPassPostDataType,
@@ -31,14 +32,6 @@ export type FullPostResponseType<T> = {
   distance?: number;
 };
 
-type PaginationResponseType = {
-  totalCount: number;
-  totalPages: number;
-  currentPage: number;
-  currentPageSize: number;
-  canPrevious: boolean;
-  canNext: boolean;
-};
 type searchPostResponseType<
   T extends
     | RentalPostSelectSchemaType

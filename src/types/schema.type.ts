@@ -152,3 +152,6 @@ export type PassPostItemSelectSchemaType = typeof schema.passPostItems.$inferSel
 export type UserInterestedPostSelectSchemaType = typeof schema.userPostsInterested.$inferSelect;
 export type UserFollowersSelectSchemaType = typeof schema.userFollowers.$inferSelect;
 export type UserContactsSelectSchemaType = typeof schema.userContacts.$inferSelect;
+export type MessageSelectSchemaType = typeof schema.messages.$inferSelect;
+export type ChatSelectSchemaType = typeof schema.chats.$inferSelect;
+export type ChatMemberSelectSchemaType = typeof schema.chatMembers.$inferSelect;
