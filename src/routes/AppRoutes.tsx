@@ -2,33 +2,37 @@ import useUrl from '@/hooks/useUrl.hook';
 import BlankLayout from '@/layouts/BlankLayout';
 import MainLayout from '@/layouts/MainLayout';
 import AuthPage from '@/pages/AuthPage';
-import ForbiddenPage from '@/pages/ForbiddenPage';
-import ForgotPasswordPage from '@/pages/ForgotPasswordPage';
 import HomePage from '@/pages/HomePage';
 import { default as JoinHome } from '@/pages/HomePage/components/JoinHome';
 import { default as PassHome } from '@/pages/HomePage/components/PassHome';
 import { default as RentalHome } from '@/pages/HomePage/components/RentalHome';
 import { default as WantedHome } from '@/pages/HomePage/components/WantedHome';
-import LoginPage from '@/pages/LoginPage';
-import JoinPostPage from '@/pages/PostPage/JoinPostPage';
-import PassPostPage from '@/pages/PostPage/PassPostPage';
-import PostPageWrapper from '@/pages/PostPage/PostPageWrapper';
-import RentalPostPage from '@/pages/PostPage/RentalPostPage';
-import WantedPostPage from '@/pages/PostPage/WantedPostPage';
-import RolePage from '@/pages/RolePage';
-import SearchPage from '@/pages/SearchPage';
-import UserPage from '@/pages/UserPage';
-import AddressPage from '@/pages/UserPage/components/AddressPage';
-import InterestedPosts from '@/pages/UserPage/components/InterestedPosts';
-import SettingPage from '@/pages/UserPage/components/SettingPage';
-import ProfilePage from '@/pages/UserPage/components/UserPostPage';
-import VerifyPage from '@/pages/VerifyPage';
-import ViewPostDetailPage from '@/pages/ViewPostDetailPage';
 import React, { lazy } from 'react';
 import { useNavigate, useRoutes } from 'react-router-dom';
 
 const NotFountPage = lazy(() => import('@/pages/NotFoundPage'));
+const ForbiddenPage = lazy(() => import('@/pages/ForbiddenPage'));
+const VerifyPage = lazy(() => import('@/pages/VerifyPage'));
+const RolePage = lazy(() => import('@/pages/RolePage'));
+const ForgotPasswordPage = lazy(() => import('@/pages/ForgotPasswordPage'));
 const RegisterPage = lazy(() => import('@/pages/RegisterPage'));
+const LoginPage = lazy(() => import('@/pages/LoginPage'));
+
+const SettingPage = lazy(() => import('@/pages/UserPage/components/SettingPage'));
+const UserPage = lazy(() => import('@/pages/UserPage'));
+const ProfilePage = lazy(() => import('@/pages/UserPage/components/UserPostPage'));
+const InterestedPosts = lazy(() => import('@/pages/UserPage/components/InterestedPosts'));
+const AddressPage = lazy(() => import('@/pages/UserPage/components/AddressPage'));
+
+const JoinPostPage = lazy(() => import('@/pages/PostPage/JoinPostPage'));
+const PassPostPage = lazy(() => import('@/pages/PostPage/PassPostPage'));
+const PostPageWrapper = lazy(() => import('@/pages/PostPage/PostPageWrapper'));
+const RentalPostPage = lazy(() => import('@/pages/PostPage/RentalPostPage'));
+const WantedPostPage = lazy(() => import('@/pages/PostPage/WantedPostPage'));
+const SearchPage = lazy(() => import('@/pages/SearchPage'));
+const ViewPostDetailPage = lazy(() => import('@/pages/ViewPostDetailPage'));
+
+const ConversationPage = lazy(() => import('@/pages/ConversationPage'));
 
 const AppRoutes: React.FC = () => {
   const { pathname } = useUrl();
@@ -127,6 +131,10 @@ const AppRoutes: React.FC = () => {
         {
           path: '/search',
           element: <SearchPage />,
+        },
+        {
+          path: '/conversations/:conversationId',
+          element: <ConversationPage />,
         },
       ],
     },

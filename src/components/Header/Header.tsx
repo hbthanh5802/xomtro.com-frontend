@@ -1,6 +1,8 @@
 import LogoIcon2 from '@/assets/LogoIcon2';
 import DrawerWrapper from '@/components/DrawerWrapper';
 import Account from '@/components/Header/Account';
+import MessageButton from '@/components/Header/MessageButton';
+import NotificationButton from '@/components/Header/NotificationButton';
 import SearchBar from '@/components/Header/SearchBar';
 import MobileSearchBar from '@/components/MobileSearchBar/MobileSearchBar';
 import NavBar from '@/pages/HomePage/components/NavBar';
@@ -93,6 +95,7 @@ const Header = () => {
                   size='md'
                   startDecorator={<FaPlus />}
                   sx={(theme) => ({
+                    borderRadius: '40px',
                     [theme.breakpoints.down('sm')]: {
                       display: 'none',
                     },
@@ -155,6 +158,10 @@ const Header = () => {
                   )}
                 </Menu>
               </Dropdown>
+              <div className='tw-flex tw-items-center tw-gap-3 tw-pr-[12px]'>
+                <NotificationButton />
+                <MessageButton />
+              </div>
               <Account />
             </div>
             <div className='tablet:tw-hidden tw-gap-[12px] tw-flex-1 tw-flex tw-justify-end tw-text-right tw-items-center'>

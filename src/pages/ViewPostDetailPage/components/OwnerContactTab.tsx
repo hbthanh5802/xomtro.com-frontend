@@ -1,6 +1,8 @@
 import { useClipboard } from '@/hooks/useClipboard';
 import useUserApiHook from '@/hooks/useUserApi.hook';
 import analyticService, { GetPostsCountByTypeWithPostConditionsResponseType } from '@/services/analytic.service';
+import conversationService from '@/services/conversation.service';
+import { useAppStore } from '@/store/store';
 import { PostSelectSchemaType } from '@/types/schema.type';
 import { handleAxiosError } from '@/utils/constants.helper';
 import { Avatar, Button, Chip, Divider, Skeleton, Tooltip, Typography } from '@mui/joy';
@@ -11,6 +13,8 @@ import { IoChatboxEllipsesOutline } from 'react-icons/io5';
 import { MdEmail, MdLocalPhone } from 'react-icons/md';
 import { SiZalo } from 'react-icons/si';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+import { useShallow } from 'zustand/react/shallow';
 
 interface OwnerContactTabProps {
   post: PostSelectSchemaType;
@@ -19,8 +23,15 @@ const OwnerContactTab = (props: OwnerContactTabProps) => {
   const { post } = props;
   const navigate = useNavigate();
   const { isCopied, copyToClipboard } = useClipboard();
+  const [createConversationLoading, setCreateConversationLoading] = React.useState(false);
   const [userPostCount, setUserPostCount] = React.useState<GetPostsCountByTypeWithPostConditionsResponseType[] | null>(
     null,
+  );
+
+  const { currentUser } = useAppStore(
+    useShallow((state) => ({
+      currentUser: state.currentUser,
+    })),
   );
 
   const { data: getUserDetailResponse, isFetching: getUserDetailLoading } = useUserApiHook.useUserDetail(
@@ -41,6 +52,28 @@ const OwnerContactTab = (props: OwnerContactTabProps) => {
   const userContacts = getUserContactResponse?.data;
   const userDetail = getUserDetailResponse?.data;
   const userAvatar = getUserAvatarResponse?.data;
+
+  const handleCreateIndividualConversation = async () => {
+    const toastId = toast.loading('Vui lòng chờ. Bạn sẽ được chuyển hướng ngay sau đó!');
+    if (!currentUser) {
+      toast.info('Vui lòng đăng nhập trước để nhắn tin.', { id: toastId });
+      return;
+    }
+    setCreateConversationLoading(true);
+    try {
+      const response = await conversationService.createIndividualConversation({
+        members: [currentUser.userId, Number(post.ownerId)],
+      });
+      const conversationId = response.data.id;
+      navigate(`/conversations/${conversationId}`);
+    } catch (error) {
+      toast.error('Có lỗi xảy ra. Hãy thử lại liên hệ bằng những phương thức khác.', { id: toastId });
+      console.log(handleAxiosError(error));
+    } finally {
+      toast.dismiss(toastId);
+      setCreateConversationLoading(false);
+    }
+  };
 
   React.useEffect(() => {
     const fetchUserPostCount = async () => {
@@ -171,15 +204,20 @@ const OwnerContactTab = (props: OwnerContactTabProps) => {
               </Button>
             )}
 
-            <Button
-              color='neutral'
-              variant='outlined'
-              size='lg'
-              fullWidth
-              startDecorator={<IoChatboxEllipsesOutline className='tw-text-[20px]' />}
-            >
-              Nhắn tin
-            </Button>
+            {currentUser?.userId !== post.ownerId && (
+              <Button
+                disabled={createConversationLoading}
+                loading={createConversationLoading}
+                onClick={handleCreateIndividualConversation}
+                color='neutral'
+                variant='outlined'
+                size='lg'
+                fullWidth
+                startDecorator={<IoChatboxEllipsesOutline className='tw-text-[20px]' />}
+              >
+                Nhắn tin
+              </Button>
+            )}
 
             <div className='tw-pt-4'>
               <Typography
