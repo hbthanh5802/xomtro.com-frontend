@@ -47,7 +47,7 @@ const AppRoutes: React.FC = () => {
   const routes = useRoutes([
     {
       path: '/auth',
-      element: <BlankLayout></BlankLayout>,
+      element: <BlankLayout />,
       children: [
         {
           path: 'register',

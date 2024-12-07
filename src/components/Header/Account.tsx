@@ -4,7 +4,8 @@ import { Avatar, Badge, Box, Dropdown, ListDivider, Menu, MenuButton, MenuItem, 
 import React from 'react';
 import { FaAngleDown, FaClipboardUser } from 'react-icons/fa6';
 import { IoMdHeart } from 'react-icons/io';
-import { MdOutlineHelp, MdOutlineLogout } from 'react-icons/md';
+import { MdNotifications, MdOutlineHelp, MdOutlineLogout } from 'react-icons/md';
+import { TbMessageFilled } from 'react-icons/tb';
 import { useNavigate } from 'react-router-dom';
 import { useShallow } from 'zustand/react/shallow';
 
@@ -100,6 +101,34 @@ const Account = () => {
             </MenuItem>
           );
         })}
+        <MenuItem
+          sx={(theme) => ({
+            [theme.breakpoints.up('md')]: {
+              display: 'none',
+            },
+          })}
+          variant='plain'
+          onClick={() => navigate('/notifications')}
+        >
+          <div className='tw-flex tw-items-center tw-gap-2'>
+            <MdNotifications className='tw-flex tw-text-xl' />
+            Thông báo
+          </div>
+        </MenuItem>
+        <MenuItem
+          sx={(theme) => ({
+            [theme.breakpoints.up('md')]: {
+              display: 'none',
+            },
+          })}
+          variant='plain'
+          onClick={() => navigate('/conversations/me')}
+        >
+          <div className='tw-flex tw-items-center tw-gap-2'>
+            <TbMessageFilled className='tw-flex tw-text-lg' />
+            Tin nhắn
+          </div>
+        </MenuItem>
         <ListDivider />
         <MenuItem onClick={() => logoutUser()} color='danger'>
           <div className='tw-flex tw-items-center tw-gap-2'>

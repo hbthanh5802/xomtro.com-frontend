@@ -24,11 +24,11 @@ class conversationService {
     });
   }
 
-  getConversationMessages(conversationId: number, pagination: PaginationType) {
+  getConversationMessages(conversationId: number, options: PaginationType & { sentAt?: 'asc' | 'desc' }) {
     return axiosAuthRequest<GetConversationMessagesResponseType>({
       method: 'GET',
       url: `/conversations/${conversationId}/messages`,
-      params: { ...pagination },
+      params: { ...options },
     });
   }
 

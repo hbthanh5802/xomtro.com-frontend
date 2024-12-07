@@ -236,7 +236,7 @@ const Header = () => {
             </div>
           </div>
         ) : (
-          <div className='tw-flex tw-gap-[8px] tw-flex-1 tw-text-right tw-self-end tw-justify-end'>
+          <div className='tw-flex tw-flex-wrap tw-gap-[8px] tw-flex-1 tw-text-right tw-self-end tw-justify-end'>
             <Button onClick={() => history.push('/auth/login')} size='md' className='tw-ml-auto'>
               Đăng nhập
             </Button>

@@ -8,7 +8,7 @@ import LogoIcon from '@/assets/LogoIcon';
 import Account from '@/components/Header/Account';
 import React from 'react';
 
-const NotFoundPage = () => {
+const LoadingOverlay = () => {
   const { currentUser } = useAppStore(
     useShallow((state) => ({
       currentUser: state.currentUser,
@@ -18,7 +18,7 @@ const NotFoundPage = () => {
   return (
     <React.Fragment>
       <header className='tw-sticky tw-top-0 tw-inset-x-0 red tw-z-[999]'>
-        <div className='tw-w-screen tw-p-[12px] tw-px-[24px] tw-bg-primaryColor tw-flex tw-justify-between tw-items-center'>
+        <div className='tw-w-screen tw-p-[12px] tw-px-[24px] tw-bg-white/30 tw-backdrop-blur-sm tw-flex tw-justify-between tw-items-center'>
           {/* Logo */}
           <Link to={'/home/rental'} className='tw-mr-[24px] tw-flex-1 tw-flex tw-items-center tw-gap-2 tw-select-none'>
             {/* <IconButton variant='soft' color='primary' size='md'> */}
@@ -47,13 +47,13 @@ const NotFoundPage = () => {
           )}
         </div>
       </header>
-      <div className='tw-flex tw-flex-col tw-items-center tw-justify-center tw-w-screen tw-h-screen tw-gap-12 tw-py-8 tw-bg-primaryColor'>
+      <div className='tw-flex tw-flex-col tw-items-center tw-justify-center tw-w-screen tw-h-screen tw-gap-12 tw-py-8 tw-bg-white/30 tw-backdrop-blur-sm'>
         <div className='tw-text-white tw-text-center tw-pb-[200px]'>
-          <p className='tw-bg-clip-text tw-text-transparent tw-bg-gradient-to-r tw-from-slate-200/0 tw-to-70% tw-to-orange-200 tw-text-[64px] tablet:tw-text-[100px] laptop:tw-text-[200px] tw-font-bold tw-animate-fade-left tw-animate-duration-500 tw-animate-delay-0 tw-animate-normal'>
-            404
+          <p className='tw-bg-clip-text tw-text-transparent tw-bg-gradient-to-r tw-from-primaryColor tw-to-70% tw-to-orange-200 tw-text-[48px] tablet:tw-text-[50px] laptop:tw-text-[100px] tw-font-bold tw-animate-fade-left tw-animate-duration-500 tw-animate-delay-0 tw-animate-normal'>
+            Vui lòng chờ...
           </p>
-          <p className='tw-bg-clip-text tw-text-transparent tw-bg-gradient-to-r tw-from-orange-200 tw-to-70% tw-to-slate-200/50 tw-text-[24px] tablet:tw-text-[32px] laptop:tw-text-[48px] tw-font-semibold tw-animate-fade-right tw-animate-duration-500 tw-animate-delay-100 tw-animate-normal'>
-            Trang bạn truy cập không tồn tại!
+          <p className='tw-bg-clip-text tw-text-transparent tw-bg-gradient-to-r tw-from-orange-200 tw-to-70% tw-to-primaryColor tw-text-[24px] tablet:tw-text-[32px] laptop:tw-text-[48px] tw-font-semibold tw-animate-fade-right tw-animate-duration-500 tw-animate-delay-100 tw-animate-normal'>
+            Xóm Trọ
           </p>
         </div>
       </div>
@@ -61,4 +61,4 @@ const NotFoundPage = () => {
   );
 };
 
-export default NotFoundPage;
+export default LoadingOverlay;

@@ -1,7 +1,8 @@
 import assetService from '@/services/asset.service';
 import { AspectRatio, Skeleton } from '@mui/joy';
 import React from 'react';
-import Lightbox from 'react-image-lightbox';
+import Lightbox from 'yet-another-react-lightbox';
+import Zoom from 'yet-another-react-lightbox/plugins/zoom';
 
 interface MessageImageProps {
   assetId: number;
@@ -30,6 +31,7 @@ const MessageImage = (props: MessageImageProps) => {
       >
         <Skeleton loading={fetchingAssetData}>
           <img
+            loading='lazy'
             className='tw-h-auto tw-cursor-pointer'
             src={getAssetResponse?.data[0].url}
             alt={getAssetResponse?.data[0].name}
@@ -38,7 +40,16 @@ const MessageImage = (props: MessageImageProps) => {
         </Skeleton>
       </AspectRatio>
       {openLightbox && getAssetResponse && (
-        <Lightbox mainSrc={getAssetResponse?.data[0].url} onCloseRequest={() => setOpenLightBox(false)} />
+        <Lightbox
+          carousel={{
+            finite: true,
+          }}
+          plugins={[Zoom]}
+          controller={{ closeOnPullDown: true, closeOnBackdropClick: true }}
+          open={openLightbox}
+          close={() => setOpenLightBox(false)}
+          slides={[{ src: getAssetResponse.data[0].url }]}
+        />
       )}
     </>
   );

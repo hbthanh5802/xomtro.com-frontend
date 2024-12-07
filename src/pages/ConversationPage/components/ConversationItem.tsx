@@ -24,7 +24,7 @@ const ConversationItem = (props: ConversationItemProps) => {
         selectedConversation?.chatId === chatId ? 'tw-bg-backgroundColor' : ''
       } tw-rounded tw-cursor-pointer`}
     >
-      <AvatarWithStatus size='md' userId={userId} isOnline={true} />
+      <AvatarWithStatus size='md' userId={userId} />
       <div className='tw-overflow-hidden tw-hidden tablet:tw-block'>
         <Typography level='title-md'>
           <Skeleton loading={fetchingUserDetail}>{`${userDetail?.firstName ?? ''} ${userDetail?.lastName}`}</Skeleton>

@@ -10,12 +10,12 @@ import App from './App.tsx';
 import './index.css';
 
 createRoot(document.getElementById('root')!).render(
-  // <StrictMode>
-  <CustomRouter history={history}>
-    <Toaster expand richColors />
-    <GoogleOAuthProvider clientId={env.GG_CLIENT_ID}>
-      <App />
-    </GoogleOAuthProvider>
-  </CustomRouter>,
-  // </StrictMode>,
+  <StrictMode>
+    <CustomRouter history={history}>
+      <Toaster expand richColors />
+      <GoogleOAuthProvider clientId={env.GG_CLIENT_ID}>
+        <App />
+      </GoogleOAuthProvider>
+    </CustomRouter>
+  </StrictMode>,
 );

@@ -1,10 +1,12 @@
 import useUserApiHook from '@/hooks/useUserApi.hook';
 import AvatarWithStatus from '@/pages/ConversationPage/components/AvatarWithStatus';
+import { useAppStore } from '@/store/store';
 import { GetIndividualConversationResponseType } from '@/types/conservation.type';
 import { Button, Skeleton, Typography } from '@mui/joy';
 import { FaCircle } from 'react-icons/fa6';
 import { FiUser } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
+import { useShallow } from 'zustand/react/shallow';
 
 interface ConversationHeaderProps {
   selectedConversation: GetIndividualConversationResponseType | null;
@@ -20,12 +22,17 @@ const ConversationHeader = (props: ConversationHeaderProps) => {
     },
   );
   const userDetail = UserDetailResponse?.data;
-  const isOnline = true;
+  const { onlineUsers } = useAppStore(
+    useShallow((state) => ({
+      onlineUsers: state.onlineUsers,
+    })),
+  );
+  const isOnline = onlineUsers.find((onlineUser) => onlineUser === selectedConversation?.userId?.toString());
 
   return (
     <section className='tw-p-[24px] tw-bg-white tw-border-b tw-flex tw-flex-col laptop:tw-flex-row laptop:tw-items-center tw-justify-between tw-gap-2'>
       <div className='tw-flex tw-gap-[18px] tw-items-start'>
-        <AvatarWithStatus size='lg' isOnline={true} userId={selectedConversation?.userId} />
+        <AvatarWithStatus size='lg' userId={selectedConversation?.userId} />
         <div>
           <div className='tw-flex tw-flex-col laptop:tw-flex-row tw-items-start laptop:tw-items-center laptop:tw-gap-3'>
             <Typography level='title-lg'>
