@@ -106,6 +106,11 @@ const MessageInput = (props: MessageInputProps) => {
           value={messageValue}
           minRows={3}
           maxRows={10}
+          sx={{
+            '& textarea:first-of-type': {
+              minHeight: 72,
+            },
+          }}
           endDecorator={
             <Stack
               direction='row'
@@ -150,11 +155,6 @@ const MessageInput = (props: MessageInputProps) => {
             if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
               handleSendMessage();
             }
-          }}
-          sx={{
-            '& textarea:first-of-type': {
-              minHeight: 72,
-            },
           }}
         />
       </FormControl>

@@ -8,6 +8,7 @@ type userState = {
   userAvatar: AssetSelectSchemaType | null;
   userLocation: GeocodingReverseResponseType | null;
   userAddress: AddressSelectSchemaType | null;
+  locationPermissionStatus: 'granted' | 'prompt' | 'denied' | null;
 };
 
 type userActions = {
@@ -16,6 +17,7 @@ type userActions = {
   fetchUserAvatar: () => Promise<void>;
   fetchUserLocation: (latitude: number, longitude: number) => Promise<void>;
   setUserLocation: (userLocation: GeocodingReverseResponseType) => void;
+  setLocationPermissionStatus: (status: 'granted' | 'prompt' | 'denied') => void;
   resetUserState: () => void;
 };
 
@@ -23,6 +25,7 @@ const initialState: userState = {
   userAvatar: null,
   userLocation: null,
   userAddress: null,
+  locationPermissionStatus: null,
 };
 
 export type userSlice = userState & userActions;
@@ -43,12 +46,16 @@ export const createUserSlice: StateCreator<userSlice, UserMiddlewares, [], userS
     set((state) => {
       state.userLocation = data;
     }),
+  setLocationPermissionStatus: (status: 'granted' | 'prompt' | 'denied') =>
+    set((state) => {
+      state.locationPermissionStatus = status;
+    }),
   fetchUserLocation: async (latitude: number, longitude: number) => {
     // eslint-disable-next-line no-useless-catch
     try {
       const response = await locationService.getGeoCodingReverse(latitude, longitude);
       const { data } = response;
-      return set((state) => {
+      set((state) => {
         state.userLocation = data;
       });
     } catch (error) {

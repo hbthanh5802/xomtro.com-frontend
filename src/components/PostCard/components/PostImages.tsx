@@ -2,8 +2,8 @@ import { PostCardDataType } from '@/components/PostCard/PostCardWrapper';
 import { Button } from '@mui/joy';
 import React from 'react';
 import { Gallery, Image, ThumbnailImageComponentImageProps } from 'react-grid-gallery';
-import Lightbox from 'react-image-lightbox';
-import 'react-image-lightbox/style.css';
+import Lightbox from 'yet-another-react-lightbox';
+import Zoom from 'yet-another-react-lightbox/plugins/zoom';
 // import { AspectRatio } from '@mui/joy';
 
 interface PostImagesProps {
@@ -70,7 +70,7 @@ const getDynamicRowHeight = (images: Image[]) => {
 
 const PostImages = (props: PostImagesProps) => {
   const { assets, post } = props.data;
-  const [index, setIndex] = React.useState(-1);
+  const [open, setOpen] = React.useState(false);
 
   const images = React.useMemo(() => {
     return assets.reduce((acc, currentAsset) => {
@@ -87,19 +87,18 @@ const PostImages = (props: PostImagesProps) => {
     }, [] as Image[]);
   }, [assets, post.title]);
 
+  const lightBoxSlides = React.useMemo(
+    () =>
+      assets.map((asset) => ({
+        src: asset.url,
+      })),
+    [assets],
+  );
+
   const dynamicImages = generateDynamicImageSizes(images);
   const dynamicRowHeight = getDynamicRowHeight(images);
 
-  const currentImage = dynamicImages[index];
-  const nextIndex = (index + 1) % dynamicImages.length;
-  const nextImage = dynamicImages[nextIndex] || currentImage;
-  const prevIndex = (index + dynamicImages.length - 1) % dynamicImages.length;
-  const prevImage = dynamicImages[prevIndex] || currentImage;
-
-  const handleClick = (index: number) => setIndex(index);
-  const handleClose = () => setIndex(-1);
-  const handleMovePrev = () => setIndex(prevIndex);
-  const handleMoveNext = () => setIndex(nextIndex);
+  const handleClick = () => setOpen(true);
 
   return (
     <div className='tw-relative tw-flex tw-justify-center tw-text-center tw-px-[12px] tw-gap-1 tw-mt-[12px]'>
@@ -112,23 +111,20 @@ const PostImages = (props: PostImagesProps) => {
         enableImageSelection={false}
         thumbnailImageComponent={({ imageProps }) => <LazyThumbnail imageProps={imageProps} />}
       />
-      {!!currentImage && (
-        <Lightbox
-          mainSrc={currentImage.src}
-          imageTitle={currentImage.caption}
-          mainSrcThumbnail={currentImage.src}
-          nextSrc={nextImage.src}
-          nextSrcThumbnail={nextImage.src}
-          prevSrc={prevImage.src}
-          prevSrcThumbnail={prevImage.src}
-          onCloseRequest={handleClose}
-          onMovePrevRequest={handleMovePrev}
-          onMoveNextRequest={handleMoveNext}
-        />
-      )}
+      <Lightbox
+        carousel={{
+          finite: false,
+          preload: 2,
+        }}
+        plugins={[Zoom]}
+        controller={{ closeOnPullDown: true, closeOnBackdropClick: true }}
+        open={open}
+        close={() => setOpen(false)}
+        slides={lightBoxSlides}
+      />
 
       {dynamicImages.length > 6 && (
-        <Button variant='soft' onClick={() => handleClick(6)}>
+        <Button variant='soft' onClick={() => handleClick()}>
           Xem thêm ảnh
         </Button>
       )}

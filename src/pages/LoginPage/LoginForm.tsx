@@ -21,10 +21,11 @@ const LoginForm: React.FC = () => {
   const navigate = useNavigate();
   const { setError } = methods;
   const { isValid, isSubmitting } = methods.formState;
-  const { setCurrentUser, setAccessToken } = useAppStore(
+  const { setCurrentUser, setAccessToken, connectSocket } = useAppStore(
     useShallow((state) => ({
       setCurrentUser: state.setCurrentUser,
       setAccessToken: state.setAccessToken,
+      connectSocket: state.connectSocket,
     })),
   );
 
@@ -56,6 +57,7 @@ const LoginForm: React.FC = () => {
         const { accessToken } = meta;
         setCurrentUser(userDetail);
         setAccessToken(accessToken);
+        connectSocket();
         navigate('/home');
       }
     },

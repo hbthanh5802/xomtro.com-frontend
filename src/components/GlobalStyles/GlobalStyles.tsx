@@ -1,5 +1,6 @@
 import { CssBaseline, CssVarsProvider, extendTheme, GlobalStyles as MuiGlobalStyles } from '@mui/joy';
 import React, { ReactNode } from 'react';
+import 'yet-another-react-lightbox/styles.css';
 import './GlobalStyles.css';
 
 interface GlobalStylesTypeProps {

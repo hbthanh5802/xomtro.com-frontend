@@ -1,3 +1,4 @@
+import CreateConversationButton from '@/components/CreateConversationButton';
 import ModalLayout from '@/components/ModalLayout';
 import RHFInput from '@/components/RHFInput';
 import RHFSelect from '@/components/RHFSelect';
@@ -307,6 +308,7 @@ const UserContacts = () => {
               </div>
             );
           })}
+          {currentUser?.userId !== Number(userId) && <CreateConversationButton receiverId={Number(userId)!} />}
         </main>
       </div>
     </React.Fragment>

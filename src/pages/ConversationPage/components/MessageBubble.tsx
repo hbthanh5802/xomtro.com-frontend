@@ -50,7 +50,7 @@ const MessageBubble = (props: MessageBubbleProps) => {
 
   return (
     <div className={`tw-flex tw-mb-3 ${isMe ? 'tw-justify-end' : 'tw-justify-start'}`}>
-      <div className='tw-max-w-full tablet:tw-max-w-[60%] tw-w-auto'>
+      <div className='tw-max-w-full laptop:tw-max-w-[60%] tw-w-auto'>
         <div className='tw-flex tw-items-start tw-gap-2'>
           {!isMe && <AvatarWithStatus userId={data.senderId} />}
           <Tooltip
@@ -65,21 +65,34 @@ const MessageBubble = (props: MessageBubbleProps) => {
                     <Skeleton loading={fetchingUserDetail}>{!isMe ? userDetail?.lastName : 'Bạn'}</Skeleton>
                   </Typography>
                 </div>
-                {data.content && (
+                {data.isRecalled ? (
                   <div
                     className={`tw-py-2 tw-w-fit tw-px-3 tw-text-[14px] tw-rounded-xl ${
-                      isMe
-                        ? 'tw-rounded-tr-none tw-bg-primaryColor tw-text-white'
-                        : 'tw-rounded-tl-none tw-bg-white tw-border'
-                    } ${data.isRecalled ? 'tw-bg-slate-300/50 !tw-text-slate-800 !tw-border' : ''}`}
+                      isMe ? 'tw-rounded-tr-none' : 'tw-rounded-tl-none'
+                    } !tw-bg-slate-300/50 !tw-text-slate-800 !tw-border`}
                   >
                     {data.isRecalled ? 'Tin nhắn đã bị thu hồi.' : data.content}
                   </div>
+                ) : (
+                  <>
+                    {data.content && (
+                      <div
+                        className={`tw-py-2 tw-w-fit tw-px-3 tw-text-[14px] tw-rounded-xl ${
+                          isMe
+                            ? 'tw-rounded-tr-none tw-bg-primaryColor tw-text-white'
+                            : 'tw-rounded-tl-none tw-bg-white tw-border'
+                        }`}
+                      >
+                        {data.content}
+                      </div>
+                    )}
+                    {!!data.assetId && <MessageImage assetId={data.assetId} />}
+                  </>
                 )}
+                {}
               </div>
-              {!!data.assetId && !data.isRecalled && <MessageImage assetId={data.assetId} />}
               {/* <Typography level='body-xs'>{formatTimeForVietnamese(data.sentAt, 'HH:mm:ss DD/MM/YYYY')}</Typography> */}
-              {!data.isRecalled && isMe && (
+              {isMe && (
                 <div className='tw-absolute tw-hidden group-hover:tw-block tw-top-0 -tw-right-0 tw-z-10'>
                   <Chip
                     disabled={recallMessage}

@@ -1,4 +1,5 @@
 import { authSlice } from '@/store/authSlice';
+import { conversationSlice, createConversationSlice } from '@/store/conversationStore';
 import { userSlice } from '@/store/userSlice';
 import { create } from 'zustand';
 import { createJSONStorage, devtools, persist, subscribeWithSelector } from 'zustand/middleware';
@@ -27,7 +28,7 @@ import { createUserSlice } from './userSlice';
 //   },
 // };
 
-type Store = authSlice & userSlice & postFilterSlice;
+type Store = authSlice & userSlice & postFilterSlice & conversationSlice;
 
 export const useAppStore = create<Store>()(
   devtools(
@@ -37,11 +38,17 @@ export const useAppStore = create<Store>()(
           ...createAuthSlice(...a),
           ...createUserSlice(...a),
           ...createPostFilterSlice(...a),
+          ...createConversationSlice(...a),
         })),
       ),
       {
         name: 'xomtro.com',
         storage: createJSONStorage(() => localStorage),
+        partialize: (state) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { socketInstance, whereConditions, orderConditions, pagination, ...other } = state;
+          return other;
+        },
       },
     ),
   ),

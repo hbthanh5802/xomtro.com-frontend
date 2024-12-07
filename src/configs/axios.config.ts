@@ -10,7 +10,7 @@ import queryString from 'query-string';
 import { toast } from 'sonner';
 
 type HttpMethods = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
-interface ApiResponse<T = any> {
+interface ApiResponse<T = unknown> {
   statusCode: number;
   message: string;
   data: T;
@@ -20,7 +20,7 @@ interface customAxiosRequestConfig extends AxiosRequestConfig {
 }
 
 const axiosClient = axios.create({
-  baseURL: env.BASE_URL,
+  baseURL: `${env.BASE_URL}/api`,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -28,7 +28,7 @@ const axiosClient = axios.create({
 });
 
 const axiosAuth = axios.create({
-  baseURL: env.BASE_URL,
+  baseURL: `${env.BASE_URL}/api`,
   paramsSerializer: (params) => queryString.stringify(params),
   withCredentials: true,
   headers: {
@@ -64,7 +64,7 @@ axiosClient.interceptors.response.use(
   },
 );
 
-let refreshTokenRequest: any = null;
+let refreshTokenRequest: unknown = null;
 axiosAuth.interceptors.request.use(
   async (config) => {
     let accessToken = useAppStore.getState().accessToken;
@@ -73,7 +73,7 @@ axiosAuth.interceptors.request.use(
 
     if (decodeToken.exp! < date.getTime() / 1000) {
       console.log('Expired');
-      refreshTokenRequest = !!refreshTokenRequest ? refreshTokenRequest : authService.refreshUserToken();
+      refreshTokenRequest = refreshTokenRequest ? refreshTokenRequest : authService.refreshUserToken();
       try {
         const response = (await refreshTokenRequest) as ApiResponse<TokenResponseType>;
         if (response && response.data) {
@@ -121,10 +121,10 @@ axiosAuth.interceptors.response.use(
   },
 );
 
-export const axiosRequest = <T = any>(config: customAxiosRequestConfig): Promise<ApiResponse<T>> => {
+export const axiosRequest = <T = unknown>(config: customAxiosRequestConfig): Promise<ApiResponse<T>> => {
   return axiosClient(config) as Promise<ApiResponse<T>>;
 };
 
-export const axiosAuthRequest = <T = any>(config: customAxiosRequestConfig): Promise<ApiResponse<T>> => {
+export const axiosAuthRequest = <T = unknown>(config: customAxiosRequestConfig): Promise<ApiResponse<T>> => {
   return axiosAuth(config) as Promise<ApiResponse<T>>;
 };
