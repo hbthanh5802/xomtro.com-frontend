@@ -16,3 +16,8 @@ export type InsertJoinPostDataType = z.infer<typeof insertJoinPostValidation>;
 export type InsertPassPostDataType = z.infer<typeof insertPassPostValidation>;
 
 export type InsertPassPostItemDataType = z.infer<typeof insertPassPostItemValidation>;
+
+export type RenewPostDataType = {
+  expirationAfter: number | undefined;
+  expirationAfterUnit: 'hour' | 'day' | 'week' | 'month';
+};

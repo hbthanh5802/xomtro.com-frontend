@@ -8,6 +8,9 @@ export default {
         backgroundColor: '#F5F5FA',
         primaryColor: '#0B6BCB',
       },
+      fontFamily: {
+        writing: 'Pacifico',
+      },
     },
     screens: {
       tablet: '640px',

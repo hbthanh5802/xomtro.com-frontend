@@ -1,3 +1,4 @@
+import MapBox from '@/components/MapBox';
 import { useAppStore } from '@/store/store';
 import { Typography } from '@mui/joy';
 import { useShallow } from 'zustand/react/shallow';
@@ -11,7 +12,7 @@ const LocationTab = () => {
   );
 
   return (
-    <div className='tw-border tw-bg-white tw-rounded tw-shadow tw-m-2 tw-ml-[12px] tw-p-2'>
+    <div className='tw-border tw-bg-transparent tw-rounded tw-shadow-sm tw-m-2 tw-ml-[12px] tw-p-2'>
       <div className='tw-flex tw-gap-4 tw-items-start'>
         <div className='tw-relative tw-mt-[6px]'>
           <span
@@ -50,7 +51,7 @@ const LocationTab = () => {
                 <Typography level='body-sm'>{userLocation.longitude}</Typography>
               </div> */}
               <div className='tw-flex tw-flex-wrap tw-items-center tw-gap-1'>
-                <Typography level='title-sm'>Địa chỉ:</Typography>
+                <Typography level='title-sm'>Vị trí của bạn:</Typography>
                 <Typography level='body-sm'>{userLocation.addressComponents.slice(1).join(', ')}</Typography>
               </div>
             </div>
@@ -58,6 +59,17 @@ const LocationTab = () => {
             <Typography level='body-sm'>Chưa có thông tin vị trí của bạn</Typography>
           )}
         </div>
+      </div>
+      <div className='tw-mt-4'>
+        {userLocation && (
+          <MapBox
+            dragPan
+            doubleClickZoom
+            scrollZoom
+            center={[userLocation?.longitude, userLocation?.latitude]}
+            className='tw-w-full tw-h-[300px]'
+          />
+        )}
       </div>
     </div>
   );

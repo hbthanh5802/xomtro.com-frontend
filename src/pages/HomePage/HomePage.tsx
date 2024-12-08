@@ -2,6 +2,7 @@ import DrawerWrapper from '@/components/DrawerWrapper';
 import FilterBar from '@/pages/HomePage/components/FilterBar';
 import NavBar from '@/pages/HomePage/components/NavBar';
 import NavBarMobile from '@/pages/HomePage/components/NavBarMobile';
+import RecommendPanel from '@/pages/HomePage/components/RecommendPanel';
 import addressService from '@/services/address.service';
 import {
   OrderConditionType,
@@ -80,7 +81,7 @@ const HomePage = () => {
         <div className='tw-hidden tablet:tw-block tw-sticky laptop:tw-hidden tw-top-0 tw-left-0 tw-z-50'>
           <NavBarMobile />
         </div>
-        <div className='tw-relative tw-px-2 tw-flex-1 tw-w-0 laptop:tw-flex-none laptop:tw-px-2 tablet:tw-w-[680px] tabletLg:tw-w-[700px] laptop:tw-w-[800px] tw-mt-[40px] tw-mx-auto'>
+        <div className='tw-relative tw-px-2 tw-flex-1 tw-w-0 laptop:tw-flex-none laptop:tw-px-2 tablet:tw-w-[680px] tabletLg:tw-w-[700px] laptop:tw-w-[800px] tw-mt-[8px] tw-mx-auto'>
           <div className='tw-fixed tw-block laptop:tw-hidden tw-right-[-4px] tw-top-[var(--header-height)] tw-z-50'>
             <Button
               variant='solid'
@@ -95,7 +96,10 @@ const HomePage = () => {
               <MdFilterAlt />
             </IconButton> */}
           </div>
-          <Outlet context={{ whereConditions, orderConditions }} />
+          <div>
+            <RecommendPanel setWhereConditions={handleSetWhereConditions} />
+            <Outlet context={{ whereConditions, orderConditions }} />
+          </div>
         </div>
         <div className='tw-hidden laptop:tw-block laptop:tw-sticky laptop:tw-w-[360px] tw-top-[8px]  tw-right-[0px] tw-z-50 tw-max-h-[calc(100dvh-60px)] tw-overflow-y-auto tw-scrollbar-none tw-m-2 tw-rounded'>
           <FilterBar setWhereConditions={handleSetWhereConditions} setOrderConditions={handleSetOrderConditions} />

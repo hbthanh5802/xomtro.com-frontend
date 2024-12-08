@@ -1,5 +1,7 @@
+import useUrl from '@/hooks/useUrl.hook';
 import ConversationView from '@/pages/ConversationPage/components/ConversationView';
 import SideBar from '@/pages/ConversationPage/components/SideBar';
+import conversationService from '@/services/conversation.service';
 import { useAppStore } from '@/store/store';
 import { GetIndividualConversationResponseType } from '@/types/conservation.type';
 import React from 'react';
@@ -7,6 +9,9 @@ import { Navigate } from 'react-router-dom';
 import { useShallow } from 'zustand/react/shallow';
 
 const ConversationPage = () => {
+  const { params, search } = useUrl();
+  const { conversationId } = params;
+  const {slug} = search;
   const [selectedConversation, setSelectedConversation] = React.useState<GetIndividualConversationResponseType | null>(
     null,
   );
@@ -17,6 +22,20 @@ const ConversationPage = () => {
     })),
   );
   const handleChooseConversation = React.useCallback(setSelectedConversation, [setSelectedConversation]);
+  const { data: getUserIndividualConversationResponse } = conversationService.getUserIndividualConversations({
+    enabled: !!currentUser,
+  });
+  const userIndividualConversations = getUserIndividualConversationResponse?.data;
+
+  React.useEffect(() => {
+    if (conversationId && Number.isSafeInteger(Number(conversationId))) {
+      const conversation = userIndividualConversations?.find((con) => con.chatId === Number(conversationId));
+      if (conversation) {
+        console.log(conversation);
+        setSelectedConversation(conversation);
+      }
+    }
+  }, [userIndividualConversations, conversationId, slug]);
 
   if (!currentUser) {
     return <Navigate to={'/403'} />;

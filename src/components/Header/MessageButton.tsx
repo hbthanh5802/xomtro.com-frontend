@@ -22,7 +22,7 @@ const MessageButton = () => {
       toast('Bạn nhận được một tin nhắn mới!', {
         action: {
           label: 'Xem',
-          onClick: () => navigate(`/conversations/${newMessage.chatId}`),
+          onClick: () => navigate(`/conversations/${newMessage.chatId}?slug=${Math.random()}`),
         },
         position: pathname.startsWith('/conversations') ? 'top-center' : 'bottom-right',
       });

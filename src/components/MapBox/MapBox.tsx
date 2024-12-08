@@ -9,7 +9,12 @@ import { RiTrafficLightFill } from 'react-icons/ri';
 import { toast } from 'sonner';
 
 mapboxgl.accessToken = env.MAPBOX_API_KEY;
-const GOONG_API_KEY = env.GOONG_API_KEY as string;
+const apiKey = [env.GOONG_API_KEY_1, env.GOONG_API_KEY_2] as string[];
+
+const getGoongApiKey = () => {
+  const index = Math.floor(Math.random() * 2);
+  return apiKey[index];
+};
 
 interface MapBoxProps {
   center: [number, number]; // [longitude, latitude]
@@ -26,9 +31,9 @@ interface MapBoxProps {
 
 // Object quản lý các kiểu bản đồ
 const MapStyle = {
-  NORMAL: `https://tiles.goong.io/assets/goong_map_web.json?api_key=${GOONG_API_KEY}`,
-  SATELLITE: `https://tiles.goong.io/assets/goong_satellite.json?api_key=${GOONG_API_KEY}`,
-  TRAFFIC: `https://tiles.goong.io/assets/goong_traffic_map.json?api_key=${GOONG_API_KEY}`,
+  NORMAL: `https://tiles.goong.io/assets/goong_map_web.json?api_key=${getGoongApiKey()}`,
+  SATELLITE: `https://tiles.goong.io/assets/goong_satellite.json?api_key=${getGoongApiKey()}`,
+  TRAFFIC: `https://tiles.goong.io/assets/goong_traffic_map.json?api_key=${getGoongApiKey()}`,
   DARK: `mapbox://styles/mapbox/dark-v11`,
   LIGHT: `mapbox://styles/mapbox/light-v11`,
 } as const;

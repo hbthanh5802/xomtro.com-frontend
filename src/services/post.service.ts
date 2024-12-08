@@ -6,6 +6,7 @@ import {
   InsertPassPostDataType,
   InsertRentalPostDataType,
   InsertWantedPostDataType,
+  RenewPostDataType,
 } from '@/types/post.type';
 import {
   AssetSelectSchemaType,
@@ -216,6 +217,14 @@ class postServices {
     return axiosRequest({
       method: 'PUT',
       url: `/posts/${postId}/view`,
+    });
+  }
+
+  renewPost(postId: number, data: RenewPostDataType) {
+    return axiosAuthRequest({
+      method: 'PUT',
+      url: `/posts/${postId}/renew`,
+      data,
     });
   }
 }

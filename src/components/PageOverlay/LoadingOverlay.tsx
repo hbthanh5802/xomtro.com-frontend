@@ -25,7 +25,7 @@ const LoadingOverlay = () => {
             <LogoIcon size={32} />
             {/* <LogoIcon2 width={32} height={32} /> */}
             {/* </IconButton> */}
-            <div className='tw-hidden tablet:tw-inline-block tw-text-[24px] tw-font-bold tw-primary-gradient-lightest tw-gradient-text'>
+            <div className='tw-hidden tablet:tw-inline-block tw-text-[24px] tw-font-writing tw-primary-gradient-lightest tw-gradient-text'>
               Xóm trọ
             </div>
           </Link>
@@ -48,8 +48,8 @@ const LoadingOverlay = () => {
         </div>
       </header>
       <div className='tw-flex tw-flex-col tw-items-center tw-justify-center tw-w-screen tw-h-screen tw-gap-12 tw-py-8 tw-bg-white/30 tw-backdrop-blur-sm'>
-        <div className='tw-text-white tw-text-center tw-pb-[200px]'>
-          <p className='tw-bg-clip-text tw-text-transparent tw-bg-gradient-to-r tw-from-primaryColor tw-to-70% tw-to-orange-200 tw-text-[48px] tablet:tw-text-[50px] laptop:tw-text-[100px] tw-font-bold tw-animate-fade-left tw-animate-duration-500 tw-animate-delay-0 tw-animate-normal'>
+        <div className='tw-text-white tw-text-center tw-pb-[200px] tw-space-y-2'>
+          <p className='tw-bg-clip-text tw-text-transparent tw-bg-gradient-to-r tw-from-primaryColor tw-to-70% tw-to-orange-200 tw-text-[48px] tablet:tw-text-[50px] laptop:tw-text-[100px] tw-font-writing tw-animate-fade-left tw-animate-duration-500 tw-animate-delay-0 tw-animate-normal'>
             Vui lòng chờ...
           </p>
           <p className='tw-bg-clip-text tw-text-transparent tw-bg-gradient-to-r tw-from-orange-200 tw-to-70% tw-to-primaryColor tw-text-[24px] tablet:tw-text-[32px] laptop:tw-text-[48px] tw-font-semibold tw-animate-fade-right tw-animate-duration-500 tw-animate-delay-100 tw-animate-normal'>

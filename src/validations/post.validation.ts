@@ -110,3 +110,8 @@ export const insertPassPostValidation = createInsertSchema(passPosts)
       assets: z.array(imageFileValidation).optional(),
     }),
   );
+
+export const renewPostValidation = createInsertSchema(posts).pick({
+  expirationAfter: true,
+  expirationAfterUnit: true,
+});

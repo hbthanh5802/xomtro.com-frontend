@@ -4,6 +4,7 @@ import JoinDetail from '@/components/PostCard/components/JoinDetail';
 import PassDetail from '@/components/PostCard/components/PassDetail';
 import PostImages from '@/components/PostCard/components/PostImages';
 import PostTime from '@/components/PostCard/components/PostTime';
+import RenewPostForm from '@/components/PostCard/components/RenewPostForm';
 import RentalDetail from '@/components/PostCard/components/RentalDetail';
 import WantedDetail from '@/components/PostCard/components/WantedDetail';
 import ShareButtons from '@/components/ShareButton/ShareButton';
@@ -135,6 +136,7 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
   const navigate = useNavigate();
   const { origin } = useUrl();
   const [openShare, setOpenShare] = React.useState(false);
+  const [openRenewModal, setOpenRenewModal] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const { post, assets, distance } = props.data;
   const { ownerId } = post;
@@ -164,9 +166,14 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
 
   const handleCloseModal = () => {
     setShowDeleteModal(false);
+    setOpenRenewModal(false);
   };
 
-  const handleChangePostStatusClick = async () => {
+  const handleChangePostStatusClick = async (postStatus: 'actived' | 'unactived') => {
+    if (postStatus === 'unactived') {
+      setOpenRenewModal(true);
+      return;
+    }
     setLoading(true);
     const toastId = toast.loading('Đang ẩn bài đăng, vui lòng chờ');
     try {
@@ -243,14 +250,18 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
                         Chỉnh sửa bài viết
                       </div>
                     </MenuItem>
-                    <MenuItem onClick={handleChangePostStatusClick}>
+                    <MenuItem
+                      color={post.status === 'actived' ? 'neutral' : 'success'}
+                      variant={post.status === 'actived' ? 'plain' : 'soft'}
+                      onClick={() => handleChangePostStatusClick(post.status!)}
+                    >
                       <div className='tw-flex tw-items-center tw-gap-2'>
                         {post.status === 'actived' ? (
                           <FaRegEyeSlash className='tw-flex tw-text-lg tw-text-slate-600' />
                         ) : (
-                          <FaRegEye className='tw-flex tw-text-lg tw-text-slate-600' />
+                          <FaRegEye className='tw-flex tw-text-lg ' />
                         )}
-                        {post.status === 'actived' ? 'Tạm ẩn bài đăng' : 'Bỏ ẩn'}
+                        {post.status === 'actived' ? 'Tạm ẩn bài đăng' : 'Làm mới bài viết'}
                       </div>
                     </MenuItem>
                     <ListDivider />
@@ -345,6 +356,10 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
       {/* Modal */}
       <ModalLayout onCloseModal={handleCloseModal} isOpen={showDeleteModal}>
         <DeletePostDialog postId={post.id} onSuccess={handleCloseModal} />
+      </ModalLayout>
+
+      <ModalLayout onCloseModal={handleCloseModal} isOpen={openRenewModal}>
+        <RenewPostForm postId={post.id} onSuccess={handleCloseModal} />
       </ModalLayout>
     </React.Fragment>
   );
