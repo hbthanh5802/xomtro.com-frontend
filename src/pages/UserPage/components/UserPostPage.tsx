@@ -73,8 +73,9 @@ const UserPostPageFilter = React.memo((props: UserPostPageFilterProps) => {
             name='status'
             label='Trạng thái:'
             options={[
-              { label: 'Còn hiệu lục', value: 'actived' },
-              { label: 'Đã ẩn', value: 'unactived' },
+              { label: 'Còn hiệu lực', value: 'actived' },
+              { label: 'Đã bị ẩn', value: 'hidden' },
+              { label: 'Đã hết hạn', value: 'unactived' },
             ]}
           />
         )}
@@ -97,14 +98,14 @@ const UserPostPage: React.FC = () => {
   });
 
   // Sử dụng useCallback để ngăn hàm bị tạo mới
-  const handleSetWhereConditions = React.useCallback(setWhereConditions, []);
-  const handleSetOrderConditions = React.useCallback(setOrderConditions, []);
+  const handleSetWhereConditions = React.useCallback(setWhereConditions, [setWhereConditions]);
+  const handleSetOrderConditions = React.useCallback(setOrderConditions, [setOrderConditions]);
 
   useEffect(() => {
     if (userData) {
       setWhereConditions((prev) => ({ ...prev, ownerId: userData.userId }));
     }
-  }, [userData?.userId, userId]);
+  }, [userData]);
 
   React.useEffect(() => {
     queryClient.invalidateQueries({ queryKey: ['users', 'posts'] });

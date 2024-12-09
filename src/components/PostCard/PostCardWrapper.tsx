@@ -44,7 +44,7 @@ import {
 import React from 'react';
 import { FaEye, FaRegCommentDots, FaRegEye, FaRegEyeSlash, FaRegImages } from 'react-icons/fa6';
 import { IoIosShareAlt } from 'react-icons/io';
-import { MdDeleteForever, MdEdit, MdOutlineInfo, MdOutlineMoreHoriz } from 'react-icons/md';
+import { MdAutorenew, MdDeleteForever, MdEdit, MdOutlineInfo, MdOutlineMoreHoriz } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useShallow } from 'zustand/react/shallow';
@@ -169,11 +169,7 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
     setOpenRenewModal(false);
   };
 
-  const handleChangePostStatusClick = async (postStatus: 'actived' | 'unactived') => {
-    if (postStatus === 'unactived') {
-      setOpenRenewModal(true);
-      return;
-    }
+  const handleChangePostStatusClick = async () => {
     setLoading(true);
     const toastId = toast.loading('Đang ẩn bài đăng, vui lòng chờ');
     try {
@@ -186,6 +182,10 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleRenewPostClick = async () => {
+    setOpenRenewModal(true);
   };
 
   return (
@@ -250,20 +250,26 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
                         Chỉnh sửa bài viết
                       </div>
                     </MenuItem>
-                    <MenuItem
-                      color={post.status === 'actived' ? 'neutral' : 'success'}
-                      variant={post.status === 'actived' ? 'plain' : 'soft'}
-                      onClick={() => handleChangePostStatusClick(post.status!)}
-                    >
-                      <div className='tw-flex tw-items-center tw-gap-2'>
-                        {post.status === 'actived' ? (
-                          <FaRegEyeSlash className='tw-flex tw-text-lg tw-text-slate-600' />
-                        ) : (
-                          <FaRegEye className='tw-flex tw-text-lg ' />
-                        )}
-                        {post.status === 'actived' ? 'Tạm ẩn bài đăng' : 'Làm mới bài viết'}
-                      </div>
-                    </MenuItem>
+                    {post.status !== 'hidden' && (
+                      <MenuItem color='neutral' variant='plain' onClick={() => handleChangePostStatusClick()}>
+                        <div className='tw-flex tw-items-center tw-gap-2'>
+                          {post.status === 'actived' ? (
+                            <FaRegEyeSlash className='tw-flex tw-text-lg tw-text-slate-600' />
+                          ) : (
+                            <FaRegEye className='tw-flex tw-text-lg ' />
+                          )}
+                          {post.status === 'actived' ? 'Tạm ẩn bài đăng' : 'Bỏ ẩn bài viết'}
+                        </div>
+                      </MenuItem>
+                    )}
+                    {post.status === 'hidden' && (
+                      <MenuItem color='neutral' variant='plain' onClick={() => handleRenewPostClick()}>
+                        <div className='tw-flex tw-items-center tw-gap-2'>
+                          <MdAutorenew className='tw-flex tw-text-lg ' />
+                          Làm mới lại bài viết
+                        </div>
+                      </MenuItem>
+                    )}
                     <ListDivider />
                     <MenuItem color='danger' onClick={handleDeleteClick}>
                       <div className='tw-flex tw-items-center tw-gap-2'>

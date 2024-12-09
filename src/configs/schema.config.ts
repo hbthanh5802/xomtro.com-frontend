@@ -160,7 +160,8 @@ export const posts = mysqlTable('posts', {
   description: text(),
   expirationAfter: int('expiration_after'),
   expirationAfterUnit: mysqlEnum('expiration_after_unit', ['hour', 'day', 'week', 'month']).default('day'),
-  status: mysqlEnum(['actived', 'unactived']).default('actived'),
+  expirationTime: datetime('expiration_time'),
+  status: mysqlEnum(['actived', 'unactived', 'hidden']).default('actived'),
   type: mysqlEnum(['rental', 'pass', 'join', 'wanted']).notNull(),
   note: text(),
   viewedCount: int('viewed_count').default(0),
@@ -402,7 +403,7 @@ export const messages = mysqlTable(
       .references(() => users.id),
     content: text().notNull(),
     assetId: int('asset_id').references(() => assets.id, {
-      onDelete: 'cascade',
+      onDelete: 'set null',
       onUpdate: 'cascade',
     }),
     messageType: mysqlEnum('message_type', ['text', 'file']).notNull(),
