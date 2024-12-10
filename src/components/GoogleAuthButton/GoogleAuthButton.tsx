@@ -1,15 +1,14 @@
 import GoogleIcon from '@/assets/GoogleIcon';
 import authService from '@/services/auth.service';
 import { useAppStore } from '@/store/store';
+import { handleAxiosError } from '@/utils/constants.helper';
 import { Button } from '@mui/joy';
 import { useGoogleLogin } from '@react-oauth/google';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useShallow } from 'zustand/react/shallow';
 
 const GoogleAuthButton: React.FC = () => {
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const { setCurrentUser, setAccessToken } = useAppStore(
     useShallow((state) => ({
@@ -34,6 +33,7 @@ const GoogleAuthButton: React.FC = () => {
       setCurrentUser(userDetail);
       setAccessToken(accessToken);
     } catch (error) {
+      console.log(handleAxiosError(error));
       toast.error('Có lỗi xảy ra. Vui lòng thử lại!', {
         id: toastId,
       });
@@ -51,6 +51,7 @@ const GoogleAuthButton: React.FC = () => {
         handleGoogleAuth(access_token);
       }
     },
+    onNonOAuthError: () => toast.info('Vui lòng chọn một tài khoản Google để tiếp tục.'),
     onError: () => console.log('Login failed!'),
   });
 

@@ -250,19 +250,23 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
                         Chỉnh sửa bài viết
                       </div>
                     </MenuItem>
-                    {post.status !== 'hidden' && (
+                    {post.status === 'actived' && (
                       <MenuItem color='neutral' variant='plain' onClick={() => handleChangePostStatusClick()}>
                         <div className='tw-flex tw-items-center tw-gap-2'>
-                          {post.status === 'actived' ? (
-                            <FaRegEyeSlash className='tw-flex tw-text-lg tw-text-slate-600' />
-                          ) : (
-                            <FaRegEye className='tw-flex tw-text-lg ' />
-                          )}
-                          {post.status === 'actived' ? 'Tạm ẩn bài đăng' : 'Bỏ ẩn bài viết'}
+                          <FaRegEyeSlash className='tw-flex tw-text-lg tw-text-slate-600' />
+                          Tạm ẩn bài viết
                         </div>
                       </MenuItem>
                     )}
                     {post.status === 'hidden' && (
+                      <MenuItem color='neutral' variant='plain' onClick={() => handleChangePostStatusClick()}>
+                        <div className='tw-flex tw-items-center tw-gap-2'>
+                          <FaRegEye className='tw-flex tw-text-lg ' />
+                          Bỏ ẩn bài viết
+                        </div>
+                      </MenuItem>
+                    )}
+                    {post.status === 'unactived' && (
                       <MenuItem color='neutral' variant='plain' onClick={() => handleRenewPostClick()}>
                         <div className='tw-flex tw-items-center tw-gap-2'>
                           <MdAutorenew className='tw-flex tw-text-lg ' />

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import RHFCurrencyInput from '@/components/RHFCurrencyInput';
 import RHFDatePicker from '@/components/RHFDatePicker';
 import RHFImageUploadPreview from '@/components/RHFImageUploadPreview';
@@ -83,11 +84,7 @@ interface AddressPostFormProps {
 function AddressPostForm(props: AddressPostFormProps) {
   const { control, mode, data } = props;
 
-  if (mode === 'edit' && !data) {
-    return <Typography level='body-xs'>Chưa lấy được dữ liệu. Vui lòng thử lại sau.</Typography>;
-  }
-
-  const defaultAddressCode = data?.addressCode?.split('-')!;
+  const defaultAddressCode = data?.addressCode?.split('-');
 
   const [selectedProvinceValue, selectedDistrictValue] = useWatch({
     control,
@@ -151,6 +148,10 @@ function AddressPostForm(props: AddressPostFormProps) {
     return [];
   }, [getWardResponse]);
 
+  if (mode === 'edit' && !data) {
+    return <Typography level='body-xs'>Chưa lấy được dữ liệu. Vui lòng thử lại sau.</Typography>;
+  }
+
   return (
     <div className='tw-mt-[24px] tw-flex tw-flex-col tw-gap-4'>
       <div className='tw-grid tw-grid-cols-1 tablet:tw-grid-cols-3 tw-gap-4'>
@@ -205,17 +206,9 @@ const WantedPostPage = () => {
   const assets: AssetSelectSchemaType[] = mode === 'edit' && postData ? postData.assets : [];
   const [assetList, setAssetList] = React.useState(() => (mode === 'edit' && assets ? assets : []));
 
-  if (!['create', 'edit'].includes(mode)) {
-    return <Navigate to={'/404'} />;
-  }
-
-  if (mode === 'edit' && !postData) {
-    return <Navigate to={'/404'} />;
-  }
-
   const [loading, setLoading] = React.useState(false);
 
-  const defaultAddressCode = post?.addressCode?.split('-')!;
+  const defaultAddressCode = post?.addressCode?.split('-');
 
   const methods = useForm<InsertWantedPostDataType>({
     defaultValues: {
@@ -271,6 +264,7 @@ const WantedPostPage = () => {
       toast.success('Xoá thành công', { duration: 1000, id: toastId });
       setAssetList((prev) => prev.filter((item) => item.id !== assetId));
     } catch (error) {
+      console.log(handleAxiosError(error));
       toast.error('Xoá không thành công. Vui lòng thử lại sau.', { duration: 1500, id: toastId });
     } finally {
       setLoading(false);
@@ -344,6 +338,14 @@ const WantedPostPage = () => {
       setLoading(false);
     }
   };
+
+  if (!['create', 'edit'].includes(mode)) {
+    return <Navigate to={'/404'} />;
+  }
+
+  if (mode === 'edit' && !postData) {
+    return <Navigate to={'/404'} />;
+  }
 
   return (
     <div className='tw-container tw-bg-white tw-shadow tw-p-[24px] tw-rounded tw-min-h-[100px] tw-mt-[40px]'>
@@ -717,7 +719,7 @@ const WantedPostPage = () => {
               type='submit'
               fullWidth
             >
-              {mode === 'create' ? 'Đăng tải bài viết' : 'Lưu lại thông tin'}
+              {mode === 'create' ? 'Đăng tải bài viết' : 'Lưu thay đổi'}
             </Button>
           </footer>
         </form>

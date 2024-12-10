@@ -245,7 +245,17 @@ const ForgotPasswordPage = () => {
                 )}
               </form>
             </FormProvider>
-            <Button size='sm' variant='plain'>
+            <Button
+              size='sm'
+              variant='plain'
+              onClick={() => {
+                if (canGetPassword) {
+                  setCanGetPassword(false);
+                } else {
+                  navigate('/auth/login');
+                }
+              }}
+            >
               Quay lại
             </Button>
           </Box>

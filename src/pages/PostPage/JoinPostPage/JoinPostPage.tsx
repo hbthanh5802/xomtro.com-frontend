@@ -80,7 +80,6 @@ const totalAreaUnitOptions: SelectOptionItemType[] = [
 interface AddressPostFormProps {
   control: Control<InsertJoinPostDataType>;
   mode: 'create' | 'edit';
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data?: any;
 }
 function AddressPostForm(props: AddressPostFormProps) {
@@ -266,6 +265,7 @@ const JoinPostPage = () => {
       toast.success('Xoá thành công', { duration: 1000, id: toastId });
       setAssetList((prev) => prev.filter((item) => item.id !== assetId));
     } catch (error) {
+      handleAxiosError(error);
       toast.error('Xoá không thành công. Vui lòng thử lại sau.', { duration: 1500, id: toastId });
     } finally {
       setLoading(false);
@@ -720,7 +720,7 @@ const JoinPostPage = () => {
               type='submit'
               fullWidth
             >
-              {mode === 'create' ? 'Đăng tải bài viết' : 'Lưu lại thông tin'}
+              {mode === 'create' ? 'Đăng tải bài viết' : 'Lưu thay đổi'}
             </Button>
           </footer>
         </form>

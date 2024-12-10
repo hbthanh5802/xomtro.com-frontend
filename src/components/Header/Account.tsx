@@ -3,7 +3,7 @@ import { useAppStore } from '@/store/store';
 import { Avatar, Badge, Box, Dropdown, ListDivider, Menu, MenuButton, MenuItem, Typography } from '@mui/joy';
 import React from 'react';
 import { FaAngleDown, FaClipboardUser } from 'react-icons/fa6';
-import { IoMdHeart } from 'react-icons/io';
+import { IoMdHeart, IoMdSettings } from 'react-icons/io';
 import { MdNotifications, MdOutlineHelp, MdOutlineLogout } from 'react-icons/md';
 import { TbMessageFilled } from 'react-icons/tb';
 import { useNavigate } from 'react-router-dom';
@@ -33,6 +33,12 @@ const Account = () => {
         label: 'Bài viết đã lưu',
         icon: <IoMdHeart className='tw-flex tw-text-lg' />,
         path: `/users/${currentUser?.userId}/interested`,
+        disabled: false,
+      },
+      {
+        label: 'Cài đặt bảo mật',
+        icon: <IoMdSettings className='tw-flex tw-text-lg' />,
+        path: `/users/${currentUser?.userId}/settings`,
         disabled: false,
       },
       {

@@ -52,18 +52,18 @@ const RegisterForm: React.FC = () => {
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)}>
           {/* User Full Name */}
-          <div className='tw-flex tw-gap-[8px]'>
-            <div className='tw-max-w-[180px]'>
-              <RHFInput<RegisterDataType>
-                name='firstName'
-                label='Họ và đệm'
-                placeholder='Nhập họ và đệm...'
-                type='text'
-              />
-            </div>
-            <div className='tw-min-w-[180px]'>
-              <RHFInput<RegisterDataType> name='lastName' label='Tên' placeholder='Nhập tên...' type='text' />
-            </div>
+          <div className='tw-grid tw-grid-cols-1 tablet:tw-grid-cols-2 tw-gap-[8px]'>
+            {/* <div className=''> */}
+            <RHFInput<RegisterDataType>
+              name='firstName'
+              label='Họ và đệm'
+              placeholder='Nhập họ và đệm...'
+              type='text'
+            />
+            {/* </div> */}
+            {/* <div className=''> */}
+            <RHFInput<RegisterDataType> name='lastName' label='Tên' placeholder='Nhập tên...' type='text' />
+            {/* </div> */}
           </div>
           {/* Email */}
           <RHFInput<RegisterDataType>
@@ -72,7 +72,7 @@ const RegisterForm: React.FC = () => {
             placeholder='Nhập địa chỉ email của bạn...'
             type='email'
           />
-          {/* Email */}
+          {/* Phone */}
           <RHFPhoneInput<RegisterDataType>
             name='phone'
             label='Số điện thoại'

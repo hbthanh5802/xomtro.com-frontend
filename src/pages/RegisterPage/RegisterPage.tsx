@@ -19,8 +19,8 @@ export default function JoySignInSideTemplate() {
           zIndex: 1,
           display: 'flex',
           justifyContent: 'flex-end',
-          backdropFilter: 'blur(12px)',
-          backgroundColor: 'rgba(255 255 255 / 0.2)',
+          backdropFilter: 'blur(4px)',
+          backgroundColor: 'rgba(255 255 255 / 0.8)',
           [theme.getColorSchemeSelector('dark')]: {
             backgroundColor: 'rgba(19 19 24 / 0.4)',
           },
@@ -101,15 +101,7 @@ export default function JoySignInSideTemplate() {
               </Stack>
               <GoogleAuthButton />
             </Stack>
-            <Divider
-              sx={(theme) => ({
-                [theme.getColorSchemeSelector('light')]: {
-                  color: { xs: '#FFF', md: 'text.tertiary' },
-                },
-              })}
-            >
-              hoặc
-            </Divider>
+            <Divider>hoặc</Divider>
             {/* Register Form */}
             <RegisterForm />
           </Box>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import RHFCurrencyInput from '@/components/RHFCurrencyInput';
 import RHFImageUploadPreview from '@/components/RHFImageUploadPreview';
 import RHFInput from '@/components/RHFInput';
@@ -81,11 +82,7 @@ interface AddressPostFormProps {
 function AddressPostForm(props: AddressPostFormProps) {
   const { control, mode, data } = props;
 
-  if (mode === 'edit' && !data) {
-    return <Typography level='body-xs'>Chưa lấy được dữ liệu. Vui lòng thử lại sau.</Typography>;
-  }
-
-  const defaultAddressCode = data?.addressCode?.split('-')!;
+  const defaultAddressCode = data?.addressCode?.split('-');
 
   const [selectedProvinceValue, selectedDistrictValue] = useWatch({
     control,
@@ -149,6 +146,10 @@ function AddressPostForm(props: AddressPostFormProps) {
     return [];
   }, [getWardResponse]);
 
+  if (mode === 'edit' && !data) {
+    return <Typography level='body-xs'>Chưa lấy được dữ liệu. Vui lòng thử lại sau.</Typography>;
+  }
+
   return (
     <div className='tw-mt-[24px] tw-flex tw-flex-col tw-gap-4'>
       <div className='tw-grid tw-grid-cols-1 tablet:tw-grid-cols-3 tw-gap-4'>
@@ -203,17 +204,9 @@ const RentalPostPage = () => {
   const assets: AssetSelectSchemaType[] = mode === 'edit' && postData ? postData.assets : [];
   const [assetList, setAssetList] = React.useState(() => (mode === 'edit' && assets ? assets : []));
 
-  if (!['create', 'edit'].includes(mode)) {
-    return <Navigate to={'/404'} />;
-  }
-
-  if (mode === 'edit' && !postData) {
-    return <Navigate to={'/404'} />;
-  }
-
   const [loading, setLoading] = React.useState(false);
 
-  const defaultAddressCode = post?.addressCode?.split('-')!;
+  const defaultAddressCode = post?.addressCode?.split('-');
 
   const methods = useForm<InsertRentalPostDataType>({
     defaultValues: {
@@ -241,9 +234,9 @@ const RentalPostPage = () => {
       priceEnd: mode === 'create' ? undefined : detail?.priceEnd === detail?.priceStart ? undefined : detail?.priceEnd,
       note: mode === 'create' ? '' : post?.note,
       addressCode: mode === 'create' ? '' : post?.addressCode,
-      addressProvince: mode === 'create' ? undefined : `${defaultAddressCode[0]}-${post?.addressProvince}`,
-      addressDistrict: mode === 'create' ? undefined : `${defaultAddressCode[1]}-${post?.addressDistrict}`,
-      addressWard: mode === 'create' ? undefined : `${defaultAddressCode[2]}-${post?.addressWard}`,
+      addressProvince: mode === 'create' ? undefined : `${defaultAddressCode?.[0]}-${post?.addressProvince}`,
+      addressDistrict: mode === 'create' ? undefined : `${defaultAddressCode?.[1]}-${post?.addressDistrict}`,
+      addressWard: mode === 'create' ? undefined : `${defaultAddressCode?.[2]}-${post?.addressWard}`,
       addressDetail: mode === 'create' ? undefined : post?.addressDetail,
     },
     resolver: zodResolver(insertRentalPostValidation),
@@ -271,6 +264,7 @@ const RentalPostPage = () => {
       toast.success('Xoá thành công', { duration: 1000, id: toastId });
       setAssetList((prev) => prev.filter((item) => item.id !== assetId));
     } catch (error) {
+      console.log(handleAxiosError(error));
       toast.error('Xoá không thành công. Vui lòng thử lại sau.', { duration: 1500, id: toastId });
     } finally {
       setLoading(false);
@@ -345,13 +339,21 @@ const RentalPostPage = () => {
     }
   };
 
+  if (!['create', 'edit'].includes(mode)) {
+    return <Navigate to={'/404'} />;
+  }
+
+  if (mode === 'edit' && !postData) {
+    return <Navigate to={'/404'} />;
+  }
+
   return (
     <div className='tw-container tw-bg-white tw-shadow tw-p-[24px] tw-rounded tw-min-h-[100px] tw-mt-[40px]'>
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(handleSubmitForm)}>
           {/* Header */}
           <header>
-            <Typography level='h4'>Tạo bài viết mới</Typography>
+            <Typography level='h4'>{mode === 'create' ? 'Tạo bài viết mới' : 'Chỉnh sửa bài viết'}</Typography>
             <Typography level='body-sm'>
               Hãy hoàn thành những thông tin được yêu cầu dưới đây để tiến hành đăng bài viết mới.
             </Typography>
@@ -735,7 +737,7 @@ const RentalPostPage = () => {
               type='submit'
               fullWidth
             >
-              Đăng tải bài viết
+              {mode === 'create' ? 'Đăng tải bài viết' : 'Lưu thay đổi'}
             </Button>
           </footer>
         </form>
