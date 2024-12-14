@@ -40,7 +40,7 @@ export const formatDateForInput = (date: string | Date | undefined): string => {
  * @returns The UTC ISO string.
  */
 export const convertToUTC = (date: string): string => {
-  return dayjs(date).utc().toISOString();
+  return dayjs(date).startOf('day').utc(true).toISOString();
 };
 
 /**
@@ -70,6 +70,7 @@ export const isValidDateTime = (dateTimeString: string) => {
 };
 
 // register your locale with timeago
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const localeFunc = (number: number, index: number, totalSec: number | undefined): [string, string] => {
   // number: thời gian đã qua / thời gian sắp tới dưới dạng số;
   // index: chỉ số của mảng bên dưới;

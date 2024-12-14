@@ -11,7 +11,7 @@ import { useShallow } from 'zustand/react/shallow';
 const ConversationPage = () => {
   const { params, search } = useUrl();
   const { conversationId } = params;
-  const {slug} = search;
+  const { slug } = search;
   const [selectedConversation, setSelectedConversation] = React.useState<GetIndividualConversationResponseType | null>(
     null,
   );
@@ -31,7 +31,6 @@ const ConversationPage = () => {
     if (conversationId && Number.isSafeInteger(Number(conversationId))) {
       const conversation = userIndividualConversations?.find((con) => con.chatId === Number(conversationId));
       if (conversation) {
-        console.log(conversation);
         setSelectedConversation(conversation);
       }
     }

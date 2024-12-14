@@ -407,7 +407,7 @@ const AddressPage = () => {
                           size='sm'
                           sx={{ maxWidth: '32px', maxHeight: '32px', borderRadius: '9999999px' }}
                         >
-                          <Tooltip title='Thiệt lập thêm' arrow placement='top-start'>
+                          <Tooltip title='Thiết lập thêm' placement='right'>
                             <Chip size='sm' color='neutral' variant='soft'>
                               <IoIosMore />
                             </Chip>

@@ -65,7 +65,7 @@ const ViewPostDetailPage = () => {
     <div className='tw-w-full tw-min-h-[calc(100vh-var(--header-height))] tw-bg-backgroundColor tw-pt-[40px]'>
       <div className='tw-container tw-mx-auto tw-p-[12px]'>
         <div className='tw-flex tw-flex-col laptop:tw-flex-row tw-items-start tw-gap-6'>
-          <div className='tw-flex-1 tw-mb-2'>
+          <div className='tw-flex-1 tw-max-w-full laptop:tw-max-w-[calc(100%-400px)] tw-mb-2'>
             {!!assets?.length && (
               <ImageGallery thumbnailPosition='bottom' showBullets showPlayButton={false} lazyLoad items={postImages} />
             )}
@@ -77,7 +77,7 @@ const ViewPostDetailPage = () => {
             </section>
           </div>
           {/* Owner contact info */}
-          <div className='tw-w-full laptop:tw-sticky tw-top-[calc(var(--header-height)+12px)] laptop:tw-w-[400px] tw-bg-white tw-shadow tw-rounded tw-p-[24px]'>
+          <div className='tw-w-full laptop:tw-sticky tw-top-[calc(var(--header-height)+12px)] tw-grow-0 tw-shrink-0 laptop:tw-w-[400px] tw-bg-white tw-shadow tw-rounded tw-p-[24px]'>
             <OwnerContactTab post={post!} />
           </div>
         </div>

@@ -84,6 +84,7 @@ const ChangeAvatar = (props: { onSuccess?: () => void }) => {
           sx={{
             width: '200px',
             height: '200px',
+            fontSize: 72,
           }}
           color='primary'
           alt={currentUser?.lastName}

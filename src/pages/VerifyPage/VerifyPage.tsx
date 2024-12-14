@@ -74,11 +74,15 @@ const VerifyPage = () => {
     }
   }, [userDetail]);
 
+  // React.useEffect(() => {
+  //   if (canResend && !isSending) {
+  //     handleSendVerifyEmail();
+  //   }
+  // }, [canResend, handleSendVerifyEmail, isSending]);
+
   React.useEffect(() => {
-    if (canResend) {
-      handleSendVerifyEmail();
-    }
-  }, [canResend, handleSendVerifyEmail]);
+    handleSendVerifyEmail();
+  }, [handleSendVerifyEmail]);
 
   return (
     <>

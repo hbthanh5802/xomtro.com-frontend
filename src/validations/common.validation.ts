@@ -24,7 +24,7 @@ export const imageFileValidation = z
   .refine((files) => files.length > 0, { message: 'Bạn phải chọn một ảnh.' })
   .refine((files) => files[0]?.type.startsWith('image/'), { message: 'File phải là ảnh.' });
 
-export const dateValidation = z.string().refine((date) => dayjs(date, 'YYYY-MM-DD HH:mm:ss', true).isValid(), {
+export const dateValidation = z.string().refine((date) => dayjs.utc(date, 'YYYY-MM-DD HH:mm:ss').isValid(), {
   message: 'Thông tin không đúng định dạng YYYY-MM-DD',
 });
 

@@ -10,8 +10,8 @@ export const updateAvatarValidation = z.object({
 export const updateUserDetailValidation = createInsertSchema(userDetail, {
   firstName: z.string().optional(),
   lastName: z.string().min(1, { message: 'Thông tin này này là bắt buộc' }),
-  phone: phoneValidation,
-  dob: dateValidation,
+  phone: phoneValidation.optional(),
+  dob: dateValidation.optional(),
 })
   .pick({
     firstName: true,

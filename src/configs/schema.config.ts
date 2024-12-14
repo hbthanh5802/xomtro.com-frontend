@@ -38,7 +38,7 @@ export const userDetail = mysqlTable('users_detail', {
   role: mysqlEnum(['renter', 'landlord']),
   email: varchar({ length: 255 }).unique().notNull(),
   bio: text(),
-  phone: varchar({ length: 25 }).notNull(),
+  phone: varchar({ length: 25 }),
   firstName: varchar('first_name', { length: 50 }).notNull(),
   lastName: varchar('last_name', { length: 50 }).notNull(),
   gender: mysqlEnum(['male', 'female', 'others']),
@@ -131,23 +131,23 @@ export const assets = mysqlTable(
   }),
 );
 
-export const properties = mysqlTable('properties', {
-  id: int().primaryKey().autoincrement(),
-  ownerId: int('owner_id').references(() => users.id, {
-    onDelete: 'cascade',
-    onUpdate: 'cascade',
-  }),
-  addressId: int('address_id').references(() => addresses.id, {
-    onDelete: 'cascade',
-    onUpdate: 'cascade',
-  }),
-  totalArea: float('total_area'),
-  totalAreaUnit: mysqlEnum(['cm2', 'm2', 'km2']).default('m2'),
-  priceRangeStart: int('price_range_start').default(0),
-  priceRangeEnd: int('price_range_end'),
-  isActived: boolean('is_actived').default(true),
-  ...timestamps,
-});
+// export const properties = mysqlTable('properties', {
+//   id: int().primaryKey().autoincrement(),
+//   ownerId: int('owner_id').references(() => users.id, {
+//     onDelete: 'cascade',
+//     onUpdate: 'cascade',
+//   }),
+//   addressId: int('address_id').references(() => addresses.id, {
+//     onDelete: 'cascade',
+//     onUpdate: 'cascade',
+//   }),
+//   totalArea: float('total_area'),
+//   totalAreaUnit: mysqlEnum(['cm2', 'm2', 'km2']).default('m2'),
+//   priceRangeStart: int('price_range_start').default(0),
+//   priceRangeEnd: int('price_range_end'),
+//   isActived: boolean('is_actived').default(true),
+//   ...timestamps,
+// });
 
 export const posts = mysqlTable('posts', {
   id: int().primaryKey().autoincrement(),

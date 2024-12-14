@@ -306,10 +306,14 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
               </Chip>
             )}
           </div>
-          {post.type === 'rental' && <RentalDetail data={props.data} />}
-          {post.type === 'wanted' && <WantedDetail data={props.data} />}
-          {post.type === 'join' && <JoinDetail data={props.data} />}
-          {post.type === 'pass' && <PassDetail data={props.data} />}
+          {props.data && (
+            <>
+              {post.type === 'rental' && <RentalDetail data={props.data} />}
+              {post.type === 'wanted' && <WantedDetail data={props.data} />}
+              {post.type === 'join' && <JoinDetail data={props.data} />}
+              {post.type === 'pass' && <PassDetail data={props.data} />}
+            </>
+          )}
 
           {/* Post Images */}
           {assets.length ? (
@@ -336,7 +340,7 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
               variant='solid'
               onClick={() => navigate(`/posts/${post.id}/view`)}
             >
-              Xem thêm chi tiết
+              Xem chi tiết
             </Button>
             <Button startDecorator={<FaRegCommentDots className='tw-text-[18px]' />}>Bình luận</Button>
             <Tooltip

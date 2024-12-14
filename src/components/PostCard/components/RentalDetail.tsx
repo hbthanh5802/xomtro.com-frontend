@@ -39,7 +39,7 @@ const RentalDetail = (props: RentalDetailProps) => {
             <Typography level='body-sm' variant='soft' color='success'>
               {formatCurrencyVND(detail.priceStart)}/tháng
             </Typography>
-            {detail.priceEnd && detail.priceEnd !== detail.priceStart && (
+            {!!detail.priceEnd && detail.priceEnd !== detail.priceStart && (
               <>
                 <span>-</span>
                 <Typography level='body-sm' variant='soft' color='success'>{`${formatCurrencyVND(

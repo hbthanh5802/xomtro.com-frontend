@@ -87,7 +87,6 @@ export const defaultWhereFilter: WhereConditionType = Object.freeze({
 
 export const defaultOrderFilter: OrderConditionType = Object.freeze({
   updatedAt: 'desc',
-  createdAt: 'desc',
 });
 
 const initialState: postFilterState = {

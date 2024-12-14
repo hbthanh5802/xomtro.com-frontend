@@ -2,10 +2,10 @@ import RHFDatePicker from '@/components/RHFDatePicker';
 import RHFInput from '@/components/RHFInput';
 import RHFPhoneInput from '@/components/RHFPhoneInput';
 import RHFRadioGroup from '@/components/RHFRadioGroup';
-import { RadioOptionItem } from '@/components/RHFRadioGroup/RHFRadioGroup';
 import RHFTextArea from '@/components/RHFTextArea';
 import userService from '@/services/user.service';
 import { useAppStore } from '@/store/store';
+import { RadioOptionItemType } from '@/types/common.type';
 import { UserDetailInsertSchemaType, UserDetailSelectSchemaType } from '@/types/schema.type';
 import { UpdateUserProfileDataType } from '@/types/user.type';
 import { handleAxiosError } from '@/utils/constants.helper';
@@ -20,7 +20,7 @@ import { toast } from 'sonner';
 import { useShallow } from 'zustand/react/shallow';
 
 const emptyContent = 'Chưa có thông tin';
-const genderRadioOptions: RadioOptionItem[] = [
+const genderRadioOptions: RadioOptionItemType[] = [
   {
     label: 'Nam',
     value: 'male',
@@ -74,11 +74,12 @@ const EditProfile = (props: EditProfileProps) => {
   const handleUpdateProfile = async (data: UpdateUserProfileDataType) => {
     const toastId = toast.loading('Đang lưu lại thông tin sửa đổi. VUi lòng chờ...');
     try {
+      console.log(data);
       const response = await updateUserProfileMutation.mutateAsync(data);
-      await queryClient.refetchQueries({ queryKey: ['user-detail'] });
+      queryClient.invalidateQueries({ queryKey: ['user-detail', { userId: userData.userId }] });
       if (response.data) {
         toast.success('Thay đổi thành công!', { id: toastId, duration: 1500 });
-        setCurrentUser(response.data, false);
+        setCurrentUser(response.data as UserDetailSelectSchemaType, false);
         if (props.onSuccess) props.onSuccess();
       }
     } catch (error) {
@@ -116,7 +117,6 @@ const EditProfile = (props: EditProfileProps) => {
                 name='phone'
                 label='Số điện thoại:'
                 placeholder={emptyContent}
-                required
               />
             </Skeleton>
             <Skeleton animation='wave' loading={isFetching}>
@@ -125,7 +125,6 @@ const EditProfile = (props: EditProfileProps) => {
                 label='Ngày sinh'
                 control={control}
                 maxDate={timeInVietNam().toDate()}
-                required
               />
             </Skeleton>
           </div>
@@ -136,7 +135,6 @@ const EditProfile = (props: EditProfileProps) => {
                 label='Giới tính:'
                 options={genderRadioOptions}
                 direction='horizontal'
-                required
               />
             </Skeleton>
           </div>

@@ -36,9 +36,7 @@ const HomePage = () => {
   );
 
   React.useEffect(() => {
-    if (whereConditions) {
-      setGlobalWhereConditions(whereConditions);
-    }
+    setGlobalWhereConditions(whereConditions);
     // if (orderConditions) {
     //   setGlobalOrderConditions(orderConditions);
     // }
@@ -59,7 +57,7 @@ const HomePage = () => {
   React.useEffect(() => {
     if (userAddress) {
       setWhereConditions((prev) => ({ ...prev, provinceName: userAddress.provinceName }));
-    } else if (!userAddress) {
+    } else if (!userAddress && whereConditions.provinceName) {
       if (whereConditions.provinceName) setWhereConditions((prev) => ({ ...prev, provinceName: undefined }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
