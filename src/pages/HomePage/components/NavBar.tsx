@@ -43,7 +43,7 @@ const NavBar = () => {
   return (
     <div className='tw-h-[calc(100dvh-60px)] tw-overflow-y-auto'>
       {/* Nav Bar */}
-      <div className='tw-bg-white tw-rounded tw-shadow tw-m-2 tw-ml-[12px] tw-p-2'>
+      <div className='tw-bg-white/5 tw-rounded tw-shadow tw-m-2 tw-ml-[12px] tw-p-2'>
         <header className='tw-px-[4px] tw-pt-[6px] tw-pb-[12px]'>
           <Typography level='title-md'>Loại bài đăng:</Typography>
         </header>

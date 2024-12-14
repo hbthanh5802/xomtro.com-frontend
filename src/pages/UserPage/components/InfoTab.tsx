@@ -28,9 +28,9 @@ import addressService from '@/services/address.service';
 import { BsPostcardFill } from 'react-icons/bs';
 import { FaRegEdit } from 'react-icons/fa';
 import { FaCameraRotate, FaCircleCheck, FaClipboardUser, FaHouseFlag, FaRegEye, FaRegEyeSlash } from 'react-icons/fa6';
-import { IoIosMore, IoMdHeart } from 'react-icons/io';
+import { IoMdHeart, IoMdSettings } from 'react-icons/io';
 import { IoCalendarSharp } from 'react-icons/io5';
-import { MdEmail, MdLocalPhone, MdLocationPin, MdSettings } from 'react-icons/md';
+import { MdEmail, MdLocalPhone, MdLocationPin, MdOutlineSecurity } from 'react-icons/md';
 
 // const emptyContent = 'Chưa có thông tin';
 
@@ -120,12 +120,13 @@ const InfoTab = (props: InfoTabProps) => {
                     width: '200px',
                     height: '200px',
                     boxShadow: 'md',
+                    fontSize: 72,
                   }}
                   color='primary'
                   alt={userData?.lastName}
                   src={userAvatarData?.url}
                 >
-                  <Skeleton animation='wave' loading={!userAvatarData} />
+                  {/* <Skeleton animation='wave' loading={!userAvatarData} /> */}
                 </Avatar>
               </div>
             </Badge>
@@ -164,9 +165,10 @@ const InfoTab = (props: InfoTabProps) => {
                 size='sm'
                 sx={{ maxWidth: '32px', maxHeight: '32px', borderRadius: '9999999px' }}
               >
-                <Tooltip title='Thiệt lập thêm' arrow placement='top-start'>
-                  <Chip size='sm' color='primary' variant='solid'>
-                    <IoIosMore />
+                <Tooltip title='Thiết lập thêm' placement='right'>
+                  <Chip size='lg' color='neutral' variant='soft'>
+                    {/* <IoIosMore /> */}
+                    <IoMdSettings className='tw-text-[18px]' />
                   </Chip>
                 </Tooltip>
               </MenuButton>
@@ -188,18 +190,18 @@ const InfoTab = (props: InfoTabProps) => {
                   </div>
                 </MenuItem>
                 {Number(userId) === currentUser?.userId && (
-                  <MenuItem onClick={() => navigate(`/users/${currentUser?.userId}/settings`)}>
-                    <div className='tw-flex tw-items-center tw-gap-2'>
-                      <MdSettings className='tw-flex tw-text-lg' />
-                      Cài đặt tài khoản
-                    </div>
-                  </MenuItem>
-                )}
-                {Number(userId) === currentUser?.userId && (
                   <MenuItem onClick={() => navigate(`/users/${currentUser?.userId}/interested`)}>
                     <div className='tw-flex tw-items-center tw-gap-2'>
                       <IoMdHeart className='tw-flex tw-text-lg' />
                       Bài viết đã lưu
+                    </div>
+                  </MenuItem>
+                )}
+                {Number(userId) === currentUser?.userId && (
+                  <MenuItem onClick={() => navigate(`/users/${currentUser?.userId}/settings`)}>
+                    <div className='tw-flex tw-items-center tw-gap-2'>
+                      <MdOutlineSecurity className='tw-flex tw-text-lg' />
+                      Cài đặt bảo mật
                     </div>
                   </MenuItem>
                 )}

@@ -251,7 +251,7 @@ const FilterBar = (props: FilterBarProps) => {
   }, [watch, setWhereConditions, pathname, setValue, userLocation]);
 
   return (
-    <div className='tw-relative tw-rounded tw-bg-white tw-border tw-border-slate-200 tw-shadow-md'>
+    <div className='tw-relative tw-rounded tw-bg-white/15 tw-border tw-border-slate-200 tw-shadow-md'>
       <header className='tw-sticky tw-top-0 tw-z-10 tw-p-[8px] tw-flex tw-justify-between tw-bg-primaryColor tw-rounded-t-md'>
         <Typography
           textColor={'common.white'}

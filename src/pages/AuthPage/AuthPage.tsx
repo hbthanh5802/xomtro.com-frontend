@@ -23,7 +23,8 @@ const AuthPage: React.FC<AuthPageProps> = ({ children }) => {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          backgroundImage: 'url(https://images.unsplash.com/photo-1527181152855-fc03fc7949c8?auto=format&w=1000&dpr=2)',
+          backgroundImage:
+            'url(https://images.pexels.com/photos/10758467/pexels-photo-10758467.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2)',
           [theme.getColorSchemeSelector('dark')]: {
             backgroundImage:
               'url(https://images.unsplash.com/photo-1572072393749-3ca9c8ea0831?auto=format&w=1000&dpr=2)',

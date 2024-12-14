@@ -17,11 +17,14 @@ const WantedDetail = (props: WantedDetailProps) => {
   const { post, detail } = props.data;
   const [showMore, setShowMore] = React.useState(false);
 
-  const hasAmenities = React.useMemo(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    () => Object.keys(room_amenities).some((key: string) => (detail as any)[key as keyof typeof detail] as boolean),
-    [detail],
-  );
+  const hasAmenities = React.useMemo(() => {
+    if (detail) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return Object.keys(room_amenities).some((key: string) => (detail as any)[key as keyof typeof detail] as boolean);
+    } else {
+      return false;
+    }
+  }, [detail]);
 
   return (
     <div>

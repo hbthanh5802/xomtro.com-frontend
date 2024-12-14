@@ -96,12 +96,23 @@ const Header = () => {
                   startDecorator={<FaPlus />}
                   sx={(theme) => ({
                     borderRadius: '40px',
-                    [theme.breakpoints.down('sm')]: {
+                    [theme.breakpoints.down('md')]: {
                       display: 'none',
                     },
                   })}
                 >
                   Tạo bài viết
+                </MenuButton>
+                <MenuButton
+                  slots={{ root: IconButton }}
+                  slotProps={{ root: { variant: 'solid', color: 'primary' } }}
+                  sx={(theme) => ({
+                    [theme.breakpoints.up('md')]: {
+                      display: 'none',
+                    },
+                  })}
+                >
+                  <FaPlus />
                 </MenuButton>
                 <Menu
                   placement='bottom-end'
@@ -170,7 +181,7 @@ const Header = () => {
                   slots={{ root: IconButton }}
                   slotProps={{ root: { variant: 'solid', color: 'primary' } }}
                   sx={(theme) => ({
-                    [theme.breakpoints.up('sm')]: {
+                    [theme.breakpoints.up('md')]: {
                       display: 'none',
                     },
                   })}

@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { useShallow } from 'zustand/react/shallow';
 
 interface OwnerContactTabProps {
-  post: PostSelectSchemaType;
+  post?: PostSelectSchemaType;
 }
 const OwnerContactTab = (props: OwnerContactTabProps) => {
   const { post } = props;
@@ -178,22 +178,23 @@ const OwnerContactTab = (props: OwnerContactTabProps) => {
                 {isCopied ? phoneContact.contactContent : phoneContact.contactContent.slice(0, 7).concat('***')}
               </Button>
             )}
-
-            {currentUser?.userId !== post.ownerId && <CreateConversationButton receiverId={post.ownerId!} />}
-
-            <div className='tw-pt-4'>
-              <Typography
-                textAlign='center'
-                level='title-sm'
-                color='neutral'
-                onClick={() => navigate(`/users/${post?.ownerId}/profile`)}
-                sx={{ cursor: 'pointer' }}
-              >
-                Xem thêm
-              </Typography>
-            </div>
           </div>
         )}
+
+        {post?.ownerId && currentUser?.userId !== post.ownerId && (
+          <CreateConversationButton receiverId={post.ownerId!} />
+        )}
+        <div className='tw-pt-4'>
+          <Typography
+            textAlign='center'
+            level='title-sm'
+            color='neutral'
+            onClick={() => navigate(`/users/${post?.ownerId}/profile`)}
+            sx={{ cursor: 'pointer' }}
+          >
+            Xem thêm
+          </Typography>
+        </div>
       </div>
     </section>
   );

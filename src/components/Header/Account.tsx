@@ -3,8 +3,8 @@ import { useAppStore } from '@/store/store';
 import { Avatar, Badge, Box, Dropdown, ListDivider, Menu, MenuButton, MenuItem, Typography } from '@mui/joy';
 import React from 'react';
 import { FaAngleDown, FaClipboardUser } from 'react-icons/fa6';
-import { IoMdHeart, IoMdSettings } from 'react-icons/io';
-import { MdNotifications, MdOutlineHelp, MdOutlineLogout } from 'react-icons/md';
+import { IoMdHeart } from 'react-icons/io';
+import { MdNotifications, MdOutlineHelp, MdOutlineLogout, MdOutlineSecurity } from 'react-icons/md';
 import { TbMessageFilled } from 'react-icons/tb';
 import { useNavigate } from 'react-router-dom';
 import { useShallow } from 'zustand/react/shallow';
@@ -37,14 +37,14 @@ const Account = () => {
       },
       {
         label: 'Cài đặt bảo mật',
-        icon: <IoMdSettings className='tw-flex tw-text-lg' />,
+        icon: <MdOutlineSecurity className='tw-flex tw-text-lg' />,
         path: `/users/${currentUser?.userId}/settings`,
         disabled: false,
       },
       {
         label: 'Trợ giúp',
         icon: <MdOutlineHelp className='tw-flex tw-text-lg' />,
-        path: `/users/${currentUser?.userId}/settings`,
+        path: `/users/${currentUser?.userId}/helps`,
         disabled: false,
       },
     ],
