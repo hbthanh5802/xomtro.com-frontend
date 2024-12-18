@@ -9,7 +9,7 @@ import { OrderConditionType, WhereConditionType } from '@/store/postFilterSlice'
 import { useAppStore } from '@/store/store';
 import { AssetSelectSchemaType, UserDetailSelectSchemaType } from '@/types/schema.type';
 import { Box, Chip, Divider, Skeleton, Tab, TabList, Tabs, Typography, tabClasses } from '@mui/joy';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 // Icons
 import { useOutletContext } from 'react-router-dom';
@@ -97,11 +97,10 @@ const UserPostPage: React.FC = () => {
     status: 'actived',
   });
 
-  // Sử dụng useCallback để ngăn hàm bị tạo mới
   const handleSetWhereConditions = React.useCallback(setWhereConditions, [setWhereConditions]);
   const handleSetOrderConditions = React.useCallback(setOrderConditions, [setOrderConditions]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (userData) {
       setWhereConditions((prev) => ({ ...prev, ownerId: userData.userId }));
     }

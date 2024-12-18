@@ -361,7 +361,7 @@ const WantedPostPage = () => {
           {/* Body  */}
           <main>
             <div className='tw-flex tw-flex-col laptop:tw-flex-row tw-gap-[40px]'>
-              <div className='tablet:tw-w-[600px] tw-my-[24px]'>
+              <div className='laptop:tw-w-[600px] tw-my-[24px]'>
                 <Divider sx={{ '--Divider-childPosition': `${0}%`, margin: '8px 0 8px 0' }}>
                   <div className='tw-inline-flex tw-items-center tw-gap-2'>
                     <Typography variant='plain' color='primary' level='title-sm'>
@@ -421,7 +421,7 @@ const WantedPostPage = () => {
                   />
                 </div>
               </div>
-              <div className='tablet:tw-w-[600px] tw-my-[24px]'>
+              <div className='laptop:tw-w-[600px] tw-my-[24px]'>
                 <Divider sx={{ '--Divider-childPosition': `${0}%`, margin: '8px 0 8px 0' }}>
                   <div className='tw-inline-flex tw-items-center tw-gap-2'>
                     <Typography variant='plain' color='primary' level='title-sm'>

@@ -1,4 +1,12 @@
-import { joinPosts, passPostItems, passPosts, posts, rentalPosts, wantedPosts } from '@/configs/schema.config';
+import {
+  joinPosts,
+  passPostItems,
+  passPosts,
+  postComments,
+  posts,
+  rentalPosts,
+  wantedPosts,
+} from '@/configs/schema.config';
 import { dateValidation, imageFileValidation } from '@/validations/common.validation';
 import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
@@ -115,3 +123,17 @@ export const renewPostValidation = createInsertSchema(posts).pick({
   expirationAfter: true,
   expirationAfterUnit: true,
 });
+
+export const insertPostCommentValidation = createInsertSchema(postComments).refine(
+  (data) => {
+    // Nếu không có tags, content không được rỗng
+    if (!data.tags) {
+      return data.content.trim() !== '';
+    }
+    return true;
+  },
+  {
+    message: 'Content cannot be empty if tags are not provided.',
+    path: ['content'], // Chỉ định lỗi sẽ được gán vào trường "content"
+  },
+);

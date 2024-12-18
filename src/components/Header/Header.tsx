@@ -103,6 +103,74 @@ const Header = () => {
                 >
                   Tạo bài viết
                 </MenuButton>
+                {/* <MenuButton
+                  slots={{ root: IconButton }}
+                  slotProps={{ root: { variant: 'solid', color: 'primary' } }}
+                  sx={(theme) => ({
+                    [theme.breakpoints.up('md')]: {
+                      display: 'none',
+                    },
+                  })}
+                >
+                  <FaPlus />
+                </MenuButton> */}
+                <Menu
+                  placement='bottom-end'
+                  size='md'
+                  sx={{
+                    zIndex: '99999',
+                    p: 1,
+                    gap: 1,
+                    '--ListItem-radius': 'var(--joy-radius-sm)',
+                  }}
+                >
+                  {currentUser.role === 'renter' ? (
+                    <React.Fragment>
+                      <MenuItem onClick={() => navigate('/posts/wanted/create')}>
+                        <div className='tw-flex tw-items-center tw-gap-2'>
+                          <IoHome className='tw-flex tw-text-lg tw-text-slate-600' />
+                          Tìm phòng cho thuê
+                        </div>
+                      </MenuItem>
+                      <MenuItem onClick={() => navigate('/posts/join/create')}>
+                        <div className='tw-flex tw-items-center tw-gap-2'>
+                          <FaHouseChimneyUser className='tw-flex tw-text-lg tw-text-slate-600' />
+                          Tìm người ở ghép
+                        </div>
+                      </MenuItem>
+                      <MenuItem>
+                        <div
+                          onClick={() => navigate('/posts/pass/create')}
+                          className='tw-flex tw-items-center tw-gap-2'
+                        >
+                          <FaHandsHoldingCircle className='tw-flex tw-text-lg tw-text-slate-600' />
+                          Pass đồ
+                        </div>
+                      </MenuItem>
+                    </React.Fragment>
+                  ) : (
+                    <React.Fragment>
+                      <MenuItem onClick={() => navigate('/posts/rental/create')}>
+                        <div className='tw-flex tw-items-center tw-gap-2'>
+                          <FaHouseMedicalFlag className='tw-flex tw-text-lg tw-text-slate-600' />
+                          Cho thuê phòng
+                        </div>
+                      </MenuItem>
+                      <MenuItem>
+                        <div
+                          onClick={() => navigate('/posts/pass/create')}
+                          className='tw-flex tw-items-center tw-gap-2'
+                        >
+                          <FaHandsHoldingCircle className='tw-flex tw-text-lg tw-text-slate-600' />
+                          Pass đồ
+                        </div>
+                      </MenuItem>
+                    </React.Fragment>
+                  )}
+                </Menu>
+              </Dropdown>
+              {/*  */}
+              <Dropdown>
                 <MenuButton
                   slots={{ root: IconButton }}
                   slotProps={{ root: { variant: 'solid', color: 'primary' } }}

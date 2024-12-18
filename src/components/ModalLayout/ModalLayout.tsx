@@ -7,7 +7,7 @@ interface ModalLayoutProps {
   children: ReactNode;
   title?: ReactNode | string;
   content?: ReactNode | string;
-  maxWidth?: number;
+  maxWidth?: number | string;
   layout?: 'center' | 'fullscreen';
   keepMounted?: boolean;
 }

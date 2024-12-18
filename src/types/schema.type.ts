@@ -139,6 +139,8 @@ export type PostAssetsInsertSchemaType = typeof schema.postAssets.$inferInsert;
 export type PassPostItemInsertSchemaType = typeof schema.passPostItems.$inferInsert;
 export type UserFollowersInsertSchemaType = typeof schema.userFollowers.$inferInsert;
 export type UserContactsInsertSchemaType = typeof schema.userContacts.$inferInsert;
+export type PostCommentInsertSchemaType = typeof schema.postComments.$inferInsert;
+export type NotificationInsertSchemaType = typeof schema.notifications.$inferInsert;
 
 // SELECT
 export type UserDetailSelectSchemaType = typeof schema.userDetail.$inferSelect;
@@ -156,3 +158,5 @@ export type UserContactsSelectSchemaType = typeof schema.userContacts.$inferSele
 export type MessageSelectSchemaType = typeof schema.messages.$inferSelect;
 export type ChatSelectSchemaType = typeof schema.chats.$inferSelect;
 export type ChatMemberSelectSchemaType = typeof schema.chatMembers.$inferSelect;
+export type PostCommentSelectSchemaType = typeof schema.postComments.$inferSelect;
+export type NotificationSelectSchemaType = typeof schema.notifications.$inferSelect;
