@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { authSlice } from '@/store/authSlice';
-import { conversationSlice, createConversationSlice } from '@/store/conversationStore';
+import { conversationSlice, createConversationSlice } from '@/store/conversationSlice';
+import { createPostCommentSlice, postCommentSlice } from '@/store/postCommentSlice';
 import { userSlice } from '@/store/userSlice';
 import { create } from 'zustand';
 import { createJSONStorage, devtools, persist, subscribeWithSelector } from 'zustand/middleware';
@@ -28,7 +30,7 @@ import { createUserSlice } from './userSlice';
 //   },
 // };
 
-type Store = authSlice & userSlice & postFilterSlice & conversationSlice;
+type Store = authSlice & userSlice & postFilterSlice & conversationSlice & postCommentSlice;
 
 export const useAppStore = create<Store>()(
   devtools(
@@ -39,14 +41,30 @@ export const useAppStore = create<Store>()(
           ...createUserSlice(...a),
           ...createPostFilterSlice(...a),
           ...createConversationSlice(...a),
+          ...createPostCommentSlice(...a),
         })),
       ),
       {
         name: 'xomtro.com',
         storage: createJSONStorage(() => localStorage),
         partialize: (state) => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { socketInstance, whereConditions, orderConditions, pagination, ...other } = state;
+          const {
+            socketInstance,
+            whereConditions,
+            orderConditions,
+            pagination,
+            selectedPostComment,
+            postCommentMode,
+            fetchingPostComments,
+            postComments,
+            postCommentPagination,
+            setPostCommentMode,
+            selectedPostAttachment,
+            setSelectedPostAttachment,
+            setOpenSelectedPostAttachment,
+            openSelectPostAttachment,
+            ...other
+          } = state;
           return other;
         },
       },

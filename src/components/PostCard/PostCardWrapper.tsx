@@ -1,5 +1,6 @@
 import ModalLayout from '@/components/ModalLayout';
 import AddToInterested from '@/components/PostCard/components/AddToInterestedButton';
+import CommentButton from '@/components/PostCard/components/CommentButton';
 import JoinDetail from '@/components/PostCard/components/JoinDetail';
 import PassDetail from '@/components/PostCard/components/PassDetail';
 import PostImages from '@/components/PostCard/components/PostImages';
@@ -7,6 +8,7 @@ import PostTime from '@/components/PostCard/components/PostTime';
 import RenewPostForm from '@/components/PostCard/components/RenewPostForm';
 import RentalDetail from '@/components/PostCard/components/RentalDetail';
 import WantedDetail from '@/components/PostCard/components/WantedDetail';
+import PostComments from '@/components/PostComments';
 import ShareButtons from '@/components/ShareButton/ShareButton';
 import { queryClient } from '@/configs/tanstackQuery.config';
 import useClickOutside from '@/hooks/useClickOutside';
@@ -42,7 +44,7 @@ import {
   Typography,
 } from '@mui/joy';
 import React from 'react';
-import { FaEye, FaRegCommentDots, FaRegEye, FaRegEyeSlash, FaRegImages } from 'react-icons/fa6';
+import { FaEye, FaRegEye, FaRegEyeSlash, FaRegImages } from 'react-icons/fa6';
 import { IoIosShareAlt } from 'react-icons/io';
 import { MdAutorenew, MdDeleteForever, MdEdit, MdOutlineInfo, MdOutlineMoreHoriz } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
@@ -86,6 +88,7 @@ export type PostCardDataType = {
 
 interface PostCardWrapperProps {
   data: PostCardDataType;
+  isPreview?: boolean;
 }
 
 function DeletePostDialog(props: { postId: number; onSuccess?: () => void }) {
@@ -138,17 +141,19 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
   const [openShare, setOpenShare] = React.useState(false);
   const [openRenewModal, setOpenRenewModal] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
-  const { post, assets, distance } = props.data;
+  const { isPreview, data } = props;
+  const { post, assets, distance } = data;
   const { ownerId } = post;
   const [showDeleteModal, setShowDeleteModal] = React.useState(false);
   const shareButtonRef = React.useRef(null);
 
   useClickOutside(shareButtonRef, () => setOpenShare(false));
 
-  const { currentUser, whereConditions } = useAppStore(
+  const { currentUser, whereConditions, resetPostCommentState } = useAppStore(
     useShallow((state) => ({
       currentUser: state.currentUser,
       whereConditions: state.whereConditions,
+      resetPostCommentState: state.resetPostCommentState,
     })),
   );
   const { data: UserDetailResponse } = useUserApiHook.useUserDetail(Number(ownerId), {
@@ -188,9 +193,20 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
     setOpenRenewModal(true);
   };
 
+  const handleViewDetailClick = () => {
+    navigate(`/posts/${post.id}/view`);
+  };
+
+  React.useEffect(() => {
+    resetPostCommentState();
+    return () => {
+      resetPostCommentState();
+    };
+  }, [resetPostCommentState]);
+
   return (
     <React.Fragment>
-      <div className='tw-shadow-md tw-rounded-lg tw-bg-white tw-overflow-hidden tw-pt-[18px]'>
+      <div className=' tw-relative tw-shadow-md tw-rounded-lg tw-bg-white tw-overflow-hidden tw-pt-[18px]'>
         <header className='tw-p-[14px] tw-pt-0 tw-flex tw-justify-between tw-items-center'>
           <div
             className='tw-flex tw-gap-4 tw-items-center tw-cursor-pointer'
@@ -338,11 +354,17 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
               startDecorator={<FaEye className='tw-text-[16px]' />}
               color='primary'
               variant='solid'
-              onClick={() => navigate(`/posts/${post.id}/view`)}
+              onClick={handleViewDetailClick}
             >
               Xem chi tiết
             </Button>
-            <Button startDecorator={<FaRegCommentDots className='tw-text-[18px]' />}>Bình luận</Button>
+            {/* <Button
+              onClick={() => navigate(`/posts/${post.id}/view#comments`)}
+              startDecorator={<FaRegCommentDots className='tw-text-[18px]' />}
+            >
+              Bình luận
+            </Button> */}
+            {!isPreview && <CommentButton postId={post.id} />}
             <Tooltip
               title={
                 <ShareButtons
@@ -364,6 +386,11 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
               </Button>
             </Tooltip>
           </ButtonGroup>
+          {isPreview && (
+            <section className='PostCard__comment'>
+              <PostComments postId={post.id} />
+            </section>
+          )}
         </footer>
       </div>
 

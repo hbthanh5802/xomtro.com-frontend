@@ -2,6 +2,7 @@ import { axiosAuthRequest, axiosRequest } from '@/configs/axios.config';
 import { OrderConditionType, PaginationType, WhereConditionType } from '@/store/postFilterSlice';
 import { PaginationResponseType } from '@/types/common.type';
 import {
+  GetPostCommentDataType,
   InsertJoinPostDataType,
   InsertPassPostDataType,
   InsertRentalPostDataType,
@@ -13,6 +14,8 @@ import {
   JoinPostSelectSchemaType,
   PassPostItemSelectSchemaType,
   PassPostSelectSchemaType,
+  PostCommentInsertSchemaType,
+  PostCommentSelectSchemaType,
   PostSelectSchemaType,
   RentalPostSelectSchemaType,
   WantedPostSelectSchemaType,
@@ -41,6 +44,11 @@ type searchPostResponseType<
     | PassPostSelectSchemaType,
 > = {
   results: FullPostResponseType<T>[];
+  pagination: PaginationResponseType;
+};
+
+export type searchPostCommentsResponseType = {
+  results: PostCommentSelectSchemaType[];
   pagination: PaginationResponseType;
 };
 
@@ -224,6 +232,37 @@ class postServices {
     return axiosAuthRequest({
       method: 'PUT',
       url: `/posts/${postId}/renew`,
+      data,
+    });
+  }
+
+  getPostComments(postId: number, conditions: GetPostCommentDataType) {
+    return axiosRequest<searchPostCommentsResponseType>({
+      method: 'POST',
+      url: `/posts/${postId}/comments`,
+      data: conditions,
+    });
+  }
+
+  insertPostComment(data: PostCommentInsertSchemaType) {
+    return axiosAuthRequest<PostCommentSelectSchemaType[]>({
+      method: 'POST',
+      url: '/posts/comments',
+      data,
+    });
+  }
+
+  removePostComment(commentId: number) {
+    return axiosAuthRequest({
+      method: 'DELETE',
+      url: `/posts/comments/${commentId}`,
+    });
+  }
+
+  updatePostComment(commentId: number, data: Partial<PostCommentInsertSchemaType>) {
+    return axiosAuthRequest<PostCommentSelectSchemaType>({
+      method: 'PUT',
+      url: `/posts/comments/${commentId}`,
       data,
     });
   }

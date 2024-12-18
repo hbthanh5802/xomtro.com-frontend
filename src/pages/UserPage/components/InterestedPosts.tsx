@@ -86,7 +86,7 @@ const InterestedPostItem = (props: InterestedPostItemProps) => {
               </Typography>
               <Typography level='body-sm' variant='soft' color='success'>
                 <Skeleton animation='wave' loading={!data}>
-                  {formatCurrencyVND(Number(detail?.priceStart))}/tháng
+                  {post?.updatedAt ? formatTimeForVietnamese(post.updatedAt, 'HH:mm:ss DD/MM/YYYY') : 'N/A'}
                 </Skeleton>
               </Typography>
               {detail?.priceEnd && detail?.priceEnd !== detail?.priceStart && (
@@ -94,7 +94,7 @@ const InterestedPostItem = (props: InterestedPostItemProps) => {
                   <span>-</span>
                   <Typography level='body-sm' variant='soft' color='success'>
                     <Skeleton animation='wave' loading={!data}>
-                      {`${formatCurrencyVND(detail.priceEnd)}/tháng`}
+                      {`${formatCurrencyVND(detail.priceEnd)}${post?.type === 'pass' ? '' : '/tháng'}`}
                     </Skeleton>
                   </Typography>
                 </>

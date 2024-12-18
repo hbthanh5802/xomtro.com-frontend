@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import PostComments from '@/components/PostComments';
 import useUrl from '@/hooks/useUrl.hook';
 import {
   default as JoinViewDetail,
@@ -8,6 +9,7 @@ import OwnerContactTab from '@/pages/ViewPostDetailPage/components/OwnerContactT
 import PassViewDetail from '@/pages/ViewPostDetailPage/components/PassViewDetail';
 import RentalViewDetail from '@/pages/ViewPostDetailPage/components/RentalViewDetail';
 import postService, { FullPostResponseType } from '@/services/post.service';
+import { useAppStore } from '@/store/store';
 import {
   JoinPostSelectSchemaType,
   PassPostSelectSchemaType,
@@ -17,15 +19,27 @@ import {
 import { generateCloudinaryImageOptimizer, handleAxiosError } from '@/utils/constants.helper';
 import React from 'react';
 import ImageGallery from 'react-image-gallery';
+import { useMediaQuery } from 'react-responsive';
 import { Navigate } from 'react-router-dom';
+import { useShallow } from 'zustand/react/shallow';
 
 const ViewPostDetailPage = () => {
-  const { params } = useUrl();
+  const { params, hash } = useUrl();
+  const isDesktopOrLaptop = useMediaQuery({
+    query: '(min-width: 1224px)',
+  });
   const postId = Number(params.postId);
   const [postData, setPostData] = React.useState<FullPostResponseType<
     RentalPostSelectSchemaType | WantedPostSelectSchemaType | JoinPostSelectSchemaType | PassPostSelectSchemaType
   > | null>(null);
   const { post, assets } = postData ?? {};
+  const commentContainerRef = React.useRef<HTMLElement>(null);
+
+  const { resetPostCommentState } = useAppStore(
+    useShallow((state) => ({
+      resetPostCommentState: state.resetPostCommentState,
+    })),
+  );
 
   React.useEffect(() => {
     const handleGetFullPost = async (postId: number) => {
@@ -58,6 +72,26 @@ const ViewPostDetailPage = () => {
     return assets.map((item) => generateCloudinaryImageOptimizer(item.url));
   }, [assets]);
 
+  // React.useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     if (!hash) return;
+  //     const element = document.querySelector(hash);
+  //     if (element) {
+  //       element.scrollIntoView({ behavior: 'smooth' });
+  //       clearInterval(interval);
+  //     }
+  //   }, 100);
+
+  //   return () => clearInterval(interval);
+  // }, [hash]);
+
+  React.useEffect(() => {
+    // Cleanup logic: reset post comment state on unmount
+    return () => {
+      resetPostCommentState();
+    };
+  }, [resetPostCommentState]);
+
   if (!postId) {
     return <Navigate to={'/404'} />;
   }
@@ -69,17 +103,38 @@ const ViewPostDetailPage = () => {
             {!!assets?.length && (
               <ImageGallery thumbnailPosition='bottom' showBullets showPlayButton={false} lazyLoad items={postImages} />
             )}
-            <section className='PostViewDetail__detail'>
-              {post?.type === 'rental' && <RentalViewDetail data={postData as any} />}
-              {post?.type === 'wanted' && <WantedViewDetail data={postData as any} />}
-              {post?.type === 'join' && <JoinViewDetail data={postData as any} />}
-              {post?.type === 'pass' && <PassViewDetail data={postData as any} />}
-            </section>
+            {post && (
+              <section className='PostViewDetail__detail'>
+                {post?.type === 'rental' && <RentalViewDetail data={postData as any} />}
+                {post?.type === 'wanted' && <WantedViewDetail data={postData as any} />}
+                {post?.type === 'join' && <JoinViewDetail data={postData as any} />}
+                {post?.type === 'pass' && <PassViewDetail data={postData as any} />}
+              </section>
+            )}
+            {post && isDesktopOrLaptop && (
+              <section
+                ref={commentContainerRef}
+                id='comments'
+                className='tw-bg-white tw-p-[24px] tw-mt-[12px] tw-shadow-sm tw-rounded tw-hidden laptop:tw-block'
+              >
+                <PostComments scrollIntoView={hash === '#comments'} postId={post?.id} maxHeight='100dvh' />
+              </section>
+            )}
           </div>
           {/* Owner contact info */}
           <div className='tw-w-full laptop:tw-sticky tw-top-[calc(var(--header-height)+12px)] tw-grow-0 tw-shrink-0 laptop:tw-w-[400px] tw-bg-white tw-shadow tw-rounded tw-p-[24px]'>
             <OwnerContactTab post={post!} />
           </div>
+
+          {post && !isDesktopOrLaptop && (
+            <section
+              ref={commentContainerRef}
+              id='comments'
+              className='tw-w-full laptop:tw-sticky tw-top-[calc(var(--header-height)+12px)] tw-grow-0 tw-shrink-0 laptop:tw-w-[400px] tw-bg-white tw-p-[24px] tw-mt-[12px] tw-shadow-sm tw-rounded tw-block laptop:tw-hidden'
+            >
+              <PostComments scrollIntoView={hash === '#comments'} postId={post?.id} maxHeight='100dvh' />
+            </section>
+          )}
         </div>
       </div>
     </div>
