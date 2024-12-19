@@ -114,6 +114,7 @@ export enum notificationType {
   CHAT = 'chat',
   POST = 'post',
   ACCOUNT = 'account',
+  GENERAL = 'general',
 }
 
 export enum userContactType {

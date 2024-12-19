@@ -8,49 +8,6 @@ import { Box, Skeleton, Tab, tabClasses, TabList, Tabs } from '@mui/joy';
 import React from 'react';
 import { useShallow } from 'zustand/react/shallow';
 
-// interface UserPostPageFilterProps {
-//   setWhereConditions: React.Dispatch<React.SetStateAction<WhereConditionType>>;
-//   setOrderConditions: React.Dispatch<React.SetStateAction<OrderConditionType>>;
-// }
-
-// const UserPostPageFilter = React.memo((props: UserPostPageFilterProps) => {
-//   const { setWhereConditions, setOrderConditions } = props;
-//   const methods = useForm<WhereConditionType & OrderConditionType>({
-//     defaultValues: {
-//       status: 'actived',
-//       createdAt: 'desc',
-//     },
-//   });
-//   const { watch, control } = methods;
-//   React.useEffect(() => {
-//     const sub = watch((value, { name }) => {
-//       if (name === 'status') {
-//         setWhereConditions((prev) => ({ ...prev, status: value[name] }));
-//       }
-//       if (name === 'createdAt') {
-//         setOrderConditions((prev) => ({ ...prev, createdAt: value[name] }));
-//       }
-//     });
-//     return () => sub.unsubscribe();
-//   }, [watch, setWhereConditions, setOrderConditions]);
-
-//   return (
-//     <FormProvider {...methods}>
-//       <form className='tw-flex tw-gap-2'>
-//         <RHFSelect<OrderConditionType>
-//           control={control}
-//           name='createdAt'
-//           label='Thời điểm:'
-//           options={[
-//             { label: 'Mới nhất', value: 'desc' },
-//             { label: 'Cũ nhất', value: 'asc' },
-//           ]}
-//         />
-//       </form>
-//     </FormProvider>
-//   );
-// });
-
 const PostAttachment = () => {
   const [tabIndex, setTabIndex] = React.useState(0);
 
@@ -73,7 +30,7 @@ const PostAttachment = () => {
   }, [currentUser]);
 
   return (
-    <div className='tw-p-[8px]'>
+    <div className='tw-p-[8px] tw-max-w-[100dvw] tw-min-w-fit tablet:tw-max-w-screen-tablet laptop:tw-max-w-screen-laptop'>
       <React.Fragment>
         <div className='tw-shadow-sm tw-rounded-lg tw-bg-white tw-overflow-hidden'>
           <Box sx={{ flexGrow: 1, overflowX: 'hidden', backgroundColor: 'background.body' }}>

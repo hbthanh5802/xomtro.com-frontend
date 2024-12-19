@@ -1,3 +1,4 @@
+import { createNotificationSlice, notificationSlice } from './notificationSlice';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { authSlice } from '@/store/authSlice';
 import { conversationSlice, createConversationSlice } from '@/store/conversationSlice';
@@ -30,7 +31,7 @@ import { createUserSlice } from './userSlice';
 //   },
 // };
 
-type Store = authSlice & userSlice & postFilterSlice & conversationSlice & postCommentSlice;
+type Store = authSlice & userSlice & postFilterSlice & conversationSlice & postCommentSlice & notificationSlice;
 
 export const useAppStore = create<Store>()(
   devtools(
@@ -42,6 +43,7 @@ export const useAppStore = create<Store>()(
           ...createPostFilterSlice(...a),
           ...createConversationSlice(...a),
           ...createPostCommentSlice(...a),
+          ...createNotificationSlice(...a),
         })),
       ),
       {
@@ -63,6 +65,8 @@ export const useAppStore = create<Store>()(
             setSelectedPostAttachment,
             setOpenSelectedPostAttachment,
             openSelectPostAttachment,
+            openNotificationPopover,
+            setOpenNotificationPopover,
             ...other
           } = state;
           return other;

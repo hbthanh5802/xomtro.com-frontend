@@ -1,3 +1,4 @@
+import { NotificationSelectSchemaType } from '@/types/schema.type';
 import axios from 'axios';
 export const WHITELIST_DOMAIN = ['http://localhost:4444'];
 
@@ -117,4 +118,17 @@ export const generateContactHTML = (contactType: string, contactContent: string)
 export const roundNumber = (value: number, precision: number) => {
   const factor = Math.pow(10, precision);
   return Math.round(value * factor) / factor;
+};
+
+export const getRedirectNotification = (data: NotificationSelectSchemaType) => {
+  if (data.type === 'post') {
+    return `/posts/${data.postId}/view`;
+  }
+  if (data.type === 'account') {
+    return `/users/${data.userId}/profile`;
+  }
+  if (data.type === 'chat') {
+    return `/conversations`;
+  }
+  return undefined;
 };
