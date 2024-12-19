@@ -6,6 +6,7 @@ import { PostCommentSelectSchemaType } from '@/types/schema.type';
 import { Button, Typography } from '@mui/joy';
 import React from 'react';
 import { useShallow } from 'zustand/react/shallow';
+import './PostComments.css';
 
 interface PostCommentsProps {
   postId: number;

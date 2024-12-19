@@ -267,7 +267,6 @@ const PostCommentInput = (props: PostCommentInputProps) => {
         closeButton
         title={'Đính kèm bài viết'}
         anchor='right'
-        sx={{ maxWidth: '100%', minWidth: 'fit-content' }}
       >
         <PostAttachment />
       </DrawerWrapper>
