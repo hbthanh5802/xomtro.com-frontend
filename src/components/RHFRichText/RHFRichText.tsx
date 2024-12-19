@@ -68,13 +68,14 @@ const RHFRichText = <T extends FieldValues>(props: RHFRichTextProps<T>) => {
         onChange(quill.root.innerHTML);
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quill]);
 
   return (
     <Controller
       control={control}
       name={name}
-      render={({ field, fieldState }) => {
+      render={({ fieldState }) => {
         return (
           <FormControl error={!!fieldState.error}>
             {label && <FormLabel>{label}</FormLabel>}
