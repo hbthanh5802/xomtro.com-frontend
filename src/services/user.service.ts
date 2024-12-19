@@ -15,7 +15,7 @@ import {
 
 class userServices {
   updateUserDetail(data: Partial<UserDetailInsertSchemaType>) {
-    return axiosAuthRequest({
+    return axiosAuthRequest<UserDetailSelectSchemaType>({
       method: 'PUT',
       url: '/users/me',
       data,

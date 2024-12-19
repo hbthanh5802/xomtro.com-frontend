@@ -102,6 +102,8 @@ const AddressFilter = () => {
     })),
   );
 
+  const isNearest = watch('nearest');
+
   return (
     <div className='tw-space-y-[8px]'>
       <Divider>Vị trí</Divider>
@@ -133,7 +135,7 @@ const AddressFilter = () => {
       />
       <Divider>Địa chỉ</Divider>
       <RHFSelect<FilterDataType>
-        disabled={!provinceOptions.length}
+        disabled={isNearest || !provinceOptions.length}
         name='provinceName'
         control={control}
         label='Tỉnh/Thành phố'
@@ -143,7 +145,7 @@ const AddressFilter = () => {
       />
 
       <RHFSelect<FilterDataType>
-        disabled={!districtOptions.length}
+        disabled={isNearest || !districtOptions.length}
         name='districtName'
         control={control}
         label='Quận/Huyện:'
@@ -153,7 +155,7 @@ const AddressFilter = () => {
       />
 
       <RHFSelect<FilterDataType>
-        disabled={!wardOptions.length}
+        disabled={isNearest || !wardOptions.length}
         name='wardName'
         control={control}
         label='Phường/Xã/Thị trấn:'
@@ -208,6 +210,9 @@ const FilterBar = (props: FilterBarProps) => {
         }
       } else if (name === 'nearest' || name === 'radius') {
         if (userLocation) {
+          setValue('provinceName', undefined);
+          setValue('districtName', undefined);
+          setValue('wardName', undefined);
           setWhereConditions((prev) => {
             return {
               ...prev,
@@ -218,11 +223,30 @@ const FilterBar = (props: FilterBarProps) => {
                       latitude: userLocation.latitude,
                       radius: name === 'radius' ? Number(fieldValue) : 50,
                     },
+                    provinceName: undefined,
+                    districtName: undefined,
+                    wardName: undefined,
                   }
                 : { nearest: false }),
             };
           });
         }
+        // if (userLocation) {
+        //   setWhereConditions((prev) => {
+        //     return {
+        //       ...prev,
+        //       ...(value['nearest']
+        //         ? {
+        //             nearest: {
+        //               longitude: userLocation.longitude,
+        //               latitude: userLocation.latitude,
+        //               radius: name === 'radius' ? Number(fieldValue) : 50,
+        //             },
+        //           }
+        //         : { nearest: false }),
+        //     };
+        //   });
+        // }
       } else {
         if (['/home/rental', '/home/wanted', '/home/join'].includes(pathname)) {
           if (['priceStart', 'priceEnd'].includes(name as string)) {

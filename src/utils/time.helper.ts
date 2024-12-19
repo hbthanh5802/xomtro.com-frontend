@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import dayjs from 'dayjs';
 import 'dayjs/locale/vi';
 import timezone from 'dayjs/plugin/timezone';
@@ -70,8 +71,7 @@ export const isValidDateTime = (dateTimeString: string) => {
 };
 
 // register your locale with timeago
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const localeFunc = (number: number, index: number, totalSec: number | undefined): [string, string] => {
+const localeFunc = (_number: number, index: number, _totalSec: number | undefined): [string, string] => {
   // number: thời gian đã qua / thời gian sắp tới dưới dạng số;
   // index: chỉ số của mảng bên dưới;
   // totalSec: tổng số giây giữa ngày được định dạng và ngày hôm nay;

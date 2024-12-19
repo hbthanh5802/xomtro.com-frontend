@@ -36,12 +36,12 @@ const RHFSelect = <T extends FieldValues>(props: RHFSelectProps<T>) => {
   const { field } = useController({ name, control });
 
   const handleChange = (
-    event:
+    _event:
       | React.MouseEvent<Element, MouseEvent>
       | React.KeyboardEvent<Element>
       | React.FocusEvent<Element, Element>
       | null,
-    value: {} | null,
+    value: object | null,
   ) => {
     field.onChange(value);
   };
