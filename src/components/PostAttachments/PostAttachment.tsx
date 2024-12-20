@@ -30,7 +30,7 @@ const PostAttachment = () => {
   }, [currentUser]);
 
   return (
-    <div className='tw-p-[8px] tw-max-w-[100dvw] tw-min-w-fit tablet:tw-max-w-screen-tablet laptop:tw-max-w-screen-laptop'>
+    <div className='tw-p-[8px] tw-max-w-[100dvw] tablet:tw-max-w-screen-tablet laptop:tw-max-w-screen-laptop'>
       <React.Fragment>
         <div className='tw-shadow-sm tw-rounded-lg tw-bg-white tw-overflow-hidden'>
           <Box sx={{ flexGrow: 1, overflowX: 'hidden', backgroundColor: 'background.body' }}>

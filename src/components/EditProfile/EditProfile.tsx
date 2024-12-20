@@ -13,7 +13,7 @@ import { formatDateForInput, timeInVietNam } from '@/utils/time.helper';
 import { updateUserDetailValidation } from '@/validations/user.validation';
 import { DevTool } from '@hookform/devtools';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, Skeleton } from '@mui/joy';
+import { Button } from '@mui/joy';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -42,7 +42,6 @@ interface EditProfileProps {
 
 const EditProfile = (props: EditProfileProps) => {
   const { userData } = props;
-  const isFetching = !userData;
   const queryClient = useQueryClient();
   const methods = useForm<UpdateUserProfileDataType>({
     defaultValues: {
@@ -74,7 +73,6 @@ const EditProfile = (props: EditProfileProps) => {
   const handleUpdateProfile = async (data: UpdateUserProfileDataType) => {
     const toastId = toast.loading('Đang lưu lại thông tin sửa đổi. VUi lòng chờ...');
     try {
-      console.log(data);
       const response = await updateUserProfileMutation.mutateAsync(data);
       queryClient.invalidateQueries({ queryKey: ['user-detail', { userId: userData.userId }] });
       if (response.data) {
@@ -91,68 +89,74 @@ const EditProfile = (props: EditProfileProps) => {
   return (
     <div className='tw-pt-[24px] tw-pb-[12px] tw-flex tw-justify-center tw-flex-col tw-gap-3'>
       <FormProvider {...methods}>
-        <form className='tw-space-y-6 tw-max-w-[600px]' onSubmit={methods.handleSubmit(handleUpdateProfile)}>
-          <div className='tw-flex tw-gap-[28px]'>
-            <Skeleton animation='wave' loading={isFetching}>
-              <RHFInput<UpdateUserProfileDataType> name='firstName' label='Họ và Tên đêm:' placeholder={emptyContent} />
-            </Skeleton>
-            <Skeleton animation='wave' loading={isFetching}>
-              <RHFInput<UpdateUserProfileDataType> name='lastName' label='Tên:' placeholder={emptyContent} required />
-            </Skeleton>
+        <form
+          className='tw-flex tw-flex-col tw-gap-6 tw-w-full laptop:tw-max-w-[600px]'
+          onSubmit={methods.handleSubmit(handleUpdateProfile)}
+        >
+          <div className='tw-grid tw-grid-cols-1 tablet:tw-grid-cols-2 tw-gap-[28px]'>
+            <RHFInput<UpdateUserProfileDataType>
+              name='firstName'
+              label='Họ và Tên đêm:'
+              placeholder={emptyContent}
+              fullWidth
+            />
+            <RHFInput<UpdateUserProfileDataType>
+              name='lastName'
+              label='Tên:'
+              placeholder={emptyContent}
+              required
+              fullWidth
+            />
           </div>
           <div className='tw-gap-[28px]'>
-            <Skeleton animation='wave' loading={isFetching}>
-              <RHFInput<UpdateUserProfileDataType>
-                name='email'
-                type='email'
-                label='Địa chỉ email:'
-                placeholder={emptyContent}
-                disable
-              />
-            </Skeleton>
+            <RHFInput<UpdateUserProfileDataType>
+              name='email'
+              type='email'
+              label='Địa chỉ email:'
+              placeholder={emptyContent}
+              disable
+            />
+          </div>
+          <div className='tw-grid tw-grid-cols-1 tablet:tw-grid-cols-2 tw-gap-[28px]'>
+            <RHFPhoneInput<UpdateUserProfileDataType>
+              name='phone'
+              label='Số điện thoại:'
+              placeholder={emptyContent}
+              fullWidth
+            />
+            <RHFDatePicker<UpdateUserProfileDataType>
+              name='dob'
+              label='Ngày sinh'
+              control={control}
+              maxDate={timeInVietNam().toDate()}
+            />
           </div>
           <div className='tw-flex tw-gap-[28px]'>
-            <Skeleton animation='wave' loading={isFetching}>
-              <RHFPhoneInput<UpdateUserProfileDataType>
-                name='phone'
-                label='Số điện thoại:'
-                placeholder={emptyContent}
-              />
-            </Skeleton>
-            <Skeleton animation='wave' loading={isFetching}>
-              <RHFDatePicker<UpdateUserProfileDataType>
-                name='dob'
-                label='Ngày sinh'
-                control={control}
-                maxDate={timeInVietNam().toDate()}
-              />
-            </Skeleton>
-          </div>
-          <div className='tw-flex tw-gap-[28px]'>
-            <Skeleton animation='wave' loading={isFetching}>
-              <RHFRadioGroup<UpdateUserProfileDataType>
-                name='gender'
-                label='Giới tính:'
-                options={genderRadioOptions}
-                direction='horizontal'
-              />
-            </Skeleton>
+            <RHFRadioGroup<UpdateUserProfileDataType>
+              name='gender'
+              label='Giới tính:'
+              options={genderRadioOptions}
+              direction='horizontal'
+            />
           </div>
           {/* Bio */}
           <div className='tw-flex tw-gap-[28px]'>
-            <Skeleton animation='wave' loading={isFetching}>
-              <RHFTextArea<UpdateUserProfileDataType>
-                name='bio'
-                label='Giới thiệu:'
-                control={control}
-                placeholder='Thêm thông tin giói thiệu của bạn ở đây...'
-                minRows={4}
-              />
-            </Skeleton>
+            <RHFTextArea<UpdateUserProfileDataType>
+              name='bio'
+              label='Giới thiệu:'
+              control={control}
+              placeholder='Thêm thông tin giói thiệu của bạn ở đây...'
+              minRows={4}
+            />
           </div>
 
-          <div className='tw-flex tw-items-center tw-justify-end tw-pt-[40px] tw-gap-3'>
-            <Button type='submit' disabled={!isValid}>
+          <div className='tw-flex tw-items-center tw-justify-stretch tw-pt-[20px] tw-gap-3'>
+            <Button
+              type='submit'
+              loading={updateUserProfileMutation.isPending}
+              disabled={!isValid || updateUserProfileMutation.isPending}
+              fullWidth
+            >
               Lưu thay đổi
             </Button>
           </div>

@@ -1,4 +1,4 @@
-import { FormControl, FormHelperText, FormLabel, Input, Typography } from '@mui/joy';
+import { FormControl, FormHelperText, FormLabel, Input, InputProps, Typography } from '@mui/joy';
 import { ReactNode } from 'react';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { MdOutlineInfo } from 'react-icons/md';
@@ -15,33 +15,34 @@ interface RHFInputProps<T extends FieldValues> {
   required?: boolean;
 }
 
-const RHFInput = <T extends FieldValues>(props: RHFInputProps<T>) => {
-  const { minWidth = 0 } = props;
+const RHFInput = <T extends FieldValues>(props: RHFInputProps<T> & InputProps) => {
+  const { minWidth = 0, name, className, placeholder, disable, type, required, control, label, ...others } = props;
 
   return (
     <>
       <Controller
-        control={props.control}
-        name={props.name}
+        control={control}
+        name={name}
         render={({ field, fieldState }) => (
           <>
             <FormControl error={!!fieldState.error}>
-              {props.label && (
+              {label && (
                 <FormLabel>
-                  {props.required && <Typography color='danger' level='title-sm'>{`(*)`}</Typography>}
-                  {props.label}
+                  {required && <Typography color='danger' level='title-sm'>{`(*)`}</Typography>}
+                  {label}
                 </FormLabel>
               )}
               <Input
                 sx={{ minWidth: `${minWidth}px` }}
-                disabled={props.disable}
-                placeholder={props.placeholder || ''}
-                className={props.className}
-                type={props.type || 'text'}
+                disabled={disable}
+                placeholder={placeholder || ''}
+                className={className}
+                type={type || 'text'}
                 {...field}
-                onChange={(e) => field.onChange(props.type === 'number' ? Number(e.target.value) : e.target.value)}
+                onChange={(e) => field.onChange(type === 'number' ? Number(e.target.value) : e.target.value)}
                 value={field.value ?? ''}
-                required={props.required}
+                required={required}
+                {...others}
               />
               {!!fieldState.error && (
                 <FormHelperText>
