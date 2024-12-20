@@ -13,13 +13,18 @@ const Account = () => {
   const { pathname } = useUrl();
   const accountItemId = React.useId();
   const navigate = useNavigate();
-  const { currentUser, userAvatar, logoutUser } = useAppStore(
+  const { currentUser, userAvatar, logoutUser, checkStatus } = useAppStore(
     useShallow((state) => ({
       currentUser: state.currentUser,
       userAvatar: state.userAvatar,
       logoutUser: state.logoutUser,
+      checkStatus: state.checkStatus,
     })),
   );
+
+  React.useEffect(() => {
+    checkStatus();
+  }, [checkStatus]);
 
   const accountItems = React.useMemo(
     () => [

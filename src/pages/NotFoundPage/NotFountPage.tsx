@@ -40,7 +40,15 @@ const NotFoundPage = () => {
               <Button onClick={() => history.push('/auth/login')} variant='soft' size='md' className='tw-ml-auto'>
                 Đăng nhập
               </Button>
-              <Button onClick={() => history.push('/auth/register')} size='md'>
+              <Button
+                sx={(theme) => ({
+                  [theme.breakpoints.down('md')]: {
+                    display: 'none',
+                  },
+                })}
+                onClick={() => history.push('/auth/register')}
+                size='md'
+              >
                 Đăng ký
               </Button>
             </div>

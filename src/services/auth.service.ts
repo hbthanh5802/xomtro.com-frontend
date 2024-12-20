@@ -97,6 +97,13 @@ class AuthServices {
       url: `/auth/disable`,
     });
   }
+
+  async checkStatus() {
+    return axiosAuthRequest({
+      method: 'GET',
+      url: '/auth/status',
+    });
+  }
 }
 
 export default new AuthServices();

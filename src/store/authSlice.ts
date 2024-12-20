@@ -2,6 +2,7 @@ import { queryClient } from '@/configs/tanstackQuery.config';
 import authService from '@/services/auth.service';
 import { useAppStore } from '@/store/store';
 import type { UserDetailSelectSchemaType } from '@/types/schema.type';
+import { handleAxiosError } from '@/utils/constants.helper';
 import history from '@/utils/history.helper';
 import { toast } from 'sonner';
 import { StateCreator } from 'zustand';
@@ -14,6 +15,7 @@ type authState = {
 type authActions = {
   setCurrentUser: (currentUser: UserDetailSelectSchemaType, allowRedirect?: boolean) => void;
   setAccessToken: (token: string) => void;
+  checkStatus: () => Promise<void>;
   logoutUser: () => void;
   resetAuthState: () => void;
 };
@@ -66,6 +68,14 @@ export const createAuthSlice: StateCreator<authSlice, AuthMiddlewares, [], authS
         id: toastId,
       });
       throw error;
+    }
+  },
+  checkStatus: async () => {
+    try {
+      await authService.checkStatus();
+    } catch (error) {
+      set(initialState);
+      console.log(handleAxiosError(error));
     }
   },
   resetAuthState: () => set(initialState),
