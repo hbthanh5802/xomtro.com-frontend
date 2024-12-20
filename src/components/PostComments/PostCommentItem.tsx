@@ -54,7 +54,7 @@ const PostCommentItem = (props: PostCommentItemProps) => {
         <Skeleton loading={fetchingUserAvatar} />
       </Avatar>
 
-      <div className='tw-space-y-1'>
+      <div className='tw-flex tw-flex-col tw-items-start tw-space-y-1'>
         <div className='tw-py-[4px] tw-px-[8px] tw-bg-slate-100 tw-rounded-lg'>
           <Typography
             level='title-sm'

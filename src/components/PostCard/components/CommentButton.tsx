@@ -39,7 +39,7 @@ const CommentButton = (props: CommentButtonProps) => {
   return (
     <>
       <ModalLayout maxWidth={'100%'} isOpen={openModal} onCloseModal={handleCloseModal}>
-        <section className='PostCard__preview tw-overflow-y-auto tw-tracking-tighter tw-scroll-ml-4 !tw-scrollbar-thumb-slate-400 tw-max-h-[90dvh\] tablet:tw-max-w-[680px] laptop:tw-max-w-[800px]'>
+        <section className='PostCard__preview tw-rounded tw-overflow-y-auto tw-tracking-tighter tw-scroll-ml-4 !tw-scrollbar-thumb-slate-400 tw-max-h-[90dvh] tw-max-w-[90vw] tablet:tw-max-w-[680px] laptop:tw-max-w-[800px]'>
           {fullPostFetching ? (
             <PostCardSkeleton />
           ) : (
@@ -47,13 +47,6 @@ const CommentButton = (props: CommentButtonProps) => {
           )}
         </section>
       </ModalLayout>
-
-      {/* <Button
-        onClick={() => navigate(`/posts/${postId}/view#comments`)}
-        startDecorator={<FaRegCommentDots className='tw-text-[18px]' />}
-      >
-        Bình luận
-      </Button> */}
       <Button onClick={() => setOpenModal(true)} startDecorator={<FaRegCommentDots className='tw-text-[18px]' />}>
         Bình luận
       </Button>
