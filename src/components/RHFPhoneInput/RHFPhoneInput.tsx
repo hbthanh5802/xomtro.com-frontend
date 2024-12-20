@@ -1,5 +1,5 @@
 import { phoneRegex } from '@/validations/common.validation';
-import { FormControl, FormHelperText, FormLabel, Input, Typography } from '@mui/joy';
+import { FormControl, FormHelperText, FormLabel, Input, InputProps, Typography } from '@mui/joy';
 import { ReactNode } from 'react';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { MdOutlineInfo } from 'react-icons/md';
@@ -14,7 +14,8 @@ interface RHFPhoneInputProps<T extends FieldValues> {
   required?: boolean;
 }
 
-const RHFPhoneInput = <T extends FieldValues>(props: RHFPhoneInputProps<T>) => {
+const RHFPhoneInput = <T extends FieldValues>(props: RHFPhoneInputProps<T> & InputProps) => {
+  const { ...others } = props;
   return (
     <>
       <Controller
@@ -43,6 +44,7 @@ const RHFPhoneInput = <T extends FieldValues>(props: RHFPhoneInputProps<T>) => {
                 type={'tel'}
                 {...field}
                 value={field.value ?? ''}
+                {...others}
               />
               {!!fieldState.error && (
                 <FormHelperText>
