@@ -36,6 +36,7 @@ const SearchRentalTab = (props: SearchPostTabProps) => {
       return undefined;
     },
     placeholderData: keepPreviousData,
+    enabled: !!whereConditions.nearest,
   });
 
   React.useEffect(() => {
