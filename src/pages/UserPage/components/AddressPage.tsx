@@ -9,7 +9,6 @@ import { InsertAddressDataType } from '@/types/address.type';
 import { SelectOptionItemType } from '@/types/common.type';
 import { AddressSelectSchemaType } from '@/types/schema.type';
 import { formatTimeForVietnamese } from '@/utils/time.helper';
-import { DevTool } from '@hookform/devtools';
 import {
   Button,
   Chip,
@@ -219,7 +218,7 @@ function AddressForm(props: AddressFormProps) {
               </Button>
             </div>
           </form>
-          <DevTool control={control} />
+          {/* <DevTool control={control} /> */}
         </FormProvider>
       </main>
     </div>

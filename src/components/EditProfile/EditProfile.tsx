@@ -11,7 +11,6 @@ import { UpdateUserProfileDataType } from '@/types/user.type';
 import { handleAxiosError } from '@/utils/constants.helper';
 import { formatDateForInput, timeInVietNam } from '@/utils/time.helper';
 import { updateUserDetailValidation } from '@/validations/user.validation';
-import { DevTool } from '@hookform/devtools';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@mui/joy';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -161,7 +160,7 @@ const EditProfile = (props: EditProfileProps) => {
             </Button>
           </div>
         </form>
-        <DevTool control={control} />
+        {/* <DevTool control={control} /> */}
       </FormProvider>
     </div>
   );
