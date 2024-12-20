@@ -115,7 +115,6 @@ const SearchPage = () => {
   React.useEffect(() => {
     const sb = watch((value, { name }) => {
       const fieldValue = value[name as keyof FilterSortTDataType];
-      console.log(name, fieldValue);
       if (name === 'price') {
         setOrderConditions((prev) => ({ ...prev, price: fieldValue }));
       } else if (name === 'updatedAt') {

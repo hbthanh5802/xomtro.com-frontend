@@ -73,10 +73,10 @@ function ResetPassword() {
   };
 
   return (
-    <div className='tw-flex tw-gap-[48px]'>
+    <div className='tw-flex tw-flex-wrap tw-gap-[24px]'>
       <FormProvider {...methods}>
         <form
-          className='tw-w-[350px] tw-mt-[24px] tw-space-y-[12px] tw-flex-shrink-0'
+          className='tw-w-full tw-flex-1 tablet:tw-w-[350px] tw-mt-[24px] tw-space-y-[12px] tw-flex-shrink-0'
           onSubmit={methods.handleSubmit(handleSubmitChangePassword)}
         >
           <RHFLoginPasswordInput<UpdateUserPasswordDataType>
@@ -95,13 +95,13 @@ function ResetPassword() {
             placeholder='Xác nhận lại mật khẩu mới...'
           />
           <div className='tw-pt-[12px]'>
-            <Button disabled={!isValid || updateFetching} loading={updateFetching} type='submit'>
+            <Button fullWidth disabled={!isValid || updateFetching} loading={updateFetching} type='submit'>
               Thay đổi mật khẩu
             </Button>
           </div>
         </form>
       </FormProvider>
-      <div className='tw-flex tw-flex-col tw-gap-2 tw-mt-[40px] tw-items-end'>
+      <div className='tw-flex-1 tw-basis-[200px] tw-inline-flex tw-flex-col tw-gap-2 tw-mt-[40px] tw-items-end'>
         <div className='tw-flex tw-gap-4 tw-items-center'>
           <span className='tw-text-[16px]'>
             <MdOutlineInfo />
