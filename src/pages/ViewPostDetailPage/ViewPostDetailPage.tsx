@@ -18,6 +18,7 @@ import {
 } from '@/types/schema.type';
 import { generateCloudinaryImageOptimizer, handleAxiosError } from '@/utils/constants.helper';
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import ImageGallery from 'react-image-gallery';
 import { useMediaQuery } from 'react-responsive';
 import { Navigate } from 'react-router-dom';
@@ -96,48 +97,60 @@ const ViewPostDetailPage = () => {
     return <Navigate to={'/404'} />;
   }
   return (
-    <div className='tw-w-full tw-min-h-[calc(100vh-var(--header-height))] tw-bg-backgroundColor tw-pt-[40px]'>
-      <div className='tw-container tw-mx-auto tw-p-[12px]'>
-        <div className='tw-flex tw-flex-col laptop:tw-flex-row tw-items-start tw-gap-6'>
-          <div className='tw-flex-1 tw-max-w-full laptop:tw-max-w-[calc(100%-400px)] tw-mb-2'>
-            {!!assets?.length && (
-              <ImageGallery thumbnailPosition='bottom' showBullets showPlayButton={false} lazyLoad items={postImages} />
-            )}
-            {post && (
-              <section className='PostViewDetail__detail'>
-                {post?.type === 'rental' && <RentalViewDetail data={postData as any} />}
-                {post?.type === 'wanted' && <WantedViewDetail data={postData as any} />}
-                {post?.type === 'join' && <JoinViewDetail data={postData as any} />}
-                {post?.type === 'pass' && <PassViewDetail data={postData as any} />}
-              </section>
-            )}
-            {post && isDesktopOrLaptop && (
+    <>
+      <Helmet>
+        <title>{post?.title || 'Website Chia sẻ Và Tìm kiếm thông tin nhà trọ'}</title>
+        <meta name='description' content={post?.title || 'Website Chia sẻ Và Tìm kiếm thông tin nhà trọ'} />
+      </Helmet>
+      <div className='tw-w-full tw-min-h-[calc(100vh-var(--header-height))] tw-bg-backgroundColor tw-pt-[40px]'>
+        <div className='tw-container tw-mx-auto tw-p-[12px]'>
+          <div className='tw-flex tw-flex-col laptop:tw-flex-row tw-items-start tw-gap-6'>
+            <div className='tw-flex-1 tw-max-w-full laptop:tw-max-w-[calc(100%-400px)] tw-mb-2'>
+              {!!assets?.length && (
+                <ImageGallery
+                  thumbnailPosition='bottom'
+                  showBullets
+                  showPlayButton={false}
+                  lazyLoad
+                  items={postImages}
+                />
+              )}
+              {post && (
+                <section className='PostViewDetail__detail'>
+                  {post?.type === 'rental' && <RentalViewDetail data={postData as any} />}
+                  {post?.type === 'wanted' && <WantedViewDetail data={postData as any} />}
+                  {post?.type === 'join' && <JoinViewDetail data={postData as any} />}
+                  {post?.type === 'pass' && <PassViewDetail data={postData as any} />}
+                </section>
+              )}
+              {post && isDesktopOrLaptop && (
+                <section
+                  ref={commentContainerRef}
+                  id='comments'
+                  className='tw-bg-white tw-p-[24px] tw-mt-[12px] tw-shadow-sm tw-rounded tw-hidden laptop:tw-block'
+                >
+                  <PostComments scrollIntoView={hash === '#comments'} postId={post?.id} maxHeight='100dvh' />
+                </section>
+              )}
+            </div>
+            {/* Owner contact info */}
+            <div className='tw-w-full laptop:tw-sticky tw-top-[calc(var(--header-height)+12px)] tw-grow-0 tw-shrink-0 laptop:tw-w-[400px] tw-bg-white tw-shadow tw-rounded tw-p-[24px]'>
+              <OwnerContactTab post={post!} />
+            </div>
+
+            {post && !isDesktopOrLaptop && (
               <section
                 ref={commentContainerRef}
                 id='comments'
-                className='tw-bg-white tw-p-[24px] tw-mt-[12px] tw-shadow-sm tw-rounded tw-hidden laptop:tw-block'
+                className='tw-w-full laptop:tw-sticky tw-top-[calc(var(--header-height)+12px)] tw-grow-0 tw-shrink-0 laptop:tw-w-[400px] tw-bg-white tw-p-[24px] tw-mt-[12px] tw-shadow-sm tw-rounded tw-block laptop:tw-hidden'
               >
                 <PostComments scrollIntoView={hash === '#comments'} postId={post?.id} maxHeight='100dvh' />
               </section>
             )}
           </div>
-          {/* Owner contact info */}
-          <div className='tw-w-full laptop:tw-sticky tw-top-[calc(var(--header-height)+12px)] tw-grow-0 tw-shrink-0 laptop:tw-w-[400px] tw-bg-white tw-shadow tw-rounded tw-p-[24px]'>
-            <OwnerContactTab post={post!} />
-          </div>
-
-          {post && !isDesktopOrLaptop && (
-            <section
-              ref={commentContainerRef}
-              id='comments'
-              className='tw-w-full laptop:tw-sticky tw-top-[calc(var(--header-height)+12px)] tw-grow-0 tw-shrink-0 laptop:tw-w-[400px] tw-bg-white tw-p-[24px] tw-mt-[12px] tw-shadow-sm tw-rounded tw-block laptop:tw-hidden'
-            >
-              <PostComments scrollIntoView={hash === '#comments'} postId={post?.id} maxHeight='100dvh' />
-            </section>
-          )}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

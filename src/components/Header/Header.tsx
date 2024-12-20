@@ -48,13 +48,14 @@ const Header = () => {
         slotProps={{
           content: {
             sx: {
+              width: '100vw !important',
               height: 'fit-content',
               maxHeight: '80dvh',
             },
           },
         }}
       >
-        <div className='tw-p-[24px]'>
+        <div className='tw-p-[12px] tw-pb-[24px]'>
           <MobileSearchBar setSearchNavOpen={handleSetSearchNavOpen} />
         </div>
       </DrawerWrapper>
@@ -319,7 +320,16 @@ const Header = () => {
             <Button onClick={() => history.push('/auth/login')} size='md' className='tw-ml-auto'>
               Đăng nhập
             </Button>
-            <Button onClick={() => history.push('/auth/register')} variant='plain' size='md'>
+            <Button
+              sx={(theme) => ({
+                [theme.breakpoints.down('md')]: {
+                  display: 'none',
+                },
+              })}
+              onClick={() => history.push('/auth/register')}
+              variant='plain'
+              size='md'
+            >
               Đăng ký
             </Button>
           </div>

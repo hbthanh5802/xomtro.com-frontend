@@ -98,14 +98,14 @@ const MobileSearchBar = (props: MobileSearchBarProps) => {
     <React.Fragment>
       <Input
         variant='outlined'
-        size='md'
+        size='sm'
         placeholder={placeholderList[searchType]}
         value={searchValue}
         onChange={handleChangeInput}
         startDecorator={
           <React.Fragment>
             <Select
-              size='md'
+              size='sm'
               variant='plain'
               value={searchType}
               onChange={(_, value) => setSearchType(value!)}
