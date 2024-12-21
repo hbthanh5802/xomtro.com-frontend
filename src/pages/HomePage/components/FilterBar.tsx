@@ -30,11 +30,6 @@ import { useShallow } from 'zustand/react/shallow';
 
 type FilterDataType = WhereConditionType & OrderConditionType & { radius?: number };
 
-interface FilterBarProps {
-  setWhereConditions: Dispatch<React.SetStateAction<WhereConditionType>>;
-  setOrderConditions: Dispatch<React.SetStateAction<OrderConditionType>>;
-}
-
 const AddressFilter = () => {
   const { control, watch, getValues } = useFormContext();
   const [selectedProvinceValue, selectedDistrictValue] = watch(['provinceName', 'districtName']);
@@ -167,9 +162,15 @@ const AddressFilter = () => {
   );
 };
 
+interface FilterBarProps {
+  whereConditions: WhereConditionType;
+  setWhereConditions: Dispatch<React.SetStateAction<WhereConditionType>>;
+  setOrderConditions: Dispatch<React.SetStateAction<OrderConditionType>>;
+}
+
 const FilterBar = (props: FilterBarProps) => {
   const { pathname } = useUrl();
-  const { setWhereConditions } = props;
+  const { setWhereConditions, whereConditions } = props;
   const [filters, setFilters] = React.useState({
     amenities: true,
     price: true,
@@ -179,7 +180,7 @@ const FilterBar = (props: FilterBarProps) => {
   const methods = useForm<FilterDataType>({
     defaultValues: { ...defaultOrderFilter, ...defaultWhereFilter, radius: 50 },
   });
-  const { watch, reset, setValue } = methods;
+  const { watch, reset, setValue, getValues } = methods;
 
   const handleResetAll = () => {
     reset({ ...defaultOrderFilter, ...defaultWhereFilter });
@@ -273,6 +274,18 @@ const FilterBar = (props: FilterBarProps) => {
 
     return () => sb.unsubscribe();
   }, [watch, setWhereConditions, pathname, setValue, userLocation]);
+
+  React.useEffect(() => {
+    if (
+      !!whereConditions.provinceName &&
+      !!getValues().provinceName &&
+      whereConditions.provinceName !== getValues().provinceName?.split('-')[1]
+    ) {
+      setValue('provinceName', undefined);
+      setValue('districtName', undefined);
+      setValue('wardName', undefined);
+    }
+  }, [whereConditions, getValues, setValue]);
 
   return (
     <div className='tw-relative tw-rounded tw-bg-white/15 tw-border tw-border-slate-200 tw-shadow-md'>
