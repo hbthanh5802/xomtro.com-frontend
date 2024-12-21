@@ -59,8 +59,7 @@ const FilterSummary = (props: FilterSummaryProps) => {
           <>
             <span className='tw-px-1'></span>
             <Typography variant='outlined' level='body-sm' color='primary'>
-              {typeof whereConditions.nearest === 'object' &&
-                `Gần vị trí của bạn khoảng ${whereConditions.nearest.radius} km`}
+              {typeof whereConditions.nearest === 'object' && `Bán kính <= ${whereConditions.nearest.radius} km`}
             </Typography>
           </>
         )}

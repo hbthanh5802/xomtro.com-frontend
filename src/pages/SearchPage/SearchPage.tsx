@@ -88,7 +88,7 @@ const SearchPage = () => {
         if (!addressValue) return;
         const response = await locationService.getGeocodingForward(addressValue);
         const { longitude, latitude } = response.data;
-        setWhereConditions((prev) => ({ ...prev, nearest: { radius: 50, longitude, latitude } }));
+        setWhereConditions((prev) => ({ ...prev, nearest: { radius: 25, longitude, latitude } }));
       } catch (error) {
         console.log(handleAxiosError(error));
         navigate('/404');
