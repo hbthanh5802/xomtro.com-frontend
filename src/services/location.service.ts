@@ -2,11 +2,14 @@
 import { axiosRequest } from '@/configs/axios.config';
 import {
   AutoCompleteResponseType,
+  DistanceMatrixVehicle,
   GeocodingForwardResponseType,
   GeocodingReverseResponseType,
+  GetDistanceMatrixResponseType,
   GetDistrictListType,
   GetProvincesListType,
 } from '@/types/location.type';
+import { roundNumber } from '@/utils/constants.helper';
 import { useQuery } from '@tanstack/react-query';
 import { TanstackQueryOptions } from './../types/common.type';
 
@@ -16,6 +19,18 @@ export type GetAutoCompleteProps = {
   latitude?: number;
   limit?: number;
   radius?: number;
+};
+
+export type GetDistanceMatrixProps = {
+  origin: {
+    latitude: number;
+    longitude: number;
+  };
+  destinations: {
+    latitude: number;
+    longitude: number;
+  }[];
+  vehicle?: DistanceMatrixVehicle;
 };
 
 class locationServices {
@@ -78,6 +93,32 @@ class locationServices {
       method: 'GET',
       url: '/location/auto-complete',
       params: props,
+    });
+  }
+
+  getDistanceMatrix(props: GetDistanceMatrixProps, options?: TanstackQueryOptions) {
+    const { origin, destinations, vehicle } = props;
+    const queryKey = [
+      'distance',
+      {
+        origin: { latitude: roundNumber(origin.latitude, 3), longitude: roundNumber(origin.longitude, 3) },
+        destinations,
+        vehicle: vehicle ?? 'bike',
+      },
+    ];
+    return useQuery({
+      queryKey: queryKey,
+      queryFn: () =>
+        axiosRequest<GetDistanceMatrixResponseType[]>({
+          url: '/location/distance',
+          params: {
+            origins: `${origin.latitude},${origin.longitude}`,
+            destinations: destinations.map((des) => `${des.latitude},${des.longitude}`),
+            ...(vehicle && { vehicle }),
+          },
+        }),
+      enabled: !!origin && !!destinations,
+      ...options,
     });
   }
 }

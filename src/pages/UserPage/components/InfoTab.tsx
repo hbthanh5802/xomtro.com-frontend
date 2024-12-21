@@ -32,8 +32,6 @@ import { IoMdHeart, IoMdSettings } from 'react-icons/io';
 import { IoCalendarSharp } from 'react-icons/io5';
 import { MdEmail, MdLocalPhone, MdLocationPin, MdOutlineSecurity } from 'react-icons/md';
 
-// const emptyContent = 'Chưa có thông tin';
-
 interface InfoTabProps {
   userData: UserDetailSelectSchemaType;
   userAvatarData: AssetSelectSchemaType;

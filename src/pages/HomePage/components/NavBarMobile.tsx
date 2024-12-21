@@ -10,12 +10,6 @@ const NavBarMobile = () => {
   const navigate = useNavigate();
   const [tabIndex, setTabIndex] = React.useState(0);
 
-  // const { currentUser } = useAppStore(
-  //   useShallow((state) => ({
-  //     currentUser: state.currentUser,
-  //   })),
-  // );
-
   const handleTabChange = (tabIndex: number, path: string) => {
     setTabIndex(tabIndex);
     navigate(path);
@@ -35,9 +29,6 @@ const NavBarMobile = () => {
 
   return (
     <div className='tw-rounded tw-bg-white tw-shadow tw-p-2 tw-h-[calc(100dvh-60px)] tw-overflow-y-auto'>
-      {/* <header className='tw-px-[4px] tw-pt-[6px] tw-pb-[12px]'>
-        <Typography level='title-md'>Loại bài đăng:</Typography>
-      </header> */}
       <div className='tw-flex tw-flex-col tw-justify-between'>
         <div className='tw-space-y-2 tw-flex tw-flex-col'>
           <Tooltip arrow title='Cho thuê phòng trọ' placement='right'>
@@ -46,9 +37,6 @@ const NavBarMobile = () => {
               onClick={() => handleTabChange(0, '/home/rental')}
               color={tabIndex === 0 ? 'primary' : 'neutral'}
               variant={tabIndex === 0 ? 'solid' : 'plain'}
-              // sx={{
-              //   width: '40px',
-              // }}
             >
               <FaHouseMedicalFlag className='tw-text-[20px]' />
             </IconButton>

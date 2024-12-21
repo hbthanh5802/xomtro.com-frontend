@@ -79,12 +79,7 @@ const RentalViewDetail = (props: ViewPostDetailProps) => {
 
         <section className='tw-mt-[24px]'>
           <Divider orientation='horizontal' sx={{ '--Divider-childPosition': `${0}%` }}>
-            <Typography
-              // startDecorator={<MdMiscellaneousServices className='tw-text-[18px]' />}
-              level='title-sm'
-              color='primary'
-              variant='soft'
-            >
+            <Typography level='title-sm' color='primary' variant='soft'>
               Thông tin cơ bản:
             </Typography>
           </Divider>

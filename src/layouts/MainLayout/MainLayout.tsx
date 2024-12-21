@@ -114,16 +114,7 @@ const DefaultLayout: React.FC = () => {
 
   React.useEffect(() => {
     if (location.longitude && location.latitude && !userLocation) {
-      // Làm tròn vị trí hiện tại và vị trí trong store
-      // const roundedLatitude = roundNumber(location.latitude, 3);
-      // const roundedLongitude = roundNumber(location.longitude, 3);
-      // const roundedUserLatitude = userLocation?.latitude ? roundNumber(userLocation.latitude, 3) : null;
-      // const roundedUserLongitude = userLocation?.longitude ? roundNumber(userLocation.longitude, 3) : null;
-
-      // Kiểm tra sự thay đổi vị trí
-      // if (roundedLatitude !== roundedUserLatitude || roundedLongitude !== roundedUserLongitude) {
       getUserLocation(location);
-      // }
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

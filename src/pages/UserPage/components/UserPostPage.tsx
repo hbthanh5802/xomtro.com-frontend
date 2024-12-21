@@ -116,16 +116,7 @@ const UserPostPage: React.FC = () => {
         <Box sx={{ flexGrow: 1, overflowX: 'hidden', backgroundColor: 'background.body' }}>
           <div className='tw-p-[24px] tw-space-y-4'>
             <div className='tw-flex tw-flex-col tablet:tw-flex-row tw-gap-4 tw-justify-between tw-items-start tablet:tw-items-center'>
-              <Typography
-                level='h4'
-                // endDecorator={
-                //   <Chip size='sm' variant='solid' color='primary'>
-                //     20
-                //   </Chip>
-                // }
-              >
-                Bài đăng
-              </Typography>
+              <Typography level='h4'>Bài đăng</Typography>
               <div className='UserPost__post-filter'>
                 <UserPostPageFilter
                   setWhereConditions={handleSetWhereConditions}

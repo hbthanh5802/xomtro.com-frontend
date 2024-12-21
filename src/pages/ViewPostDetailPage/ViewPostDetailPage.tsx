@@ -73,18 +73,18 @@ const ViewPostDetailPage = () => {
     return assets.map((item) => generateCloudinaryImageOptimizer(item?.url));
   }, [assets]);
 
-  // React.useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     if (!hash) return;
-  //     const element = document.querySelector(hash);
-  //     if (element) {
-  //       element.scrollIntoView({ behavior: 'smooth' });
-  //       clearInterval(interval);
-  //     }
-  //   }, 100);
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      if (!hash) return;
+      const element = document.querySelector(hash);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+        clearInterval(interval);
+      }
+    }, 100);
 
-  //   return () => clearInterval(interval);
-  // }, [hash]);
+    return () => clearInterval(interval);
+  }, [hash]);
 
   React.useEffect(() => {
     // Cleanup logic: reset post comment state on unmount

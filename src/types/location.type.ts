@@ -9,6 +9,8 @@ export type DivisionType =
   | 'thị trấn'
   | 'phường';
 
+export type DistanceMatrixVehicle = 'car' | 'bike' | 'taxi' | 'truck' | 'hd';
+
 export type LocationResponseType = {
   name: string;
   code: number;
@@ -64,4 +66,15 @@ export type AutoCompleteResponseType = {
   }[];
   mainText: string;
   subText: string;
+};
+
+export type GetDistanceMatrixResponseType = {
+  distance: {
+    text: string;
+    value: number;
+  };
+  duration: {
+    text: string;
+    value: number;
+  };
 };

@@ -101,15 +101,7 @@ export default function JoySignInSideTemplate() {
               </Stack>
               <GoogleAuthButton />
             </Stack>
-            <Divider
-            // sx={(theme) => ({
-            //   [theme.getColorSchemeSelector('light')]: {
-            //     color: { xs: '#FFF', md: 'text.tertiary' },
-            //   },
-            // })}
-            >
-              hoặc
-            </Divider>
+            <Divider>hoặc</Divider>
             {/* Register Form */}
             <LoginForm />
           </Box>

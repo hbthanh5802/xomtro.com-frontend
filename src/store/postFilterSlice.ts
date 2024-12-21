@@ -138,11 +138,3 @@ export const createPostFilterSlice: StateCreator<postFilterSlice, PostFilerMiddl
       state.pagination[key] = value;
     }),
 });
-
-// usePostFilterStore.getState().updateWhereCondition('title', 'New Title');
-
-// usePostFilterStore.getState().updateWhereCondition('hasFurniture', true);
-
-// usePostFilterStore.getState().updateOrderCondition('price', 'asc');
-
-// usePostFilterStore.getState().updatePagination('pageSize', 20);
