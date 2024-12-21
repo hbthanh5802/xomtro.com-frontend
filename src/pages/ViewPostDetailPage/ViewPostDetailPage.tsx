@@ -70,7 +70,7 @@ const ViewPostDetailPage = () => {
 
   const postImages = React.useMemo(() => {
     if (!assets?.length) return [];
-    return assets.map((item) => generateCloudinaryImageOptimizer(item.url));
+    return assets.map((item) => generateCloudinaryImageOptimizer(item?.url));
   }, [assets]);
 
   // React.useEffect(() => {
@@ -115,7 +115,7 @@ const ViewPostDetailPage = () => {
                   items={postImages}
                 />
               )}
-              {post && (
+              {postData && post && (
                 <section className='PostViewDetail__detail'>
                   {post?.type === 'rental' && <RentalViewDetail data={postData as any} />}
                   {post?.type === 'wanted' && <WantedViewDetail data={postData as any} />}
