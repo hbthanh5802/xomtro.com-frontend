@@ -27,7 +27,7 @@ const PostAttachmentItem = (props: PostAttachmentItemProps) => {
               ratio='1/1'
               sx={{ width: 100, borderRadius: 'sm', boxShadow: 'sm', flexGrow: 0, flexShrink: 0 }}
             >
-              <img src={assets?.[0].url} alt={post?.title} />
+              {assets.length && <img src={assets?.[0].url} alt={post?.title} />}
             </AspectRatio>
           </Skeleton>
 

@@ -58,7 +58,7 @@ const InterestedPostItem = (props: InterestedPostItemProps) => {
         >
           <Skeleton loading={!data} animation='wave'>
             <AspectRatio ratio='1/1' sx={{ width: 100, borderRadius: 'sm', boxShadow: 'sm' }}>
-              <img src={assets?.[0].url} alt={post?.title} />
+              <img src={assets?.[0]?.url} alt={post?.title} />
             </AspectRatio>
           </Skeleton>
 

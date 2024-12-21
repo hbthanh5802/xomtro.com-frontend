@@ -534,7 +534,7 @@ const JoinPostPage = () => {
                         </Chip>
                       </div>
                       <AspectRatio ratio={'1/1'} objectFit='contain'>
-                        <img src={assetItem.url} alt='Hình ảnh' />
+                        <img src={assetItem?.url} alt='Hình ảnh' />
                       </AspectRatio>
                     </div>
                   );
