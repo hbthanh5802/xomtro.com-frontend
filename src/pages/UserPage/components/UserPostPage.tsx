@@ -53,7 +53,7 @@ const UserPostPageFilter = React.memo((props: UserPostPageFilterProps) => {
       }
     });
     return () => sub.unsubscribe();
-  }, [watch]);
+  }, [watch, setWhereConditions, setOrderConditions]);
 
   return (
     <FormProvider {...methods}>

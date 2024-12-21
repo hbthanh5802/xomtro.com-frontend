@@ -12,6 +12,7 @@ import { BsTaxiFrontFill } from 'react-icons/bs';
 import { FaCar, FaMotorcycle, FaTruckMoving } from 'react-icons/fa6';
 import { MdDirectionsBike, MdLocationPin } from 'react-icons/md';
 import { RiPinDistanceFill } from 'react-icons/ri';
+import { useInView } from 'react-intersection-observer';
 import { useShallow } from 'zustand/react/shallow';
 
 interface DistanceMatrixTabProps {
@@ -77,7 +78,9 @@ const DistanceMatrixTab = (props: DistanceMatrixTabProps) => {
         </form>
       </FormProvider>
       <div className='tw-mt-2'>
-        {getDistanceMatrixFetching && <Skeleton variant='rectangular' height={60} sx={{ width: '100%' }} />}
+        {getDistanceMatrixFetching && (
+          <Skeleton animation='wave' variant='rectangular' height={60} sx={{ width: '100%' }} />
+        )}
         {!!distanceMatrixData && (
           <Table size='md' borderAxis='bothBetween' color='neutral' variant='plain'>
             <thead>
@@ -112,6 +115,9 @@ interface ViewPostDetailProps {
 }
 const LocationDetailTab = (props: ViewPostDetailProps) => {
   const { post } = props.data;
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+  });
   const [viewMap, setViewMap] = React.useState(false);
 
   const { userLocation } = useAppStore(
@@ -122,7 +128,7 @@ const LocationDetailTab = (props: ViewPostDetailProps) => {
 
   return (
     <>
-      <div id='location'>
+      <div ref={ref} id='location'>
         <div className='tw-mt-4 tw-bg-white tw-shadow-sm tw-rounded tw-p-[24px]'>
           <Typography level='title-lg' variant='plain'>
             Địa chỉ:
@@ -134,18 +140,22 @@ const LocationDetailTab = (props: ViewPostDetailProps) => {
             }${post.addressWard}, ${post.addressDistrict}, ${post.addressProvince}.`}</Typography>
           </div>
 
-          <MapBox
-            center={[Number(post.addressLongitude), Number(post.addressLatitude)]}
-            zoom={11}
-            className='tw-w-full tw-h-[300px]'
-            fillOpacity={0.1}
-            // showToggleMapStyle
-          />
-          <Button fullWidth onClick={() => setViewMap(true)}>
-            Xem toàn bản đồ
-          </Button>
+          {inView && (
+            <>
+              <MapBox
+                center={[Number(post.addressLongitude), Number(post.addressLatitude)]}
+                zoom={11}
+                className='tw-w-full tw-h-[300px]'
+                fillOpacity={0.1}
+                // showToggleMapStyle
+              />
+              <Button fullWidth onClick={() => setViewMap(true)}>
+                Xem toàn bản đồ
+              </Button>
+            </>
+          )}
 
-          {!!post && (
+          {!!post && inView && (
             <>
               <div className='tw-flex tw-items-center tw-gap-2 tw-mt-4'>
                 <Typography
