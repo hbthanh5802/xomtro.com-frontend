@@ -189,20 +189,24 @@ const ConversationView = (props: ConversationViewProps) => {
         className='MessageBubble__container tw-flex tw-flex-col tw-flex-1 tw-overflow-auto tw-p-[24px] tw-gap-2'
       >
         {loading && <ConversationViewSkeleton />}
-        {!loading && messages.length ? (
-          messages.map((messageItem, index) => {
-            return (
-              <div ref={messageBubbleRef} key={`MessageBubble-${messageItemId}-${index}`}>
-                <MessageBubble
-                  data={messageItem}
-                  currentUserId={currentUser?.userId}
-                  onRecallSuccess={() => handleRecallMessageSuccess(index)}
-                />
-              </div>
-            );
-          })
+        {!loading ? (
+          messages.length ? (
+            messages.map((messageItem, index) => {
+              return (
+                <div ref={messageBubbleRef} key={`MessageBubble-${messageItemId}-${index}`}>
+                  <MessageBubble
+                    data={messageItem}
+                    currentUserId={currentUser?.userId}
+                    onRecallSuccess={() => handleRecallMessageSuccess(index)}
+                  />
+                </div>
+              );
+            })
+          ) : (
+            <ConversationViewEmpty />
+          )
         ) : (
-          <ConversationViewEmpty />
+          <></>
         )}
       </div>
       <div className=''>
