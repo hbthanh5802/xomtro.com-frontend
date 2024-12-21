@@ -157,7 +157,7 @@ const LocationDetailTab = (props: ViewPostDetailProps) => {
 
           {!!post && inView && (
             <>
-              <div className='tw-flex tw-items-center tw-gap-2 tw-mt-4'>
+              <div className='tw-flex tw-flex-wrap tw-items-center tw-gap-2 tw-mt-4'>
                 <Typography
                   startDecorator={<RiPinDistanceFill className='tw-size-[18px]' />}
                   level='title-md'
@@ -165,7 +165,7 @@ const LocationDetailTab = (props: ViewPostDetailProps) => {
                 >
                   Dự đoán thời gian và khoảng cách đi lại từ vị trí của bạn:
                 </Typography>
-                <Typography color='primary' variant='outlined' level='body-md'>
+                <Typography color='primary' variant='solid' level='body-sm'>
                   {userLocation
                     ? userLocation?.addressComponents.slice(1).join(', ')
                     : 'Chưa xác định được vị trí của bạn'}

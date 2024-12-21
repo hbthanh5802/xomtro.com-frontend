@@ -26,11 +26,13 @@ const FilterSummary = (props: FilterSummaryProps) => {
 
   return (
     <Card color='primary' variant='outlined' sx={{ borderWidth: 2 }}>
-      <Typography
-        level='title-sm'
-        startDecorator={<IoMdInformationCircleOutline className='tw-text-primaryColor tw-size-[16px]' />}
-      >
-        Hiển thị bài đăng cho:
+      <div className='tw-flex tw-flex-wrap tw-gap-1'>
+        <Typography
+          level='title-sm'
+          startDecorator={<IoMdInformationCircleOutline className='tw-text-primaryColor tw-size-[16px]' />}
+        >
+          Hiển thị bài đăng cho:
+        </Typography>
         {whereConditions.provinceName && (
           <>
             <span className='tw-px-1'></span>
@@ -50,7 +52,7 @@ const FilterSummary = (props: FilterSummaryProps) => {
         {whereConditions.wardName && (
           <>
             <span className='tw-px-1'></span>
-            <Typography variant='outlined' level='body-sm' color='warning'>
+            <Typography variant='outlined' level='body-sm' color='success'>
               {whereConditions.wardName}
             </Typography>
           </>
@@ -79,7 +81,7 @@ const FilterSummary = (props: FilterSummaryProps) => {
             </Typography>
           </>
         )}
-      </Typography>
+      </div>
       <Typography
         level='title-sm'
         startDecorator={<IoMdInformationCircleOutline className='tw-text-primaryColor/5 tw-size-[16px]' />}

@@ -118,9 +118,12 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
   const { post, assets, distance } = data;
   const { ownerId } = post;
   const [showDeleteModal, setShowDeleteModal] = React.useState(false);
+  const [distanceOpen, setDistanceOpen] = React.useState(false);
+  const distanceRef = React.useRef<HTMLDivElement | null>(null);
   const shareButtonRef = React.useRef(null);
 
   useClickOutside(shareButtonRef, () => setOpenShare(false));
+  useClickOutside(distanceRef, () => setDistanceOpen(false));
 
   const { currentUser, whereConditions, resetPostCommentState } = useAppStore(
     useShallow((state) => ({
@@ -212,15 +215,16 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
             <div className='tw-flex tw-items-center tw-gap-1'>
               {distance && (
                 <Tooltip
-                  placement='bottom-end'
                   arrow
+                  open={distanceOpen}
+                  placement='bottom-end'
                   variant='outlined'
                   title={
-                    <div className='tw-flex tw-flex-col tw-gap-2 tw-max-w-[200px]'>
+                    <div ref={distanceRef} className='tw-flex tw-flex-col tw-gap-2 tw-max-w-[200px]'>
                       <Typography level='title-sm'>
                         Khoảng cách bán kính này chỉ mang tính chất tham khảo. Nếu bạn bạn muốn xem cụ thể:
                       </Typography>
-                      <Button size='sm' variant='soft' onClick={() => navigate(`/posts/${post.id}/view#location`)}>
+                      <Button size='sm' variant='solid' onClick={() => navigate(`/posts/${post.id}/view#location`)}>
                         Xem chi tiết
                       </Button>
                     </div>
@@ -230,6 +234,7 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
                     color='primary'
                     variant='solid'
                     endDecorator={<IoMdInformationCircleOutline className='tw-size-[18px]' />}
+                    onClick={() => setDistanceOpen(true)}
                   >
                     {`~ ${distance.toPrecision(4)} km`}
                   </Chip>
@@ -349,7 +354,7 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
               variant='solid'
               onClick={handleViewDetailClick}
             >
-              Xem chi tiết
+              Xem thêm
             </Button>
             {/* <Button
               onClick={() => navigate(`/posts/${post.id}/view#comments`)}
