@@ -1,4 +1,5 @@
 import { WhereConditionType } from '@/store/postFilterSlice';
+import { formatCurrencyVND } from '@/utils/constants.helper';
 import { room_amenities } from '@/utils/schema.helper';
 import { Card, Typography } from '@mui/joy';
 import React from 'react';
@@ -45,7 +46,7 @@ const FilterSummary = (props: FilterSummaryProps) => {
           <>
             <span className='tw-px-1'></span>
             <Typography variant='outlined' level='body-sm' color='warning'>
-              {whereConditions.provinceName}
+              {whereConditions.districtName}
             </Typography>
           </>
         )}
@@ -70,6 +71,22 @@ const FilterSummary = (props: FilterSummaryProps) => {
             <span className='tw-px-1'></span>
             <Typography variant='outlined' level='body-sm' color='neutral'>
               Dịch vụ, tiện ích
+            </Typography>
+          </>
+        )}
+        {whereConditions.priceStart && (
+          <>
+            <span className='tw-px-1'></span>
+            <Typography variant='outlined' level='body-sm' color='neutral'>
+              {`>= ${formatCurrencyVND(whereConditions.priceStart)}`}
+            </Typography>
+          </>
+        )}
+        {whereConditions.priceEnd && (
+          <>
+            <span className='tw-px-1'></span>
+            <Typography variant='outlined' level='body-sm' color='neutral'>
+              {`<= ${formatCurrencyVND(whereConditions.priceEnd)}`}
             </Typography>
           </>
         )}
