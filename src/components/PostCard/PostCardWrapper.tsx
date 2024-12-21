@@ -45,7 +45,7 @@ import {
 } from '@mui/joy';
 import React from 'react';
 import { FaEye, FaRegEye, FaRegEyeSlash, FaRegImages } from 'react-icons/fa6';
-import { IoIosShareAlt } from 'react-icons/io';
+import { IoIosShareAlt, IoMdInformationCircleOutline } from 'react-icons/io';
 import { MdAutorenew, MdDeleteForever, MdEdit, MdOutlineInfo, MdOutlineMoreHoriz } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -58,33 +58,6 @@ export type PostCardDataType = {
   passItems?: PassPostItemSelectSchemaType[];
   distance?: number;
 };
-
-// export type PostCardDataType =
-//   | {
-//       post: PostSelectSchemaType & { type: 'rental' };
-//       detail: RentalPostSelectSchemaType;
-//       assets: AssetSelectSchemaType[];
-//       distance?: number;
-//     }
-//   | {
-//       post: PostSelectSchemaType & { type: 'join' };
-//       detail: JoinPostSelectSchemaType;
-//       assets: AssetSelectSchemaType[];
-//       distance?: number;
-//     }
-//   | {
-//       post: PostSelectSchemaType & { type: 'wanted' };
-//       detail: WantedPostSelectSchemaType;
-//       assets: AssetSelectSchemaType[];
-//       distance?: number;
-//     }
-//   | {
-//       post: PostSelectSchemaType & { type: 'pass' };
-//       detail: PassPostSelectSchemaType;
-//       assets: AssetSelectSchemaType[];
-//       passItems: PassPostItemSelectSchemaType[];
-//       distance?: number;
-//     };
 
 interface PostCardWrapperProps {
   data: PostCardDataType;
@@ -238,9 +211,29 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
           <div className='tw-flex tw-gap-1'>
             <div className='tw-flex tw-items-center tw-gap-1'>
               {distance && (
-                <Chip color='primary' variant='solid'>
-                  {`~ ${distance.toPrecision(4)} km`}
-                </Chip>
+                <Tooltip
+                  placement='bottom-end'
+                  arrow
+                  variant='outlined'
+                  title={
+                    <div className='tw-flex tw-flex-col tw-gap-2 tw-max-w-[200px]'>
+                      <Typography level='title-sm'>
+                        Khoảng cách bán kính này chỉ mang tính chất tham khảo. Nếu bạn bạn muốn xem cụ thể:
+                      </Typography>
+                      <Button size='sm' variant='soft' onClick={() => navigate(`/posts/${post.id}/view#location`)}>
+                        Xem chi tiết
+                      </Button>
+                    </div>
+                  }
+                >
+                  <Chip
+                    color='primary'
+                    variant='solid'
+                    endDecorator={<IoMdInformationCircleOutline className='tw-size-[18px]' />}
+                  >
+                    {`~ ${distance.toPrecision(4)} km`}
+                  </Chip>
+                </Tooltip>
               )}
               {currentUser?.userId !== Number(post.ownerId) && <AddToInterested postId={post.id} />}
             </div>

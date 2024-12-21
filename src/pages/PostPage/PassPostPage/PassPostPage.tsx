@@ -43,36 +43,6 @@ const expirationAfterOptions: SelectOptionItemType[] = [
   },
 ];
 
-// const totalAreaUnitOptions: SelectOptionItemType[] = [
-//   {
-//     label: 'Mét vuông',
-//     value: 'm2',
-//   },
-//   {
-//     label: 'Centimet vuông',
-//     value: 'cm2',
-//   },
-// ];
-
-// const minLeaseTermUnitOptions: SelectOptionItemType[] = [
-//   {
-//     label: 'Giờ',
-//     value: 'hour',
-//   },
-//   {
-//     label: 'Ngày',
-//     value: 'day',
-//   },
-//   {
-//     label: 'Tháng',
-//     value: 'month',
-//   },
-//   {
-//     label: 'Năm',
-//     value: 'year',
-//   },
-// ];
-
 interface AddressPostFormProps {
   control: Control<InsertPassPostDataType>;
   mode: 'create' | 'edit';
@@ -209,7 +179,6 @@ const JoinPostPage = () => {
   const assetId = React.useId();
   const mode = params?.mode as 'create' | 'edit';
   const postData = state?.postData;
-  // const detail: PassPostSelectSchemaType = mode === 'edit' && postData ? postData.detail : null;
   const post: PostSelectSchemaType = mode === 'edit' && postData ? postData.post : null;
   const passItems = React.useMemo(
     () =>

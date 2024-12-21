@@ -1,9 +1,7 @@
 import { FormControl, FormHelperText, FormLabel, List, ListItem, Radio, RadioGroup, Typography } from '@mui/joy';
 import { ReactNode, useId } from 'react';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
-// import { GoHome } from 'react-icons/go';
 import { MdOutlineInfo } from 'react-icons/md';
-// import { TbHomeSearch } from 'react-icons/tb';
 
 interface RHFRoleChoicesProps<T extends FieldValues> {
   label?: ReactNode | string;
@@ -19,13 +17,11 @@ const roleChoices = [
     label: 'Người cho thuê',
     value: 'landlord',
     description: 'Nếu bạn có nhu cầu đăng bài cho thuê trọ.',
-    // icon: <GoHome />,
   },
   {
     label: 'Người thuê',
     value: 'renter',
     description: 'Nếu bạn có nhu cầu tìm phòng trọ, tìm người ở ghép, pass đồ.',
-    // icon: <TbHomeSearch />,
   },
 ];
 

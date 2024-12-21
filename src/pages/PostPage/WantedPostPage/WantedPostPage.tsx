@@ -57,25 +57,6 @@ const totalAreaUnitOptions: SelectOptionItemType[] = [
   },
 ];
 
-// const minLeaseTermUnitOptions: SelectOptionItemType[] = [
-//   {
-//     label: 'Giờ',
-//     value: 'hour',
-//   },
-//   {
-//     label: 'Ngày',
-//     value: 'day',
-//   },
-//   {
-//     label: 'Tháng',
-//     value: 'month',
-//   },
-//   {
-//     label: 'Năm',
-//     value: 'year',
-//   },
-// ];
-
 interface AddressPostFormProps {
   control: Control<InsertWantedPostDataType>;
   mode: 'create' | 'edit';

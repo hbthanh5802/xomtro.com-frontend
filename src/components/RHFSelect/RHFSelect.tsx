@@ -70,14 +70,11 @@ const RHFSelect = <T extends FieldValues>(props: RHFSelectProps<T>) => {
                   onChange={handleChange}
                   value={field.value || null}
                   className={props.className}
-                  // indicator={<MdOutlineKeyboardArrowDown className='tw-text-[24px]' />}
                   sx={{
                     minWidth: `${minWidth}px`,
-                    // zIndex: '99999',
                     p: 1,
                     gap: 1,
                     '--ListItem-radius': 'var(--joy-radius-sm)',
-                    // width: 240,
                     [`& .${selectClasses.indicator}`]: {
                       transition: '0.2s',
                       [`&.${selectClasses.expanded}`]: {

@@ -21,10 +21,7 @@ const NotFoundPage = () => {
         <div className='tw-w-screen tw-p-[12px] tw-px-[24px] tw-bg-primaryColor tw-flex tw-justify-between tw-items-center'>
           {/* Logo */}
           <Link to={'/home/rental'} className='tw-mr-[24px] tw-flex-1 tw-flex tw-items-center tw-gap-2 tw-select-none'>
-            {/* <IconButton variant='soft' color='primary' size='md'> */}
             <LogoIcon size={32} />
-            {/* <LogoIcon2 width={32} height={32} /> */}
-            {/* </IconButton> */}
             <div className='tw-hidden tablet:tw-inline-block tw-text-[24px] tw-font-writing tw-primary-gradient-lightest tw-gradient-text'>
               Xóm trọ
             </div>

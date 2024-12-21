@@ -11,26 +11,6 @@ import { createAuthSlice } from './authSlice';
 import { createPostFilterSlice, postFilterSlice } from './postFilterSlice';
 import { createUserSlice } from './userSlice';
 
-// const customStorage = {
-//   getItem: async (name: string): Promise<string | null> => {
-//     const storedData = await get(name);
-//     if (!storedData) return null;
-//     try {
-//       return superjson.parse(storedData);
-//     } catch (e) {
-//       console.error('Error parsing data:', e);
-//       return null;
-//     }
-//   },
-//   setItem: async (name: string, value: string): Promise<void> => {
-//     const serializedData = superjson.stringify(value);
-//     await set(name, serializedData);
-//   },
-//   removeItem: async (name: string): Promise<void> => {
-//     await del(name);
-//   },
-// };
-
 type Store = authSlice & userSlice & postFilterSlice & conversationSlice & postCommentSlice & notificationSlice;
 
 export const useAppStore = create<Store>()(

@@ -11,12 +11,6 @@ const NavBar = () => {
   const navigate = useNavigate();
   const [tabIndex, setTabIndex] = React.useState(0);
 
-  // const { currentUser } = useAppStore(
-  //   useShallow((state) => ({
-  //     currentUser: state.currentUser,
-  //   })),
-  // );
-
   const handleTabChange = (tabIndex: number, path: string) => {
     setTabIndex(tabIndex);
     navigate(path);

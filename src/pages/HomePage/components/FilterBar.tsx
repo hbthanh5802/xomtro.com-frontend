@@ -232,22 +232,6 @@ const FilterBar = (props: FilterBarProps) => {
             };
           });
         }
-        // if (userLocation) {
-        //   setWhereConditions((prev) => {
-        //     return {
-        //       ...prev,
-        //       ...(value['nearest']
-        //         ? {
-        //             nearest: {
-        //               longitude: userLocation.longitude,
-        //               latitude: userLocation.latitude,
-        //               radius: name === 'radius' ? Number(fieldValue) : 50,
-        //             },
-        //           }
-        //         : { nearest: false }),
-        //     };
-        //   });
-        // }
       } else {
         if (['/home/rental', '/home/wanted', '/home/join'].includes(pathname)) {
           if (['priceStart', 'priceEnd'].includes(name as string)) {

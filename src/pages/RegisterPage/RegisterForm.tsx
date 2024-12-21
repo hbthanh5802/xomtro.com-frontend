@@ -13,7 +13,6 @@ import React, { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-// import { Link } from 'react-router-dom';
 
 const RegisterForm: React.FC = () => {
   const methods = useForm<RegisterDataType>({
