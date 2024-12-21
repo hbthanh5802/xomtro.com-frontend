@@ -163,7 +163,7 @@ function AddressForm(props: AddressFormProps) {
   }
 
   return (
-    <div className='tw-w-[400px]'>
+    <div className='tw-w-full tablet:tw-w-[400px]'>
       <header className='tw-space-y-[8px]'>
         <Typography level='title-md'>Thêm địa chỉ mới</Typography>
         <Typography level='body-sm'>
