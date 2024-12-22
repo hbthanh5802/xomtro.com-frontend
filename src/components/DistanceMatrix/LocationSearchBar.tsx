@@ -1,20 +1,13 @@
 import useDebounce from '@/hooks/useDebounce';
 import locationService, { GetAutoCompleteProps } from '@/services/location.service';
 import { useAppStore } from '@/store/store';
-import { AutoCompleteResponseType } from '@/types/location.type';
+import { AutoCompleteResponseType, GeocodingForwardResponseType } from '@/types/location.type';
 import { handleAxiosError } from '@/utils/constants.helper';
-import { Button, Chip, Divider, IconButton, Input, Option, Select, selectClasses, Tooltip, Typography } from '@mui/joy';
-import queryString from 'query-string';
+import { Button, Chip, Divider, IconButton, Input, InputProps, Tooltip, Typography } from '@mui/joy';
 import React from 'react';
 import { IoIosCloseCircle, IoIosSearch } from 'react-icons/io';
-import { MdLocationPin } from 'react-icons/md';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useShallow } from 'zustand/react/shallow';
-
-const placeholderList: Record<string, string> = {
-  location: 'Nhập địa điểm bạn muốn tìm kiếm...',
-};
 
 const handleGenerateSearchResult = (
   searchValue: string,
@@ -24,7 +17,7 @@ const handleGenerateSearchResult = (
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const searchId = React.useId();
   return (
-    <div className='tw-relative tw-max-w-[600px] tw-max-h-[600px] tw-overflow-y-auto'>
+    <div className='tw-relative tw-max-w-[600px] tw-max-h-[40dvh] tw-overflow-y-auto'>
       {!searchResult.length && (
         <div className='tw-py-[24px]'>
           <Typography level='title-md'>Không có thấy kết quả tìm kiếm</Typography>
@@ -68,10 +61,12 @@ const handleGenerateSearchResult = (
   );
 };
 
-const SearchBar: React.FC = () => {
-  const navigate = useNavigate();
+interface LocationSearchBarProps {
+  onSelectedResult: (selectedData: AutoCompleteResponseType, locationPoint: GeocodingForwardResponseType) => void;
+}
+const LocationSearchBar = (props: LocationSearchBarProps & InputProps) => {
+  const { onSelectedResult, ...others } = props;
   const [loading, setLoading] = React.useState(false);
-  const [searchType, setSearchType] = React.useState('location');
   const [searchValue, setSearchValue] = React.useState('');
   const [searchResult, setSearchResult] = React.useState<AutoCompleteResponseType[]>([]);
   const [tooltipOpen, setTooltipOpen] = React.useState(false);
@@ -93,7 +88,6 @@ const SearchBar: React.FC = () => {
     async (value: string) => {
       setLoading(true);
       try {
-        console.log({ userLocation });
         const searchParams: GetAutoCompleteProps = {
           searchValue: value,
           ...(userLocation?.longitude && { longitude: userLocation.longitude }),
@@ -113,19 +107,22 @@ const SearchBar: React.FC = () => {
     [userLocation],
   );
 
-  const handleSearchResultClick = (searchResultValue: AutoCompleteResponseType) => {
+  const handleSearchResultClick = async (searchResultValue: AutoCompleteResponseType) => {
     if (!debounceSearchValue || !searchResultValue) {
       toast.error('Vui lòng nhập kết quả tìm kiếm');
       return;
     }
-    handleReset();
-    setTooltipOpen(false);
-    const qr = queryString.stringify({
-      searchType,
-      searchValue: debounceSearchValue,
-      searchResult: searchResultValue.description,
-    });
-    navigate(`/search?${qr}`);
+    setLoading(true);
+    try {
+      const geoCodingResponse = await locationService.getGeocodingForward(searchResultValue.description);
+      if (onSelectedResult) onSelectedResult(searchResultValue, geoCodingResponse.data);
+      handleReset();
+      setTooltipOpen(false);
+    } catch (error) {
+      console.log(handleAxiosError(error));
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleReset = () => {
@@ -134,19 +131,11 @@ const SearchBar: React.FC = () => {
   };
 
   React.useEffect(() => {
-    if (debounceSearchValue.trim()) {
-      // handleSearchValue(debounceSearchValue.trim());
-    }
-  }, [debounceSearchValue, handleSearchValue]);
-
-  React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (tooltipRef.current && !tooltipRef.current.contains(event.target as Node)) {
-        // console.log(event.target, !tooltipRef.current.contains(event.target as Node));
         setTooltipOpen(false);
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
@@ -156,6 +145,7 @@ const SearchBar: React.FC = () => {
   return (
     <React.Fragment>
       <Tooltip
+        // open={true}
         placement='bottom-start'
         open={tooltipOpen}
         title={
@@ -169,43 +159,10 @@ const SearchBar: React.FC = () => {
         <Input
           variant='outlined'
           size='md'
-          placeholder={placeholderList[searchType]}
+          placeholder='Nhập địa điểm bạn muốn tìm kiếm...'
           disabled={loading}
           value={searchValue}
           onChange={handleChangeInput}
-          startDecorator={
-            <React.Fragment>
-              <Select
-                size='md'
-                variant='plain'
-                value={searchType}
-                onChange={(_, value) => setSearchType(value!)}
-                slotProps={{
-                  listbox: {
-                    variant: 'outlined',
-                  },
-                }}
-                sx={{
-                  p: 0.5,
-                  gap: 1,
-                  '--ListItem-radius': 'var(--joy-radius-sm)',
-                  '--ListItem-padding': 1,
-                  [`& .${selectClasses.indicator}`]: {
-                    transition: '0.2s',
-                    [`&.${selectClasses.expanded}`]: {
-                      transform: 'rotate(-180deg)',
-                    },
-                  },
-                }}
-              >
-                <Option value='location'>
-                  <MdLocationPin />
-                  Địa điểm
-                </Option>
-              </Select>
-              <Divider orientation='vertical' />
-            </React.Fragment>
-          }
           endDecorator={
             <React.Fragment>
               {searchValue.trim() && (
@@ -217,7 +174,7 @@ const SearchBar: React.FC = () => {
                 loading={loading}
                 variant='plain'
                 color='primary'
-                sx={{ width: 60, borderRadius: '40px' }}
+                sx={{ width: 60 }}
                 onClick={() => handleSearchValue(debounceSearchValue)}
               >
                 <IoIosSearch size={24} />
@@ -226,14 +183,28 @@ const SearchBar: React.FC = () => {
           }
           fullWidth
           sx={{
-            borderRadius: '40px',
-            boxShadow: 'sx',
             '--Input-decoratorChildHeight': '38px',
+            '&::before': {
+              border: '1.5px solid var(--Input-focusedHighlight)',
+              transform: 'scaleX(0)',
+              left: '2.5px',
+              right: '2.5px',
+              bottom: 0,
+              top: 'unset',
+              transition: 'transform .15s cubic-bezier(0.1,0.9,0.2,1)',
+              borderRadius: 0,
+              borderBottomLeftRadius: '64px 20px',
+              borderBottomRightRadius: '64px 20px',
+            },
+            '&:focus-within::before': {
+              transform: 'scaleX(1)',
+            },
           }}
+          {...others}
         />
       </Tooltip>
     </React.Fragment>
   );
 };
 
-export default SearchBar;
+export default LocationSearchBar;
