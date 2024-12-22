@@ -1,9 +1,11 @@
 import MapBox from '@/components/MapBox';
 import { useAppStore } from '@/store/store';
 import { Typography } from '@mui/joy';
+import React from 'react';
 import { useShallow } from 'zustand/react/shallow';
 
 const LocationTab = () => {
+  const locationId = React.useId();
   const { userLocation, locationPermissionStatus } = useAppStore(
     useShallow((state) => ({
       userLocation: state.userLocation,
@@ -52,7 +54,12 @@ const LocationTab = () => {
               </div> */}
               <div className='tw-flex tw-flex-wrap tw-items-center tw-gap-1'>
                 <Typography level='title-sm'>Vị trí của bạn:</Typography>
-                <Typography level='body-sm'>{userLocation.addressComponents.slice(1).join(', ')}</Typography>
+                {userLocation.addressComponents.map((item, index) => (
+                  <Typography key={`Location-${locationId}-${index}`} level='body-sm'>
+                    {item}
+                  </Typography>
+                ))}
+                .
               </div>
             </div>
           ) : (
@@ -70,6 +77,12 @@ const LocationTab = () => {
             center={[userLocation?.longitude, userLocation?.latitude]}
             className='tw-w-full tw-h-[300px]'
           />
+        )}
+        {userLocation && (
+          <Typography
+            sx={{ mt: 1 }}
+            level='body-xs'
+          >{`lat: ${userLocation?.latitude}, long: ${userLocation?.longitude}`}</Typography>
         )}
       </div>
     </div>

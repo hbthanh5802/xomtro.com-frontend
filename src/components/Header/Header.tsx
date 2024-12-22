@@ -72,11 +72,11 @@ const Header = () => {
         </div>
 
         {/* Logo */}
-        <div className='tw-flex tw-justify-center tablet:tw-justify-start tw-flex-1'>
+        <div className='tw-flex tw-justify-center tablet:tw-justify-start tw-flex-1 tw-shrink-0'>
           <Link to={'/home/rental'} className='tw-mr-[24px] tw-inline-flex tw-items-center tw-gap-2 tw-select-none'>
             {/* <LogoIcon width='22px' color='#185EA5' /> */}
             <LogoIcon2 width={32} height={32} />
-            <div className='tw-hidden laptop:tw-inline-block tw-text-[24px] tw-font-writing tw-text-primaryColor'>
+            <div className='tw-hidden laptop:tw-inline-block tw-text-[24px] tw-font-writing tw-text-primaryColor tw-text-nowrap tw-line-clamp-1'>
               Xóm trọ
             </div>
           </Link>

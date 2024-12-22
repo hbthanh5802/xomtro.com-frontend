@@ -25,7 +25,7 @@ const ForbiddenPage = () => {
             <LogoIcon size={32} />
             {/* <LogoIcon2 width={32} height={32} /> */}
             {/* </IconButton> */}
-            <div className='tw-hidden tablet:tw-inline-block'>
+            <div className='tw-hidden tw-font-writing tablet:tw-inline-block'>
               <Typography level='h4' textColor='primary.100'>
                 Xóm trọ
               </Typography>
