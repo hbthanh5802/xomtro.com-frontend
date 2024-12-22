@@ -93,6 +93,11 @@ const RenewPostForm = (props: RenewPostFormProps) => {
               Làm mới bài viết
             </Button>
           </div>
+          <Typography level='body-sm'>
+            Bài viết sẽ không tự động ẩn đi nếu không thiết lập{' '}
+            <Typography level='title-sm'>thời gian gia hạn</Typography> hoặc giá trị là{' '}
+            <Typography level='title-sm'>0</Typography>.
+          </Typography>
         </form>
       </FormProvider>
     </div>
