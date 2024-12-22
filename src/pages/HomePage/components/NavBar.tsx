@@ -88,9 +88,6 @@ const NavBar = () => {
               Góc pass đồ
             </Button>
           </div>
-          {/* <div className='tw-my-2'>
-          <Divider orientation='horizontal' />
-        </div> */}
         </div>
       </div>
       <div className='tw-mt-4'>

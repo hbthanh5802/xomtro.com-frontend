@@ -14,6 +14,7 @@ import { FaHandsHoldingCircle, FaHouseChimneyUser, FaHouseMedicalFlag, FaPlus } 
 import { IoIosSearch } from 'react-icons/io';
 import { IoHome } from 'react-icons/io5';
 import { PiList } from 'react-icons/pi';
+import { useMediaQuery } from 'react-responsive';
 import { Link, useNavigate } from 'react-router-dom';
 import { useShallow } from 'zustand/react/shallow';
 // Icons
@@ -22,6 +23,9 @@ const Header = () => {
   const navigate = useNavigate();
   const [navSideOpen, setNavSideOpen] = React.useState(false);
   const [searchNavOpen, setSearchNavOpen] = React.useState(false);
+  const isMobile = useMediaQuery({
+    query: '(max-width: 640px)',
+  });
 
   const { currentUser } = useAppStore(
     useShallow((state) => ({
@@ -61,31 +65,33 @@ const Header = () => {
       </DrawerWrapper>
 
       <div className='tw-w-screen tw-px-[12px] laptop:tw-px-[24px] tw-flex tw-justify-between tw-items-center'>
-        {/* Mobile Nav */}
-        <div className='tw-inline-block tablet:tw-hidden'>
-          <IconButton variant='plain' color='neutral' onClick={() => setNavSideOpen(true)}>
-            <PiList className='tw-text-slate-800 tw-text-[24px]' />
-          </IconButton>
-          <IconButton color='primary' onClick={() => setSearchNavOpen(true)}>
-            <IoIosSearch size={24} />
-          </IconButton>
-        </div>
-
-        {/* Logo */}
-        <div className='tw-flex tw-justify-center tablet:tw-justify-start tw-flex-1 tw-shrink-0'>
-          <Link to={'/home/rental'} className='tw-mr-[24px] tw-inline-flex tw-items-center tw-gap-2 tw-select-none'>
-            {/* <LogoIcon width='22px' color='#185EA5' /> */}
-            <LogoIcon2 width={32} height={32} />
-            <div className='tw-hidden laptop:tw-inline-block tw-text-[24px] tw-font-writing tw-text-primaryColor tw-text-nowrap tw-line-clamp-1'>
-              Xóm trọ
-            </div>
-          </Link>
-          {/* Search */}
-          <div className='tw-hidden tablet:tw-block tw-max-w-[600px] tablet:tw-flex-[2]'>
-            <SearchBar />
+        {isMobile && (
+          <div className='tw-inline-flex tw-items-center tw-gap-2'>
+            <Link to={'/home/rental'} className='tw-inline-flex tw-items-center tw-gap-2 tw-select-none'>
+              <LogoIcon2 width={32} height={32} />
+            </Link>
+            <IconButton variant='plain' color='neutral' onClick={() => setNavSideOpen(true)}>
+              <PiList className='tw-text-slate-800 tw-text-[24px]' />
+            </IconButton>
+            <IconButton color='primary' onClick={() => setSearchNavOpen(true)}>
+              <IoIosSearch size={24} />
+            </IconButton>
           </div>
-        </div>
-
+        )}
+        {!isMobile && (
+          <div className='tw-flex tw-justify-center tablet:tw-justify-start tw-flex-1 tw-shrink-0'>
+            <Link to={'/home/rental'} className='tw-mr-[24px] tw-inline-flex tw-items-center tw-gap-2 tw-select-none'>
+              <LogoIcon2 width={32} height={32} />
+              <div className='tw-hidden laptop:tw-inline-block tw-text-[24px] tw-font-writing tw-text-primaryColor tw-text-nowrap tw-line-clamp-1'>
+                Xóm trọ
+              </div>
+            </Link>
+            {/* Search */}
+            <div className='tw-hidden tablet:tw-block tw-max-w-[600px] tablet:tw-flex-[2]'>
+              <SearchBar />
+            </div>
+          </div>
+        )}
         {currentUser ? (
           <div className='tw-ml-[40px]'>
             <div className='tw-hidden tablet:tw-flex tw-gap-[12px] tw-flex-1 tw-justify-end tw-text-right tw-items-center'>
@@ -104,17 +110,6 @@ const Header = () => {
                 >
                   Tạo bài viết
                 </MenuButton>
-                {/* <MenuButton
-                  slots={{ root: IconButton }}
-                  slotProps={{ root: { variant: 'solid', color: 'primary' } }}
-                  sx={(theme) => ({
-                    [theme.breakpoints.up('md')]: {
-                      display: 'none',
-                    },
-                  })}
-                >
-                  <FaPlus />
-                </MenuButton> */}
                 <Menu
                   placement='bottom-end'
                   size='md'
@@ -238,7 +233,7 @@ const Header = () => {
                   )}
                 </Menu>
               </Dropdown>
-              <div className='tw-flex tw-items-center tw-gap-3 tw-pr-[12px]'>
+              <div className='tw-flex tw-items-center tw-gap-1 tw-pr-[12px]'>
                 <NotificationButton />
                 <MessageButton />
               </div>
@@ -312,6 +307,10 @@ const Header = () => {
                   )}
                 </Menu>
               </Dropdown>
+              <div className='tw-flex tw-items-center tw-gap-0'>
+                <NotificationButton />
+                <MessageButton />
+              </div>
               <Account />
             </div>
           </div>
