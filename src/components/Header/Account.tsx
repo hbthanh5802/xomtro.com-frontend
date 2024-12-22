@@ -3,6 +3,7 @@ import { useAppStore } from '@/store/store';
 import { Avatar, Badge, Box, Dropdown, ListDivider, Menu, MenuButton, MenuItem, Typography } from '@mui/joy';
 import React from 'react';
 import { FaAngleDown, FaClipboardUser } from 'react-icons/fa6';
+import { GoGoal } from 'react-icons/go';
 import { IoMdHeart } from 'react-icons/io';
 import { MdNotifications, MdOutlineHelp, MdOutlineLogout, MdOutlineSecurity } from 'react-icons/md';
 import { TbMessageFilled } from 'react-icons/tb';
@@ -50,6 +51,12 @@ const Account = () => {
         label: 'Trợ giúp',
         icon: <MdOutlineHelp className='tw-flex tw-text-lg' />,
         path: `/users/${currentUser?.userId}/helps`,
+        disabled: false,
+      },
+      {
+        label: 'Về chúng tôi',
+        icon: <GoGoal className='tw-flex tw-text-lg' />,
+        path: `/about-us`,
         disabled: false,
       },
     ],

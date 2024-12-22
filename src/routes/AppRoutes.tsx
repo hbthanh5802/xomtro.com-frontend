@@ -11,6 +11,7 @@ import React, { lazy } from 'react';
 import { useNavigate, useRoutes } from 'react-router-dom';
 
 const NotFountPage = lazy(() => import('@/pages/NotFoundPage'));
+const AboutUsPage = lazy(() => import('@/pages/AboutUsPage'));
 const ForbiddenPage = lazy(() => import('@/pages/ForbiddenPage'));
 const VerifyPage = lazy(() => import('@/pages/VerifyPage'));
 const RolePage = lazy(() => import('@/pages/RolePage'));
@@ -135,6 +136,10 @@ const AppRoutes: React.FC = () => {
         {
           path: '/conversations/:conversationId',
           element: <ConversationPage />,
+        },
+        {
+          path: '/about-us',
+          element: <AboutUsPage />,
         },
       ],
     },

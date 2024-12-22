@@ -53,11 +53,21 @@ const InterestedPostItem = (props: InterestedPostItemProps) => {
     <>
       {postData ? (
         <div
-          className='tw-flex tw-items-start tw-gap-2 tw-cursor-pointer'
+          className='tw-flex tw-flex-wrap tw-items-start tw-justify-center tw-gap-2 tw-cursor-pointer'
           onClick={() => navigate(`/posts/${postId}/view`)}
         >
           <Skeleton loading={!data} animation='wave'>
-            <AspectRatio ratio='1/1' sx={{ width: 100, borderRadius: 'sm', boxShadow: 'sm' }}>
+            <AspectRatio
+              ratio='1/1'
+              sx={(theme) => ({
+                width: 100,
+                borderRadius: 'sm',
+                boxShadow: 'sm',
+                [theme.breakpoints.down('sm')]: {
+                  width: '100%',
+                },
+              })}
+            >
               <img src={assets?.[0]?.url} alt={post?.title} />
             </AspectRatio>
           </Skeleton>
@@ -70,7 +80,7 @@ const InterestedPostItem = (props: InterestedPostItemProps) => {
                 </Skeleton>
               </Typography>
             </div>
-            <div className='tw-flex tw-items-center tw-gap-1'>
+            <div className='tw-flex tw-flex-wrap tw-items-center tw-gap-1'>
               <Typography level='title-sm' noWrap>
                 Cập nhật gần nhất:
               </Typography>
@@ -80,7 +90,7 @@ const InterestedPostItem = (props: InterestedPostItemProps) => {
                 </Skeleton>
               </Typography>
             </div>
-            <div className='tw-flex tw-items-center tw-gap-1'>
+            <div className='tw-flex tw-flex-wrap tw-items-center tw-gap-1'>
               <Typography level='title-sm' noWrap>
                 Giá:
               </Typography>
@@ -100,7 +110,7 @@ const InterestedPostItem = (props: InterestedPostItemProps) => {
                 </>
               )}
             </div>
-            <div className='tw-flex tw-items-center tw-gap-1'>
+            <div className='tw-flex tw-flex-wrap tw-items-center tw-gap-1'>
               <Typography level='title-sm' noWrap>
                 Loại bài đăng:
               </Typography>
@@ -171,20 +181,17 @@ const InterestedPosts = () => {
               return (
                 <div
                   key={`address-${item.id}-${index}`}
-                  className='tw-border tw-border-slate-50 tw-rounded tw-p-[12px] tw-flex tw-items-start tw-justify-between tw-gap-4 hover:tw-border-primaryColor hover:tw-bg-primaryColor/[.01] tw-duration-200'
+                  className='tw-border tw-border-slate-50 tw-rounded tw-p-[12px] tw-flex tw-flex-wrap tw-items-start tw-justify-between tw-gap-4 hover:tw-border-primaryColor hover:tw-bg-primaryColor/[.01] tw-duration-200'
                 >
                   <div className='user-address-left-tab tw-flex tw-items-start tw-gap-4'>
-                    <Chip size='sm'>{index + 1}</Chip>
+                    <div className='tw-hidden tablet:tw-inline-block'>
+                      <Chip size='sm'>{index + 1}</Chip>
+                    </div>
                     <div className='tw-flex tw-flex-col tw-gap-2'>
                       <InterestedPostItem postId={Number(item.postId)} />
                     </div>
                   </div>
-                  <div className='user-address-right-tab tw-flex tw-flex-col tw-items-end tw-gap-2'>
-                    {/* {address.isDefault && (
-                        <Chip color='success' size='sm'>
-                          Mặc định
-                        </Chip>
-                      )} */}
+                  <div className='user-address-right-tab tw-ml-auto tw-flex tw-flex-col tw-items-end tw-gap-2'>
                     <Typography level='body-xs'>
                       {formatTimeForVietnamese(new Date(item.createdAt!), 'HH:mm:ss DD/MM/YYYY')}
                     </Typography>
