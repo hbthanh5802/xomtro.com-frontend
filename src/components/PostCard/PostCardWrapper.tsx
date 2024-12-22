@@ -272,6 +272,14 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
                         </div>
                       </MenuItem>
                     )}
+                    {post.status === 'actived' && (
+                      <MenuItem color='success' variant='plain' onClick={() => handleRenewPostClick()}>
+                        <div className='tw-flex tw-items-center tw-gap-2'>
+                          <MdAutorenew className='tw-flex tw-text-lg ' />
+                          Đăng lại bài viết
+                        </div>
+                      </MenuItem>
+                    )}
                     {post.status === 'hidden' && (
                       <MenuItem color='neutral' variant='plain' onClick={() => handleChangePostStatusClick()}>
                         <div className='tw-flex tw-items-center tw-gap-2'>
@@ -281,7 +289,7 @@ const PostCardWrapper = (props: PostCardWrapperProps) => {
                       </MenuItem>
                     )}
                     {post.status === 'unactived' && (
-                      <MenuItem color='neutral' variant='plain' onClick={() => handleRenewPostClick()}>
+                      <MenuItem color='success' variant='plain' onClick={() => handleRenewPostClick()}>
                         <div className='tw-flex tw-items-center tw-gap-2'>
                           <MdAutorenew className='tw-flex tw-text-lg ' />
                           Làm mới lại bài viết
