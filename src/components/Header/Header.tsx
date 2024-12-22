@@ -5,8 +5,11 @@ import MessageButton from '@/components/Header/MessageButton';
 import NotificationButton from '@/components/Header/NotificationButton';
 import SearchBar from '@/components/Header/SearchBar';
 import MobileSearchBar from '@/components/MobileSearchBar/MobileSearchBar';
+import { queryClient } from '@/configs/tanstackQuery.config';
+import useUrl from '@/hooks/useUrl.hook';
 import NavBar from '@/pages/HomePage/components/NavBar';
 import { useAppStore } from '@/store/store';
+import { handleAxiosError } from '@/utils/constants.helper';
 import history from '@/utils/history.helper';
 import { Button, Dropdown, IconButton, Menu, MenuButton, MenuItem } from '@mui/joy';
 import React from 'react';
@@ -16,11 +19,14 @@ import { IoHome } from 'react-icons/io5';
 import { PiList } from 'react-icons/pi';
 import { useMediaQuery } from 'react-responsive';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import { useShallow } from 'zustand/react/shallow';
 // Icons
 
 const Header = () => {
   const navigate = useNavigate();
+  const { pathname } = useUrl();
+  const [isRefreshing, setIsRefreshing] = React.useState(false);
   const [navSideOpen, setNavSideOpen] = React.useState(false);
   const [searchNavOpen, setSearchNavOpen] = React.useState(false);
   const isMobile = useMediaQuery({
@@ -34,10 +40,39 @@ const Header = () => {
     })),
   );
 
+  const isShowRefreshButton = pathname.startsWith('/home');
+
   const handleSetSearchNavOpen = React.useCallback(setSearchNavOpen, [setSearchNavOpen]);
+  const handleRenewPage = async () => {
+    setIsRefreshing(true);
+    try {
+      await queryClient.refetchQueries({ queryKey: ['home', 'posts'] });
+      toast.info('Đã làm mới trang', { position: isMobile ? 'top-center' : 'bottom-right' });
+    } catch (error) {
+      console.log(handleAxiosError(error));
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
 
   return (
     <header className='tw-h-[var(--header-height)] tw-max-h-[var(--header-height)] tw-min-h-[var(--header-height)] tw-flex tw-items-center tw-fixed tw-top-0 tw-inset-x-0 tw-z-[999] tw-backdrop-filter tw-backdrop-blur-[20px] tw-bg-white/80 tw-shadow-sm'>
+      {isShowRefreshButton && (
+        <div className='tw-absolute tw-top-full tw-z-10 tw-left-1/2 -tw-translate-x-1/2'>
+          <Button
+            sx={{ borderTopLeftRadius: 0, borderTopRightRadius: 0, opacity: 0.85 }}
+            size='sm'
+            color='primary'
+            variant='solid'
+            onClick={handleRenewPage}
+            disabled={isRefreshing}
+            loading={isRefreshing}
+          >
+            Làm mới trang
+          </Button>
+        </div>
+      )}
+
       {/* Mobile Nav */}
       <DrawerWrapper open={navSideOpen} closeButton onClose={() => setNavSideOpen(false)}>
         <NavBar />
