@@ -61,7 +61,7 @@ const Notifications = () => {
   const pagination = notifications?.pages[0].pagination;
 
   return (
-    <section className='Notification__popper tw-relative tw-max-w-[1000px]'>
+    <section className='Notification__popper tw-relative tw-max-w-[100vw] tablet:tw-max-w-[1000px]'>
       <div className='tw-flex tw-justify-between tw-py-2 tw-px-1 tw-bg-white tw-border-b'>
         <Typography
           level='title-md'
