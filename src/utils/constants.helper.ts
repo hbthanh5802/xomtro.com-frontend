@@ -132,3 +132,11 @@ export const getRedirectNotification = (data: NotificationSelectSchemaType) => {
   }
   return undefined;
 };
+
+export const vehicleOptions = [
+  { label: 'Xe đạp', value: 'bike' },
+  { label: 'Xe ô tô', value: 'car' },
+  { label: 'Xe taxi', value: 'taxi' },
+  { label: 'Xe tải', value: 'truck' },
+  { label: 'Những phương tiện gọi xe khác', value: 'hd' },
+];

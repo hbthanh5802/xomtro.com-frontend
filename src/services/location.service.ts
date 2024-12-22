@@ -98,6 +98,11 @@ class locationServices {
 
   getDistanceMatrix(props: GetDistanceMatrixProps, options?: TanstackQueryOptions) {
     const { origin, destinations, vehicle } = props;
+    const isDisabled = !origin.latitude || !origin.longitude || !vehicle;
+    const filteredDestination = destinations.filter((des) => !!des.latitude && !!des.longitude);
+    const isDestinationAllow =
+      !!filteredDestination.length && !!filteredDestination[0].latitude && !!filteredDestination[0].longitude;
+
     const queryKey = [
       'distance',
       {
@@ -113,11 +118,11 @@ class locationServices {
           url: '/location/distance',
           params: {
             origins: `${origin.latitude},${origin.longitude}`,
-            destinations: destinations.map((des) => `${des.latitude},${des.longitude}`),
+            destinations: filteredDestination.map((des) => `${des.latitude},${des.longitude}`),
             ...(vehicle && { vehicle }),
           },
         }),
-      enabled: !!origin && !!destinations,
+      enabled: !isDisabled === true && isDestinationAllow === true,
       ...options,
     });
   }
