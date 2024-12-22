@@ -9,6 +9,7 @@ import { Badge, IconButton, Tooltip } from '@mui/joy';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { MdNotificationsNone } from 'react-icons/md';
+import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useShallow } from 'zustand/react/shallow';
@@ -16,6 +17,9 @@ import { useShallow } from 'zustand/react/shallow';
 const NotificationButton = () => {
   const navigate = useNavigate();
   const notificationRef = React.useRef<HTMLDivElement | null>(null);
+  const isMobile = useMediaQuery({
+    query: '(max-width: 640px)',
+  });
 
   const { currentUser, socketInstance, setOpenNotificationPopover, openNotificationPopover } = useAppStore(
     useShallow((state) => ({
@@ -41,10 +45,10 @@ const NotificationButton = () => {
             if (path) navigate(path);
           },
         },
-        position: 'bottom-right',
+        position: isMobile ? 'top-center' : 'bottom-right',
       });
     },
-    [navigate],
+    [navigate, isMobile],
   );
 
   const { data: getUnreadNotificationResponse } = useQuery({

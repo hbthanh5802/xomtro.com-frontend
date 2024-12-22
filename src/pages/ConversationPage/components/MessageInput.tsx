@@ -11,6 +11,7 @@ import * as React from 'react';
 import { FaRegImage } from 'react-icons/fa6';
 import { IoSend } from 'react-icons/io5';
 import { TiDelete } from 'react-icons/ti';
+import { useMediaQuery } from 'react-responsive';
 import { toast } from 'sonner';
 
 export type MessageInputProps = {
@@ -27,6 +28,9 @@ const MessageInput = (props: MessageInputProps) => {
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const [imageFile, setImageFile] = React.useState<File | null>(null);
   const [imagePreview, setImagePreview] = React.useState<string | ArrayBuffer | null>(null);
+  const isMobile = useMediaQuery({
+    query: '(max-width: 640px)',
+  });
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -51,9 +55,6 @@ const MessageInput = (props: MessageInputProps) => {
   const handleSendMessage = async () => {
     if (!messageValue.trim() && !imagePreview) return;
     setLoading(true);
-    const toastId = toast.loading('Đang gửi tin nhắn...', {
-      position: 'top-center',
-    });
     try {
       const formData = new FormData();
       formData.append('chatId', selectedConversationId.toString());
@@ -63,11 +64,12 @@ const MessageInput = (props: MessageInputProps) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const response = await conversationService.createMessage(formData as any);
       if (onSendMessageSuccess) onSendMessageSuccess(response.data);
-      toast.success('Tin nhắn đã được gửi!', { id: toastId });
       setMessageValue('');
       removeImage();
     } catch (error) {
-      toast.error('Có lỗi xảy ra khi gửi tin nhắn', { id: toastId });
+      toast.error('Có lỗi xảy ra khi gửi tin nhắn', {
+        position: isMobile ? 'top-center' : 'bottom-right',
+      });
       console.log(handleAxiosError(error));
     } finally {
       setLoading(false);

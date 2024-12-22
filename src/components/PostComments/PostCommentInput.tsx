@@ -15,6 +15,7 @@ import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { IoSend } from 'react-icons/io5';
 import { MdDeleteOutline } from 'react-icons/md';
+import { useMediaQuery } from 'react-responsive';
 import { toast } from 'sonner';
 import { useShallow } from 'zustand/react/shallow';
 
@@ -27,6 +28,9 @@ interface PostCommentInputProps {
 
 const PostCommentInput = (props: PostCommentInputProps) => {
   const { postId, onSuccess, onError, mode } = props;
+  const isMobile = useMediaQuery({
+    query: '(max-width: 640px)',
+  });
 
   const {
     selectedPostComment,
@@ -84,23 +88,20 @@ const PostCommentInput = (props: PostCommentInputProps) => {
   );
 
   const handleSubmitComment = async (data: InsertPostCommentDataType) => {
-    const toastId = toast.loading('Đăng đăng bình luận. Vui lòng chờ...');
     try {
       if (mode === 'add') {
         const insertCommentResponse = await postService.insertPostComment(data);
         const newComment = insertCommentResponse.data[0];
-        toast.success('Thành công! Bình luận của bạn sẽ sớm xuất hiện trong bài viết.', { id: toastId });
         reset();
         if (onSuccess) onSuccess(newComment);
       } else if (mode === 'edit' && selectedPostComment) {
         const justUpdatedComment = await postService.updatePostComment(selectedPostComment?.id, data);
         if (onSuccess) onSuccess(justUpdatedComment.data);
-        toast.success('Thành công! Bình luận của bạn sẽ sớm được cập nhật lại trong bài viết.', { id: toastId });
       }
       reset(defaultFormValues, { keepValues: false });
     } catch (error) {
       toast.error('Không thành công! Có vẻ có lỗi xảy ra. Hãy kiểm tra lại thông tin hoặc thử lại sau. 😥', {
-        id: toastId,
+        position: isMobile ? 'top-center' : 'bottom-right',
       });
       if (onError) onError();
       console.log(handleAxiosError(error));
