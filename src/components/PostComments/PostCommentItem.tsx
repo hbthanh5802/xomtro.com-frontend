@@ -54,8 +54,8 @@ const PostCommentItem = (props: PostCommentItemProps) => {
         <Skeleton loading={fetchingUserAvatar} />
       </Avatar>
 
-      <div className='tw-flex tw-flex-col tw-items-start tw-space-y-1'>
-        <div className='tw-py-[4px] tw-px-[8px] tw-bg-slate-100 tw-rounded-lg'>
+      <div className='tw-flex tw-flex-col tw-items-start tw-space-y-1 tw-max-w-[calc(100vw-15%)]'>
+        <div className='tw-py-[4px] tw-px-[8px] tw-bg-slate-100 tw-rounded-lg tw-max-w-[calc(100%-10%)]'>
           <Typography
             level='title-sm'
             sx={{ cursor: 'pointer', width: 'fit-content' }}
@@ -84,6 +84,7 @@ const PostCommentItem = (props: PostCommentItemProps) => {
                   >
                     <PostAttachmentItem
                       data={getFullPostAttachmentResponse?.data[0] as unknown as PostAttachmentType}
+                      size='sm'
                     />
                   </div>
                 </div>

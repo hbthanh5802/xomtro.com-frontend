@@ -43,3 +43,28 @@ html {
 .tw-gradient-text {
   @apply tw-bg-clip-text tw-text-transparent;
 }
+
+.background-pattern {
+  /* Định nghĩa các biến cho pattern */
+  --bg-pattern-url: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAIAAACRXR/mAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAABnSURBVHja7M5RDYAwDEXRDgmvEocnlrQS2SwUFST9uEfBGWs9c97nbGtDcquqiKhOImLs/UpuzVzWEi1atGjRokWLFi1atGjRokWLFi1atGjRokWLFi1af7Ukz8xWp8z8AAAA//8DAJ4LoEAAlL1nAAAAAElFTkSuQmCC');
+  --bg-pattern-width: 50px; /* Chiều rộng của pattern */
+  --bg-pattern-height: 50px; /* Chiều cao của pattern */
+
+  /* Thiết lập hình nền */
+  background-image: var(--bg-pattern-url);
+  background-size: var(--bg-pattern-width) var(--bg-pattern-height);
+  background-repeat: repeat;
+
+  /* Animation cuộn */
+  animation: bg-pattern-scrolling 1s linear infinite;
+}
+
+/* Keyframes cho hiệu ứng cuộn */
+@keyframes bg-pattern-scrolling {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: var(--bg-pattern-width) var(--bg-pattern-height);
+  }
+}

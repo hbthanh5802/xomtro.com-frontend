@@ -6,16 +6,16 @@ import {
   WantedPostSelectSchemaType,
 } from '@/types/schema.type';
 import { formatCurrencyVND } from '@/utils/constants.helper';
-import { formatTimeForVietnamese } from '@/utils/time.helper';
 import { AspectRatio, Skeleton, Typography } from '@mui/joy';
 
 interface PostAttachmentItemProps {
   data: FullPostResponseType<
     RentalPostSelectSchemaType | WantedPostSelectSchemaType | JoinPostSelectSchemaType | PassPostSelectSchemaType
   >;
+  size?: 'sm' | 'md';
 }
 const PostAttachmentItem = (props: PostAttachmentItemProps) => {
-  const { data } = props;
+  const { data, size = 'md' } = props;
   const { post, detail, assets } = data;
 
   return (
@@ -25,7 +25,14 @@ const PostAttachmentItem = (props: PostAttachmentItemProps) => {
           <Skeleton loading={!data} animation='wave'>
             <AspectRatio
               ratio='1/1'
-              sx={{ width: 100, borderRadius: 'sm', boxShadow: 'sm', flexGrow: 0, flexShrink: 0 }}
+              sx={{
+                width: 100,
+                borderRadius: 'sm',
+                border: 1,
+                borderColor: 'var(--joy-palette-neutral-300)',
+                flexGrow: 0,
+                flexShrink: 0,
+              }}
             >
               {assets.length && <img src={assets?.[0].url} alt={post?.title} />}
             </AspectRatio>
@@ -33,27 +40,22 @@ const PostAttachmentItem = (props: PostAttachmentItemProps) => {
 
           <div className='tw-flex-1 tw-ml-3 tw-space-y-1 tw-overflow-auto'>
             <div className='tw-max-w-full'>
-              <Typography letterSpacing={0.04} level='title-md' noWrap>
+              <Typography letterSpacing={0.04} level={size === 'md' ? 'title-md' : 'title-sm'}>
                 <Skeleton animation='wave' loading={!data}>
                   {post?.title}
                 </Skeleton>
               </Typography>
             </div>
             <div className='tw-flex tw-items-center tw-gap-1'>
-              <Typography letterSpacing={0.04} level='title-sm' noWrap>
-                Cập nhật gần nhất:
-              </Typography>
-              <Typography letterSpacing={0.04} level='body-sm' noWrap>
-                <Skeleton animation='wave' loading={!data}>
-                  {post?.updatedAt ? formatTimeForVietnamese(post.updatedAt, 'HH:mm:ss DD/MM/YYYY') : 'N/A'}
-                </Skeleton>
-              </Typography>
-            </div>
-            <div className='tw-flex tw-items-center tw-gap-1'>
-              <Typography letterSpacing={0.04} level='title-sm' noWrap>
+              <Typography letterSpacing={0.04} level={size === 'md' ? 'title-md' : 'title-sm'}>
                 Giá:
               </Typography>
-              <Typography letterSpacing={0.04} level='body-sm' variant='soft' color='success'>
+              <Typography
+                letterSpacing={0.04}
+                level={size === 'md' ? 'body-md' : 'body-sm'}
+                variant='soft'
+                color='success'
+              >
                 <Skeleton animation='wave' loading={!data}>
                   {formatCurrencyVND(Number(detail?.priceStart))}
                   {post.type === 'pass' ? '' : '/tháng'}
@@ -62,7 +64,12 @@ const PostAttachmentItem = (props: PostAttachmentItemProps) => {
               {detail?.priceEnd && detail?.priceEnd !== detail?.priceStart && (
                 <>
                   <span>-</span>
-                  <Typography letterSpacing={0.04} level='body-sm' variant='soft' color='success'>
+                  <Typography
+                    letterSpacing={0.04}
+                    level={size === 'md' ? 'body-md' : 'body-sm'}
+                    variant='soft'
+                    color='success'
+                  >
                     <Skeleton animation='wave' loading={!data}>
                       {`${formatCurrencyVND(detail.priceEnd)}${post.type === 'pass' ? '' : '/tháng'}`}
                     </Skeleton>
@@ -71,7 +78,7 @@ const PostAttachmentItem = (props: PostAttachmentItemProps) => {
               )}
             </div>
             <div className='tw-flex tw-items-center tw-gap-1'>
-              <Typography letterSpacing={0.04} level='body-xs' noWrap>
+              <Typography letterSpacing={0.04} level='body-xs'>
                 <Skeleton animation='wave' loading={!data}>
                   {`${post.addressDetail ? post.addressDetail + ', ' : ''}${post.addressWard}, ${
                     post.addressDistrict

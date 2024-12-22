@@ -22,8 +22,8 @@ import { Outlet } from 'react-router-dom';
 import { useShallow } from 'zustand/react/shallow';
 
 const HomePage = () => {
-  const isMobile = useMediaQuery({
-    query: '(max-width: 768px)',
+  const isTabletLg = useMediaQuery({
+    query: '(max-width: 896px)',
   });
   const [filterMobileOpen, setFilterMobileOpen] = React.useState(false);
   const [whereConditions, setWhereConditions] = React.useState<WhereConditionType>(defaultWhereFilter);
@@ -80,10 +80,10 @@ const HomePage = () => {
       </DrawerWrapper>
 
       <div className='tw-relative tw-bg-backgroundColor tw-flex tw-h-[calc(100vh-var(--header-height))] tw-overflow-y-auto tw-scroll-pt-[var(--header-height)]'>
-        <div className='tw-hidden laptop:tw-block tw-w-[360px] tw-sticky tw-top-0 tw-left-0 tw-z-50'>
+        <div className='tw-hidden tabletLg:tw-block tw-w-[360px] tw-sticky tw-top-0 tw-left-0 tw-z-50'>
           <NavBar />
         </div>
-        {isMobile && (
+        {isTabletLg && (
           <div className='tw-hidden tablet:tw-block tw-sticky laptop:tw-hidden tw-top-0 tw-left-0 tw-z-50'>
             <NavBarMobile />
           </div>
