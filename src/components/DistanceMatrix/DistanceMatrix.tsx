@@ -152,7 +152,7 @@ const DistanceMatrix = (props: DistanceMatrixProps) => {
           </FormProvider>
         </section>
         {/* Result */}
-        <section className='tw-basis-[200px] tw-border-l tw-pl-2'>
+        <section className='tw-basis-[200px] tw-flex-1 tw-border-l tw-pl-2'>
           <Typography level='title-md'>Kết quả:</Typography>
           {getDistanceMatrixFetching && <LinearProgress size='sm' />}
           {distanceMatrixResult?.length ? (
