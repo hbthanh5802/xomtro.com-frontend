@@ -5,12 +5,14 @@ import React from 'react';
 import { IoLocationOutline } from 'react-icons/io5';
 import { MdOutlineNoteAdd } from 'react-icons/md';
 import { PiMoneyWavy } from 'react-icons/pi';
+import { useNavigate } from 'react-router-dom';
 
 interface PassDetailProps {
   data: PostCardDataType;
 }
 
 const PassDetail = (props: PassDetailProps) => {
+  const navigate = useNavigate();
   const passId = React.useId();
   const { post, detail, passItems } = props.data;
   const [showMore, setShowMore] = React.useState(false);
@@ -18,7 +20,12 @@ const PassDetail = (props: PassDetailProps) => {
   return (
     <div>
       <div className={`PostCard__post-info tw-px-[24px] ${showMore ? '' : 'tw-h-[200px] tw-overflow-hidden'}`}>
-        <Typography color='primary' level='title-lg'>
+        <Typography
+          color='primary'
+          level='title-lg'
+          sx={{ cursor: 'pointer' }}
+          onClick={() => navigate(`/posts/${post.id}/view`)}
+        >
           {post.title}
         </Typography>
 

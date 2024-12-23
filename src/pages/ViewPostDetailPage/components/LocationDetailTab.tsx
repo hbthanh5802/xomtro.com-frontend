@@ -38,8 +38,8 @@ const vehicleIcons = {
   hd: <FaMotorcycle className='tw-size-[16px]' />,
 };
 const DistanceMatrixTab = (props: DistanceMatrixTabProps) => {
-  const [openDistanceMatrixModal, setOpenDistanceMatrixModal] = React.useState(false);
-  const { originLatitude, originLongitude, destinationLatitude, destinationLongitude, postAddress } = props;
+  // const [openDistanceMatrixModal, setOpenDistanceMatrixModal] = React.useState(false);
+  const { originLatitude, originLongitude, destinationLatitude, destinationLongitude } = props;
   const methods = useForm<DistanceMatrixFromDataType>({
     defaultValues: {
       vehicle: 'bike',
@@ -104,7 +104,7 @@ const DistanceMatrixTab = (props: DistanceMatrixTabProps) => {
             </Table>
           )}
         </div>
-        <Divider />
+        {/* <Divider />
         <div className='tw-mt-2 tw-flex tw-flex-wrap tw-gap-2 tw-items-center'>
           <Typography>Bạn muốn mở rộng kết quả tính toán. Hãy thử công cụ </Typography>
           <Button
@@ -116,15 +116,15 @@ const DistanceMatrixTab = (props: DistanceMatrixTabProps) => {
           >
             Ma trận khoảng cách
           </Button>{' '}
-        </div>
+        </div> */}
       </div>
-      <ModalLayout isOpen={openDistanceMatrixModal} onCloseModal={() => setOpenDistanceMatrixModal(false)}>
+      {/* <ModalLayout isOpen={openDistanceMatrixModal} onCloseModal={() => setOpenDistanceMatrixModal(false)}>
         <DistanceMatrix
           originDescription={postAddress}
           originLatitude={destinationLatitude}
           originLongitude={destinationLongitude}
         />
-      </ModalLayout>
+      </ModalLayout> */}
     </>
   );
 };
@@ -133,6 +133,7 @@ interface ViewPostDetailProps {
   data: PostCardDataType;
 }
 const LocationDetailTab = (props: ViewPostDetailProps) => {
+  const [openDistanceMatrixModal, setOpenDistanceMatrixModal] = React.useState(false);
   const { post } = props.data;
   const { ref, inView } = useInView({
     triggerOnce: true,
@@ -203,6 +204,26 @@ const LocationDetailTab = (props: ViewPostDetailProps) => {
                   destinationLongitude={Number(post.addressLongitude)}
                 />
               )}
+              <Divider />
+              <div className='tw-mt-2 tw-flex tw-flex-wrap tw-gap-2 tw-items-center'>
+                <Typography>Bạn muốn mở rộng kết quả tính toán. Hãy thử công cụ </Typography>
+                <Button
+                  size='sm'
+                  color='primary'
+                  variant='soft'
+                  endDecorator={<IoMdInformationCircleOutline />}
+                  onClick={() => setOpenDistanceMatrixModal(true)}
+                >
+                  Ma trận khoảng cách
+                </Button>{' '}
+              </div>
+              <ModalLayout isOpen={openDistanceMatrixModal} onCloseModal={() => setOpenDistanceMatrixModal(false)}>
+                <DistanceMatrix
+                  originDescription={postAddress}
+                  originLatitude={Number(post.addressLatitude)}
+                  originLongitude={Number(post.addressLongitude)}
+                />
+              </ModalLayout>
             </>
           )}
         </div>

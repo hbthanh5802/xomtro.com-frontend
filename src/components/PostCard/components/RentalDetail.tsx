@@ -9,12 +9,14 @@ import { LuAreaChart } from 'react-icons/lu';
 import { MdMiscellaneousServices, MdOutlineNoteAdd } from 'react-icons/md';
 import { PiMoneyWavy } from 'react-icons/pi';
 import { RiContractLine } from 'react-icons/ri';
+import { useNavigate } from 'react-router-dom';
 
 interface RentalDetailProps {
   data: PostCardDataType;
 }
 
 const RentalDetail = (props: RentalDetailProps) => {
+  const navigate = useNavigate();
   const { post, detail } = props.data;
   const [showMore, setShowMore] = React.useState(false);
 
@@ -27,7 +29,12 @@ const RentalDetail = (props: RentalDetailProps) => {
   return (
     <div>
       <div className={`PostCard__post-info tw-px-[24px] ${showMore ? '' : 'tw-h-[200px] tw-overflow-hidden'}`}>
-        <Typography color='primary' level='title-lg'>
+        <Typography
+          color='primary'
+          level='title-lg'
+          sx={{ cursor: 'pointer' }}
+          onClick={() => navigate(`/posts/${post.id}/view`)}
+        >
           {post.title}
         </Typography>
 

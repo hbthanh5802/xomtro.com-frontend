@@ -8,12 +8,14 @@ import { IoLocationOutline } from 'react-icons/io5';
 import { LuAreaChart } from 'react-icons/lu';
 import { MdMiscellaneousServices, MdOutlineAccessTime, MdOutlineNoteAdd } from 'react-icons/md';
 import { PiMoneyWavy } from 'react-icons/pi';
+import { useNavigate } from 'react-router-dom';
 
 interface JoinDetailProps {
   data: PostCardDataType;
 }
 
 const JoinDetail = (props: JoinDetailProps) => {
+  const navigate = useNavigate();
   const { post, detail } = props.data;
   const [showMore, setShowMore] = React.useState(false);
 
@@ -26,7 +28,12 @@ const JoinDetail = (props: JoinDetailProps) => {
   return (
     <div>
       <div className={`PostCard__post-info tw-px-[24px] ${showMore ? '' : 'tw-h-[200px] tw-overflow-hidden'}`}>
-        <Typography color='primary' level='title-lg'>
+        <Typography
+          color='primary'
+          level='title-lg'
+          sx={{ cursor: 'pointer' }}
+          onClick={() => navigate(`/posts/${post.id}/view`)}
+        >
           {post.title}
         </Typography>
 
