@@ -5,6 +5,7 @@ import { GetIndividualConversationResponseType } from '@/types/conservation.type
 import { Button, Skeleton, Typography } from '@mui/joy';
 import { FaCircle } from 'react-icons/fa6';
 import { FiUser } from 'react-icons/fi';
+import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 import { useShallow } from 'zustand/react/shallow';
 
@@ -12,6 +13,10 @@ interface ConversationHeaderProps {
   selectedConversation: GetIndividualConversationResponseType | null;
 }
 const ConversationHeader = (props: ConversationHeaderProps) => {
+  const isMobile = useMediaQuery({
+    query: '(max-width: 640px)',
+  });
+
   const navigate = useNavigate();
   const { selectedConversation } = props;
   const { data: UserDetailResponse, isFetching: fetchingUserDetail } = useUserApiHook.useUserDetail(
@@ -32,10 +37,10 @@ const ConversationHeader = (props: ConversationHeaderProps) => {
   return (
     <section className='tw-p-[24px] tw-bg-white tw-border-b tw-flex tw-flex-col laptop:tw-flex-row laptop:tw-items-center tw-justify-between tw-gap-2'>
       <div className='tw-flex tw-gap-[18px] tw-items-start'>
-        <AvatarWithStatus size='lg' userId={selectedConversation?.userId} />
+        <AvatarWithStatus size={isMobile ? 'md' : 'lg'} userId={selectedConversation?.userId} />
         <div>
-          <div className='tw-flex tw-flex-col laptop:tw-flex-row tw-items-start laptop:tw-items-center laptop:tw-gap-3'>
-            <Typography level='title-lg'>
+          <div className='tw-flex tw-flex-wrap tw-items-start laptop:tw-items-center tw-gap-1 laptop:tw-gap-3'>
+            <Typography sx={{ pr: 0.5 }} level={isMobile ? 'title-md' : 'title-lg'}>
               <Skeleton loading={fetchingUserDetail}>
                 {`${userDetail?.firstName ?? ''} ${userDetail?.lastName}`}
               </Skeleton>
@@ -51,7 +56,7 @@ const ConversationHeader = (props: ConversationHeaderProps) => {
               <Skeleton loading={fetchingUserDetail}>{isOnline ? 'Đang hoạt động' : 'Không trực tuyến'}</Skeleton>
             </Typography>
           </div>
-          <Typography level='body-sm'>@{userDetail?.email}</Typography>
+          <Typography level={isMobile ? 'body-xs' : 'body-sm'}>@{userDetail?.email}</Typography>
         </div>
       </div>
 
@@ -60,6 +65,7 @@ const ConversationHeader = (props: ConversationHeaderProps) => {
         variant='outlined'
         color='neutral'
         onClick={() => navigate(`/users/${selectedConversation?.userId}/profile`)}
+        size={isMobile ? 'sm' : 'md'}
       >
         Xem trang cá nhân
       </Button>

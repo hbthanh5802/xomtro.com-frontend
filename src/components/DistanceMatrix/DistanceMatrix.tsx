@@ -9,6 +9,7 @@ import { Button, Chip, Divider, LinearProgress, Table, Typography } from '@mui/j
 import React from 'react';
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 import { MdLocationPin } from 'react-icons/md';
+import { useMediaQuery } from 'react-responsive';
 
 export type DistanceMatrixFromDataType = {
   origins: { description: string; longitude: number; latitude: number };
@@ -21,6 +22,10 @@ interface DistanceMatrixProps {
   originLongitude?: number;
 }
 const DistanceMatrix = (props: DistanceMatrixProps) => {
+  const isMobile = useMediaQuery({
+    query: '(max-width: 640px)',
+  });
+
   const distanceMatrixId = React.useId();
   const { originLatitude, originLongitude, originDescription } = props;
 
@@ -78,12 +83,12 @@ const DistanceMatrix = (props: DistanceMatrixProps) => {
     <div className='tw-max-w-[100vw] tablet:tw-max-w-[680px] laptop:tw-max-w-[1000px]'>
       <section>
         <Typography>
-          <Typography color='primary' level='title-md'>
+          <Typography color='primary' level={isMobile ? 'title-sm' : 'title-md'}>
             Ma trận khoảng cách
           </Typography>{' '}
-          là công cụ giúp bạn tính toán <Typography level='title-md'>khoảng cách</Typography> và{' '}
-          <Typography level='title-md'>thời gian di chuyển</Typography> được ước tính tương đối từ hai hay nhiều điểm
-          khác nhau.
+          là công cụ giúp bạn tính toán <Typography level={isMobile ? 'title-sm' : 'title-md'}>khoảng cách</Typography>{' '}
+          và <Typography level={isMobile ? 'title-sm' : 'title-md'}>thời gian di chuyển</Typography> được ước tính tương
+          đối từ một điểm đến một hoặc nhiều điểm khác nhau.
         </Typography>
         <Typography endDecorator='✨'>
           Kết quả chỉ mang tính chất tham khảo, trên thực tế sẽ chịu ảnh hưởng từ nhiều tác động ngoại cảnh khác.
@@ -167,7 +172,7 @@ const DistanceMatrix = (props: DistanceMatrixProps) => {
               <tbody>
                 {distanceMatrixResult.map((result, index) => (
                   <tr key={`DistanceMatrixResultItem-${distanceMatrixId}-${index}`}>
-                    <td>1</td>
+                    <td>{index + 1}</td>
                     <td>{result.distance.text}</td>
                     <td>{result.duration.text}</td>
                   </tr>
