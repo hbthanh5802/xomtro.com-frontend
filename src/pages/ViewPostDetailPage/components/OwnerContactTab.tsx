@@ -87,7 +87,9 @@ const OwnerContactTab = (props: OwnerContactTabProps) => {
         <Tooltip title='Xem trang cá nhân' placement='left' arrow>
           <div className='tw-cursor-pointer' onClick={() => navigate(`/users/${post?.ownerId}/profile`)}>
             <Typography level='title-lg'>
-              {`${userDetail?.firstName ? userDetail?.firstName : ''} ${userDetail?.lastName}`}
+              <Skeleton loading={getUserDetailLoading}>{`${userDetail?.firstName ? userDetail?.firstName : ''} ${
+                userDetail?.lastName
+              }`}</Skeleton>
             </Typography>
           </div>
         </Tooltip>

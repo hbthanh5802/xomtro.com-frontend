@@ -4,6 +4,7 @@ import { MessageSelectSchemaType } from '@/types/schema.type';
 import { Badge, IconButton, Tooltip } from '@mui/joy';
 import React from 'react';
 import { TbMessage } from 'react-icons/tb';
+import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useShallow } from 'zustand/react/shallow';
@@ -11,6 +12,9 @@ import { useShallow } from 'zustand/react/shallow';
 const MessageButton = () => {
   const navigate = useNavigate();
   const { pathname } = useUrl();
+  const isMobile = useMediaQuery({
+    query: '(max-width: 640px)',
+  });
   const { socketInstance } = useAppStore(
     useShallow((state) => ({
       socketInstance: state.socketInstance,
@@ -24,10 +28,10 @@ const MessageButton = () => {
           label: 'Xem',
           onClick: () => navigate(`/conversations/${newMessage.chatId}?slug=${Math.random()}`),
         },
-        position: pathname.startsWith('/conversations') ? 'top-center' : 'bottom-right',
+        position: pathname.startsWith('/conversations') || isMobile ? 'top-center' : 'bottom-right',
       });
     },
-    [navigate, pathname],
+    [navigate, pathname, isMobile],
   );
 
   React.useEffect(() => {

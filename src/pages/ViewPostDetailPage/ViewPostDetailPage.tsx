@@ -25,6 +25,7 @@ import { Navigate } from 'react-router-dom';
 import { useShallow } from 'zustand/react/shallow';
 
 const ViewPostDetailPage = () => {
+  const [loading, setLoading] = React.useState(false);
   const { params, hash } = useUrl();
   const isDesktopOrLaptop = useMediaQuery({
     query: '(min-width: 1224px)',
@@ -36,19 +37,23 @@ const ViewPostDetailPage = () => {
   const { post, assets } = postData ?? {};
   const commentContainerRef = React.useRef<HTMLElement>(null);
 
-  const { resetPostCommentState } = useAppStore(
+  const { resetPostCommentState, currentUser } = useAppStore(
     useShallow((state) => ({
       resetPostCommentState: state.resetPostCommentState,
+      currentUser: state.currentUser,
     })),
   );
 
   React.useEffect(() => {
     const handleGetFullPost = async (postId: number) => {
+      setLoading(true);
       try {
         const response = await postService.getFullPost(postId);
         setPostData(response.data[0]);
       } catch (error) {
         console.log(handleAxiosError(error));
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -96,6 +101,13 @@ const ViewPostDetailPage = () => {
   if (!postId) {
     return <Navigate to={'/404'} />;
   }
+  if (post && post.status !== 'actived') {
+    if (currentUser && currentUser.userId !== post.ownerId) {
+      return <Navigate to={'/404'} />;
+    } else if (!currentUser) {
+      return <Navigate to={'/404'} />;
+    }
+  }
   return (
     <>
       <Helmet>
@@ -115,7 +127,7 @@ const ViewPostDetailPage = () => {
                   items={postImages}
                 />
               )}
-              {postData && post && (
+              {!loading && postData && post && (
                 <section className='PostViewDetail__detail'>
                   {post?.type === 'rental' && <RentalViewDetail data={postData as any} />}
                   {post?.type === 'wanted' && <WantedViewDetail data={postData as any} />}
