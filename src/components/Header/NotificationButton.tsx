@@ -74,7 +74,7 @@ const NotificationButton = () => {
     <Tooltip
       open={openNotificationPopover}
       variant='outlined'
-      placement='bottom-end'
+      placement={isMobile ? 'bottom' : 'bottom-end'}
       title={
         <div ref={notificationRef}>
           <Notifications />

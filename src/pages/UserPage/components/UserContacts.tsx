@@ -76,7 +76,7 @@ const ConfirmRemoveDialog = (props: { contactId: number; onSuccess: () => void }
 
   return (
     <>
-      <div className='tw-w-[400px]'>
+      <div className='tw-max-w-[100vw] tablet:tw-w-[400px]'>
         <DialogTitle>
           <span className='tw-flex tw-items-center tw-justify-center'>
             <MdOutlineInfo />
@@ -283,7 +283,7 @@ const UserContacts = () => {
             const { contactContent, contactType } = item;
             return (
               <div key={`contact-item-${contactId}-${item.id}`} className='tw-flex tw-items-center tw-justify-between'>
-                <div className='tw-flex tw-items-center tw-gap-2'>
+                <div className='tw-flex tw-items-center tw-flex-wrap tw-gap-2'>
                   <Typography level='title-sm' startDecorator={contactItemDecorator[contactType!].icon}>
                     {contactItemDecorator[contactType!].label}
                   </Typography>
