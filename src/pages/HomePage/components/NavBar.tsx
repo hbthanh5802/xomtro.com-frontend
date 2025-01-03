@@ -1,8 +1,8 @@
 import useUrl from '@/hooks/useUrl.hook';
 import LocationTab from '@/pages/HomePage/components/LocationTab';
-import { Button, Typography } from '@mui/joy';
+import { Button, Divider, Typography } from '@mui/joy';
 import React from 'react';
-import { FaHandsHoldingCircle, FaHouseChimneyUser, FaHouseMedicalFlag } from 'react-icons/fa6';
+import { FaChartPie, FaHandsHoldingCircle, FaHouseChimneyUser, FaHouseMedicalFlag } from 'react-icons/fa6';
 import { IoHome } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 
@@ -86,6 +86,18 @@ const NavBar = () => {
               sx={{ textAlign: 'left', display: 'flex', justifyContent: 'flex-start' }}
             >
               Góc pass đồ
+            </Button>
+            <Divider />
+            <Button
+              startDecorator={<FaChartPie className='tw-text-[20px]' />}
+              fullWidth
+              size='lg'
+              onClick={() => navigate('/analytics')}
+              color={tabIndex === 4 ? 'primary' : 'neutral'}
+              variant={tabIndex === 4 ? 'solid' : 'plain'}
+              sx={{ textAlign: 'left', display: 'flex', justifyContent: 'flex-start' }}
+            >
+              Thống kê
             </Button>
           </div>
         </div>

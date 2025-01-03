@@ -1,11 +1,8 @@
 import { axiosRequest } from '@/configs/axios.config';
-import { GetPostsCountByTypeWithPostConditionsDataType } from '@/types/analytic.type';
-
-export type GetPostsCountByTypeWithPostConditionsResponseType = {
-  totalPosts: number;
-  type: 'rental' | 'wanted' | 'join' | 'pass';
-  ownerId?: number;
-};
+import {
+  GetPostsCountByTypeWithPostConditionsDataType,
+  GetPostsCountByTypeWithPostConditionsResponseType,
+} from '@/types/analytic.type';
 
 class analyticService {
   getPostsCountByTypeWithPostConditions(data: GetPostsCountByTypeWithPostConditionsDataType) {

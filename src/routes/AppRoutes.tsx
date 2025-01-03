@@ -34,6 +34,7 @@ const SearchPage = lazy(() => import('@/pages/SearchPage'));
 const ViewPostDetailPage = lazy(() => import('@/pages/ViewPostDetailPage'));
 
 const ConversationPage = lazy(() => import('@/pages/ConversationPage'));
+const AnalyticPage = lazy(() => import('@/pages/AnalyticPage'));
 
 const AppRoutes: React.FC = () => {
   const { pathname } = useUrl();
@@ -141,6 +142,7 @@ const AppRoutes: React.FC = () => {
           path: '/about-us',
           element: <AboutUsPage />,
         },
+        { path: 'analytics', element: <AnalyticPage /> },
       ],
     },
     {
