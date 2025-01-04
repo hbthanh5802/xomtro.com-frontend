@@ -140,3 +140,38 @@ export const vehicleOptions = [
   { label: 'Xe tải', value: 'truck' },
   { label: 'Những phương tiện gọi xe khác', value: 'hd' },
 ];
+
+export const monthSelectOptions = Array.from({ length: 12 }, (_, i) => ({
+  label: `Tháng ${i + 1}`,
+  value: i + 1,
+}));
+
+export const generateYearOptions = ({
+  startYear = new Date().getFullYear(),
+  length = 10,
+  direction = 'forward', // 'forward' hoặc 'backward'
+}: {
+  startYear?: number;
+  length?: number;
+  direction?: 'forward' | 'backward';
+}) => {
+  return Array.from({ length }, (_, i) => {
+    const year = direction === 'forward' ? startYear + i : startYear - i;
+    return {
+      label: `Năm ${year}`,
+      value: year,
+    };
+  });
+};
+
+export const getMonthDateRange = (month?: number, year?: number) => {
+  const currentYear = new Date().getFullYear();
+  const validMonth = month && month >= 1 && month <= 12 ? month : undefined;
+
+  const startDate = new Date(year || currentYear, validMonth ? validMonth - 1 : 0, 1); // Ngày đầu tháng
+  const endDate = new Date(year || currentYear, validMonth ? validMonth : 12, 0); // Ngày cuối tháng
+
+  return { startDate, endDate };
+};
+
+export const maxPriceLimitation = 50000000;

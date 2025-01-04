@@ -1,7 +1,7 @@
 import useUrl from '@/hooks/useUrl.hook';
-import { IconButton, Tooltip } from '@mui/joy';
+import { Divider, IconButton, Tooltip } from '@mui/joy';
 import React from 'react';
-import { FaHandsHoldingCircle, FaHouseChimneyUser, FaHouseMedicalFlag } from 'react-icons/fa6';
+import { FaChartPie, FaHandsHoldingCircle, FaHouseChimneyUser, FaHouseMedicalFlag } from 'react-icons/fa6';
 import { IoHome } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 
@@ -69,6 +69,17 @@ const NavBarMobile = () => {
               variant={tabIndex === 3 ? 'solid' : 'plain'}
             >
               {<FaHandsHoldingCircle className='tw-text-[20px]' />}
+            </IconButton>
+          </Tooltip>
+          <Divider />
+          <Tooltip arrow title='Thống kê bài đăng' placement='right'>
+            <IconButton
+              size='lg'
+              onClick={() => handleTabChange(4, '/analytics')}
+              color={tabIndex === 4 ? 'primary' : 'neutral'}
+              variant={tabIndex === 4 ? 'solid' : 'plain'}
+            >
+              {<FaChartPie className='tw-text-[20px]' />}
             </IconButton>
           </Tooltip>
         </div>
