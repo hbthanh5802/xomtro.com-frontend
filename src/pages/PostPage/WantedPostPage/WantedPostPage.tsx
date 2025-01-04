@@ -15,13 +15,14 @@ import { useAppStore } from '@/store/store';
 import { SelectOptionItemType } from '@/types/common.type';
 import { InsertWantedPostDataType } from '@/types/post.type';
 import { AssetSelectSchemaType, PostSelectSchemaType, WantedPostSelectSchemaType } from '@/types/schema.type';
-import { handleAxiosError } from '@/utils/constants.helper';
+import { formatCurrencyVND, handleAxiosError, maxPriceLimitation } from '@/utils/constants.helper';
 import { formatDateForInput, timeInVietNam } from '@/utils/time.helper';
 import { insertWantedPostValidation } from '@/validations/post.validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AspectRatio, Button, Chip, Divider, Typography } from '@mui/joy';
 import React from 'react';
 import { Control, FormProvider, useFieldArray, useForm, useWatch } from 'react-hook-form';
+import { IoMdInformationCircleOutline } from 'react-icons/io';
 import { MdDeleteOutline, MdOutlineInfo } from 'react-icons/md';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -293,9 +294,7 @@ const WantedPostPage = () => {
           formData.append(key, value as string);
         }
       });
-
-      console.log('formData', data, console.log(Object.fromEntries(formData)));
-
+      // console.log('formData', data, console.log(Object.fromEntries(formData)));
       // Gửi request
       if (mode === 'create') {
         await postService.createWantedPost(formData as any);
@@ -420,6 +419,7 @@ const WantedPostPage = () => {
                         required
                         label='Giá thuê khởi điểm (/tháng):'
                         placeholder='Nhập giá khởi điểm...'
+                        max={maxPriceLimitation}
                       />
                     </div>
                     <div className='tw-flex-1'>
@@ -428,8 +428,15 @@ const WantedPostPage = () => {
                         name='priceEnd'
                         label='Giá kết thúc (/tháng):'
                         placeholder='Giá kết thúc...'
+                        max={maxPriceLimitation}
                       />
                     </div>
+                    <Typography level='body-sm' startDecorator={<IoMdInformationCircleOutline />}>
+                      Tối đa:
+                      <Typography sx={{ px: 0.5 }} level='title-sm'>
+                        {formatCurrencyVND(maxPriceLimitation)}
+                      </Typography>{' '}
+                    </Typography>
                   </div>
                   {/* Move ind Date */}
                   <div className='tablet:tw-flex tw-flex-1 tablet:tw-items-center tw-gap-2 tw-flex-wrap'>

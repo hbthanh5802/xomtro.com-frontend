@@ -10,3 +10,18 @@ export type GetPostsCountByTypeWithPostConditionsResponseType = {
   type: 'rental' | 'wanted' | 'join' | 'pass';
   ownerId?: number;
 };
+
+export type GetPostPriceAnalyticConditionDataType = {
+  totalAreaStart?: number;
+  totalAreaEnd?: number;
+  year: number;
+  provinceName?: string;
+  districtName?: string;
+  wardName?: string;
+  type?: 'rental' | 'wanted' | 'join';
+};
+
+export type GetPostPriceAnalyticConditionResponseType = {
+  month: number;
+  avgPrice: number;
+};

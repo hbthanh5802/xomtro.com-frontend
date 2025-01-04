@@ -9,7 +9,7 @@ export default {
         primaryColor: '#0B6BCB',
       },
       fontFamily: {
-        writing: 'Pacifico',
+        writing: ['Pacifico', 'sans-serif', 'monospace'],
       },
       keyframes: {
         slidein: {

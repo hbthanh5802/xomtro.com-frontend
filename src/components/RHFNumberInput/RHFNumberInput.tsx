@@ -1,4 +1,4 @@
-import { FormControl, FormHelperText, FormLabel, Input, Typography } from '@mui/joy';
+import { FormControl, FormHelperText, FormLabel, Input, InputProps, Typography } from '@mui/joy';
 import { ReactNode } from 'react';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { MdOutlineInfo } from 'react-icons/md';
@@ -20,8 +20,8 @@ interface RHFNumberInputProps<T extends FieldValues> {
   fullWidth?: boolean;
 }
 
-const RHFNumberInput = <T extends FieldValues>(props: RHFNumberInputProps<T>) => {
-  const { minWidth = 0, min, max, step, startDecorator, endDecorator, fullWidth = true } = props;
+const RHFNumberInput = <T extends FieldValues>(props: RHFNumberInputProps<T> & InputProps) => {
+  const { minWidth = 0, min, max, step, startDecorator, endDecorator, fullWidth = true, ...others } = props;
 
   return (
     <>
@@ -51,6 +51,7 @@ const RHFNumberInput = <T extends FieldValues>(props: RHFNumberInputProps<T>) =>
                 value={field.value ?? ''}
                 required={props.required}
                 fullWidth={fullWidth}
+                {...others}
               />
               {!!fieldState.error && (
                 <FormHelperText>

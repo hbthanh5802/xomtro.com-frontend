@@ -10,3 +10,19 @@ export const getPostsCountByTypeWithPostConditionsValidation = z.object({
   wardName: z.string().optional(),
   status: z.enum(['actived', 'unactived']).optional(),
 });
+export const getPostPriceAnalyticConditionValidation = z
+  .object({
+    totalAreaStart: z.number().optional(),
+    totalAreaEnd: z.number().optional(),
+  })
+  .refine(
+    (data) => {
+      if (data.totalAreaStart !== undefined && data.totalAreaEnd !== undefined) {
+        return data.totalAreaStart <= data.totalAreaEnd;
+      }
+      return true;
+    },
+    {
+      message: 'totalAreaStart phải nhỏ hơn hoặc bằng totalAreaEnd.',
+    },
+  );
