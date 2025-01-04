@@ -4,6 +4,7 @@ import { useAppStore } from '@/store/store';
 import { TokenResponseType } from '@/types/auth.type';
 import { handleAxiosError } from '@/utils/constants.helper';
 import history from '@/utils/history.helper';
+import { timeInVietNam } from '@/utils/time.helper';
 import axios, { AxiosRequestConfig } from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import queryString from 'query-string';
@@ -69,10 +70,13 @@ axiosAuth.interceptors.request.use(
   async (config) => {
     let accessToken = useAppStore.getState().accessToken;
     const decodeToken = jwtDecode(accessToken as string);
-    const date = new Date();
+    const date = timeInVietNam().toDate();
 
-    if (decodeToken.exp! < date.getTime() / 1000) {
-      console.log('Expired');
+    if (!decodeToken.exp) {
+      throw new Error('Token expiration is undefined');
+    }
+    if (decodeToken.exp < Math.floor(date.getTime() / 1000)) {
+      console.log('Expired', { exp: decodeToken.exp, date: date.getTime() });
       refreshTokenRequest = refreshTokenRequest ? refreshTokenRequest : authService.refreshUserToken();
       try {
         const response = (await refreshTokenRequest) as ApiResponse<TokenResponseType>;
