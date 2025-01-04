@@ -49,7 +49,7 @@ const RenewPostForm = (props: RenewPostFormProps) => {
 
   if (!postId) return <></>;
   return (
-    <div className='tw-w-[400px]'>
+    <div className='tw-max-w-[100vw] tablet:tw-w-[400px]'>
       <DialogTitle>
         <span className='tw-flex tw-items-center tw-justify-center'>
           <MdOutlineInfo />
@@ -59,7 +59,7 @@ const RenewPostForm = (props: RenewPostFormProps) => {
       <div className='tw-my-2'>
         <Divider />
       </div>
-      <Typography level='body-md'>Hãy thiết lập để làm mới bài viết bài đăng.</Typography>
+      <Typography level='body-md'>Hãy thiết lập thông tin dưới đây để làm mới bài viết bài đăng.</Typography>
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(handleRenewPost)} className='tw-flex tw-flex-col tw-gap-2 tw-py-[12px]'>
           <RHFNumberInput<RenewPostDataType> name='expirationAfter' label='Thời gian gia hạn:' />

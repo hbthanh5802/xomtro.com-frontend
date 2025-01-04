@@ -260,13 +260,16 @@ const PriceOverview = (props: PriceOverviewProps) => {
         </div>
       </div>
 
-      <Typography level='body-sm' startDecorator={<IoMdInformationCircleOutline />}>
-        Số liệu được tổng hợp từ{' '}
-        <Typography sx={{ px: 0.5 }} level='title-sm'>
-          giá trung bình theo tháng
-        </Typography>{' '}
-        của tất cả bài đăng theo thời gian được lựa chọn. Hãy xem như một thông tin tham khảo.
-      </Typography>
+      <div className='tw-flex tw-gap-1'>
+        <IoMdInformationCircleOutline className='tw-text-[16px] tw-mt-1 tw-shrink-0 tw-text-primaryColor' />
+        <Typography level='body-sm'>
+          Số liệu được tổng hợp từ{' '}
+          <Typography sx={{ px: 0.5 }} level='title-sm'>
+            giá trung bình theo tháng
+          </Typography>{' '}
+          của tất cả bài đăng theo thời gian được lựa chọn. Hãy xem như một thông tin tham khảo.
+        </Typography>
+      </div>
     </section>
   );
 };
