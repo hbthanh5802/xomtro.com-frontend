@@ -1,8 +1,9 @@
 import CreateConversationButton from '@/components/CreateConversationButton';
 import { useClipboard } from '@/hooks/useClipboard';
 import useUserApiHook from '@/hooks/useUserApi.hook';
-import analyticService, { GetPostsCountByTypeWithPostConditionsResponseType } from '@/services/analytic.service';
+import analyticService from '@/services/analytic.service';
 import { useAppStore } from '@/store/store';
+import { GetPostsCountByTypeWithPostConditionsResponseType } from '@/types/analytic.type';
 import { PostSelectSchemaType } from '@/types/schema.type';
 import { handleAxiosError } from '@/utils/constants.helper';
 import { Avatar, Button, Chip, Divider, Skeleton, Tooltip, Typography } from '@mui/joy';
