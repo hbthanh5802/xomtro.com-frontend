@@ -104,27 +104,7 @@ const DistanceMatrixTab = (props: DistanceMatrixTabProps) => {
             </Table>
           )}
         </div>
-        {/* <Divider />
-        <div className='tw-mt-2 tw-flex tw-flex-wrap tw-gap-2 tw-items-center'>
-          <Typography>Bạn muốn mở rộng kết quả tính toán. Hãy thử công cụ </Typography>
-          <Button
-            size='sm'
-            color='primary'
-            variant='soft'
-            endDecorator={<IoMdInformationCircleOutline />}
-            onClick={() => setOpenDistanceMatrixModal(true)}
-          >
-            Ma trận khoảng cách
-          </Button>{' '}
-        </div> */}
       </div>
-      {/* <ModalLayout isOpen={openDistanceMatrixModal} onCloseModal={() => setOpenDistanceMatrixModal(false)}>
-        <DistanceMatrix
-          originDescription={postAddress}
-          originLatitude={destinationLatitude}
-          originLongitude={destinationLongitude}
-        />
-      </ModalLayout> */}
     </>
   );
 };
@@ -238,6 +218,7 @@ const LocationDetailTab = (props: ViewPostDetailProps) => {
           dragPan
           fillOpacity={0.1}
           showToggleMapStyle
+          radius={1000}
         />
       </ModalLayout>
     </>
