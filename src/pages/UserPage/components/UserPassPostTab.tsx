@@ -5,18 +5,20 @@ import { PostTabProps } from '@/pages/UserPage/components/UserPostPage';
 import postService from '@/services/post.service';
 import { Button, Divider, LinearProgress, Skeleton } from '@mui/joy';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
 export default function UserPassPostTab(props: PostTabProps) {
   const { userId } = useUrl().params;
   const { whereConditions, orderConditions } = props;
 
   const handleFetchPosts = async ({ pageParam }: { pageParam: number }) => {
+    const toastId = toast.loading('Đang lấy danh sách bài đăng...');
     const response = await postService.searchPassPost({
       whereConditions: { ...whereConditions, ownerId: Number(userId) },
       orderConditions: orderConditions,
       pagination: { page: pageParam, pageSize: 10 },
     });
-
+    toast.dismiss(toastId);
     return response.data;
   };
 
