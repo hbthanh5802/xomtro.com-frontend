@@ -9,6 +9,7 @@ import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { useOutletContext } from 'react-router-dom';
+import { toast } from 'sonner';
 
 const RentalHome = () => {
   const { whereConditions, orderConditions } = useOutletContext() as {
@@ -17,12 +18,13 @@ const RentalHome = () => {
   };
 
   const handleFetchPosts = async ({ pageParam }: { pageParam: number }) => {
+    const toastId = toast.loading('Đang lấy danh sách bài đăng...');
     const response = await postService.searchRentalPost({
       whereConditions: { ...whereConditions, status: 'actived' },
       orderConditions: { updatedAt: 'desc', ...orderConditions },
       pagination: { page: pageParam, pageSize: 10 },
     });
-
+    toast.dismiss(toastId);
     return response.data;
   };
 
