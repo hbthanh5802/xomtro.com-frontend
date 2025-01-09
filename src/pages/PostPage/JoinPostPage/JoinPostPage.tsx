@@ -334,7 +334,9 @@ const JoinPostPage = () => {
         <form onSubmit={methods.handleSubmit(handleSubmitForm)}>
           {/* Header */}
           <header>
-            <Typography level='h4'>{mode === 'create' ? 'Tạo bài viết mới' : 'Chỉnh sửa bài viết'}</Typography>
+            <Typography level='h4'>
+              {mode === 'create' ? 'Tạo bài viết Tìm người ở ghép' : 'Chỉnh sửa bài viết Tìm người ở ghép'}
+            </Typography>
             <Typography level='body-sm'>
               Hãy hoàn thành những thông tin được yêu cầu dưới đây để tiến hành đăng bài viết mới.
             </Typography>
@@ -432,7 +434,11 @@ const JoinPostPage = () => {
                         max={maxPriceLimitation}
                       />
                     </div>
-                    <Typography level='body-sm' startDecorator={<IoMdInformationCircleOutline />}>
+                    <Typography
+                      sx={{ width: '100%' }}
+                      level='body-sm'
+                      startDecorator={<IoMdInformationCircleOutline />}
+                    >
                       Tối đa:
                       <Typography sx={{ px: 0.5 }} level='title-sm'>
                         {formatCurrencyVND(maxPriceLimitation)}

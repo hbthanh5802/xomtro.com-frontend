@@ -51,6 +51,7 @@ export const createConversationSlice: StateCreator<conversationSlice, zustandMid
   },
   disconnectSocket: () => {
     if (get().socketInstance?.connected) {
+      set(initialState);
       get().socketInstance?.disconnect();
     }
   },

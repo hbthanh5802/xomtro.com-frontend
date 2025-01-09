@@ -331,7 +331,9 @@ const JoinPostPage = () => {
         <form onSubmit={methods.handleSubmit(handleSubmitForm)}>
           {/* Header */}
           <header>
-            <Typography level='h4'>{mode === 'create' ? 'Tạo bài viết mới' : 'Chỉnh sửa bài viết'}</Typography>
+            <Typography level='h4'>
+              {mode === 'create' ? 'Tạo bài viết Thanh lý đồ' : 'Chỉnh sửa bài viết Thanh lý đồ'}
+            </Typography>
             <Typography level='body-sm'>
               Hãy hoàn thành những thông tin được yêu cầu dưới đây để tiến hành đăng bài viết mới.
             </Typography>
