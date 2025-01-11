@@ -151,6 +151,7 @@ const LocationDetailTab = (props: ViewPostDetailProps) => {
                 zoom={11}
                 className='tw-w-full tw-h-[300px]'
                 fillOpacity={0.1}
+                radius={1000}
                 // showToggleMapStyle
               />
               <Button fullWidth onClick={() => setViewMap(true)}>

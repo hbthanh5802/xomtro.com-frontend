@@ -1,6 +1,7 @@
 import EmptyMessage from '@/assets/EmptyMessage';
 import useUrl from '@/hooks/useUrl.hook';
 import ConversationItem from '@/pages/ConversationPage/components/ConversationItem';
+import ConversationItemSkeleton from '@/pages/ConversationPage/components/ConversationItemSkeleton';
 import conversationService from '@/services/conversation.service';
 import { useAppStore } from '@/store/store';
 import { GetIndividualConversationResponseType } from '@/types/conservation.type';
@@ -26,9 +27,10 @@ const SideBar = (props: SideBarProps) => {
     })),
   );
 
-  const { data: getUserIndividualConversationResponse } = conversationService.getUserIndividualConversations({
-    enabled: !!currentUser,
-  });
+  const { data: getUserIndividualConversationResponse, isFetching: getUserIndividualConversationFetching } =
+    conversationService.getUserIndividualConversations({
+      enabled: !!currentUser,
+    });
   const userIndividualConversations = getUserIndividualConversationResponse?.data;
 
   React.useEffect(() => {
@@ -47,7 +49,14 @@ const SideBar = (props: SideBarProps) => {
         <Input disabled startDecorator={<IoIosSearch className='tw-text-[20px]' />} placeholder='Tìm người dùng' />
       </section>
 
-      <section className=''>
+      <section>
+        {getUserIndividualConversationFetching && (
+          <>
+            <ConversationItemSkeleton />
+            <ConversationItemSkeleton />
+            <ConversationItemSkeleton />
+          </>
+        )}
         {userIndividualConversations?.length ? (
           userIndividualConversations?.map((item, index) => {
             return (

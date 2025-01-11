@@ -1,5 +1,6 @@
 import EmptyMessage from '@/assets/EmptyMessage';
 import useUrl from '@/hooks/useUrl.hook';
+import ConversationItemSkeleton from '@/pages/ConversationPage/components/ConversationItemSkeleton';
 import ConversationMobileItem from '@/pages/ConversationPage/components/ConversationMobileItem';
 import conversationService from '@/services/conversation.service';
 import { useAppStore } from '@/store/store';
@@ -25,9 +26,10 @@ const SideBarMobile = (props: SideBarMobileProps) => {
     })),
   );
 
-  const { data: getUserIndividualConversationResponse } = conversationService.getUserIndividualConversations({
-    enabled: !!currentUser,
-  });
+  const { data: getUserIndividualConversationResponse, isFetching: getUserIndividualConversationFetching } =
+    conversationService.getUserIndividualConversations({
+      enabled: !!currentUser,
+    });
   const userIndividualConversations = getUserIndividualConversationResponse?.data;
 
   React.useEffect(() => {
@@ -42,6 +44,13 @@ const SideBarMobile = (props: SideBarMobileProps) => {
   return (
     <div className='tw-relative tw-bg-white tw-h-full tw-overflow-y-auto tw-scrollbar-thin tw-scrollbar-track-rounded-full tw-border-r'>
       <section className='tw-flex tw-p-[8px] tw-h-[60px] tw-items-center tw-max-w-[100dvw] tw-gap-2 tw-overflow-x-auto tw-overflow-y-'>
+        {getUserIndividualConversationFetching && (
+          <>
+            <ConversationItemSkeleton />
+            <ConversationItemSkeleton />
+            <ConversationItemSkeleton />
+          </>
+        )}
         {userIndividualConversations?.length ? (
           userIndividualConversations?.map((item, index) => {
             return (
