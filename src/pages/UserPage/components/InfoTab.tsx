@@ -84,9 +84,9 @@ const InfoTab = (props: InfoTabProps) => {
 
       {/* Edit Profile Modal */}
       <ModalLayout onCloseModal={handleCloseEditProfileModal} isOpen={editProfile} title='Chỉnh sửa thông tin cá nhân'>
-        <div className='tw-w-fit tw-flex tw-justify-center tw-mx-auto'>
-          <EditProfile userData={userData} onSuccess={() => setEditProfile(false)} />
-        </div>
+        {/* <div className='tw-w-fit tw-flex tw-justify-center tw-mx-auto'> */}
+        <EditProfile userData={userData} onSuccess={() => setEditProfile(false)} />
+        {/* </div> */}
       </ModalLayout>
 
       <div className='tw-relative tw-h-[180px]'>

@@ -22,6 +22,7 @@ import { Helmet } from 'react-helmet';
 import ImageGallery from 'react-image-gallery';
 import { useMediaQuery } from 'react-responsive';
 import { Navigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import { useShallow } from 'zustand/react/shallow';
 
 const ViewPostDetailPage = () => {
@@ -46,14 +47,17 @@ const ViewPostDetailPage = () => {
 
   React.useEffect(() => {
     const handleGetFullPost = async (postId: number) => {
+      const toastId = toast.loading('Đang lấy thông tin bài đăng. Vui lòng chờ...');
       setLoading(true);
       try {
         const response = await postService.getFullPost(postId);
         setPostData(response.data[0]);
       } catch (error) {
         console.log(handleAxiosError(error));
+        toast.error('Có lỗi xảy ra. Vui lòng thử lại sau', { id: toastId });
       } finally {
         setLoading(false);
+        toast.dismiss(toastId);
       }
     };
 

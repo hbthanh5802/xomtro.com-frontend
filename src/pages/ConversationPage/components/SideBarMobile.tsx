@@ -44,14 +44,13 @@ const SideBarMobile = (props: SideBarMobileProps) => {
   return (
     <div className='tw-relative tw-bg-white tw-h-full tw-overflow-y-auto tw-scrollbar-thin tw-scrollbar-track-rounded-full tw-border-r'>
       <section className='tw-flex tw-p-[8px] tw-h-[60px] tw-items-center tw-max-w-[100dvw] tw-gap-2 tw-overflow-x-auto tw-overflow-y-'>
-        {getUserIndividualConversationFetching && (
+        {getUserIndividualConversationFetching ? (
           <>
             <ConversationItemSkeleton />
             <ConversationItemSkeleton />
             <ConversationItemSkeleton />
           </>
-        )}
-        {userIndividualConversations?.length ? (
+        ) : userIndividualConversations?.length ? (
           userIndividualConversations?.map((item, index) => {
             return (
               <div

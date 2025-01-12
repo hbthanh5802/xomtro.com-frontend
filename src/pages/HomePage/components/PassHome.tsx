@@ -12,13 +12,14 @@ import { useOutletContext } from 'react-router-dom';
 import { toast } from 'sonner';
 
 const PassHome = () => {
+  const toastId = React.useId();
   const { whereConditions, orderConditions } = useOutletContext() as {
     whereConditions: WhereConditionType;
     orderConditions: OrderConditionType;
   };
 
   const handleFetchPosts = async ({ pageParam }: { pageParam: number }) => {
-    const toastId = toast.loading('Đang lấy danh sách bài đăng...');
+    toast.loading('Đang lấy danh sách bài đăng...', { id: toastId });
     const response = await postService.searchPassPost({
       whereConditions: { ...whereConditions, status: 'actived' },
       orderConditions: { updatedAt: 'desc', ...orderConditions },
@@ -43,7 +44,8 @@ const PassHome = () => {
 
   React.useEffect(() => {
     queryClient.invalidateQueries({ queryKey: ['home', 'posts', 'pass'] });
-  }, [whereConditions]);
+    toast.dismiss(toastId);
+  }, [whereConditions, toastId]);
 
   return (
     <>
