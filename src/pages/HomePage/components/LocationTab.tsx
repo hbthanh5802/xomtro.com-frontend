@@ -73,7 +73,7 @@ const LocationTab = () => {
             dragPan
             doubleClickZoom
             scrollZoom
-            radius={1000}
+            radius={0}
             center={[userLocation?.longitude, userLocation?.latitude]}
             className='tw-w-full tw-h-[300px]'
           />
