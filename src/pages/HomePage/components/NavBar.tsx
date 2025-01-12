@@ -31,6 +31,8 @@ const NavBar = () => {
       setTabIndex(2);
     } else if (pathname === '/home/pass' && tabIndex !== 3) {
       setTabIndex(3);
+    } else if (pathname === '/analytics' && tabIndex !== 4) {
+      setTabIndex(4);
     }
   }, [pathname, navigate, tabIndex]);
 
@@ -92,12 +94,12 @@ const NavBar = () => {
               startDecorator={<FaChartPie className='tw-text-[20px]' />}
               fullWidth
               size='lg'
-              onClick={() => navigate('/analytics')}
+              onClick={() => handleTabChange(4, '/analytics')}
               color={tabIndex === 4 ? 'primary' : 'neutral'}
               variant={tabIndex === 4 ? 'solid' : 'plain'}
               sx={{ textAlign: 'left', display: 'flex', justifyContent: 'flex-start' }}
             >
-              Thống kê
+              Thống kê bài đăng
             </Button>
           </div>
         </div>
