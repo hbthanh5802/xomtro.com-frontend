@@ -151,7 +151,7 @@ const LocationDetailTab = (props: ViewPostDetailProps) => {
                 zoom={11}
                 className='tw-w-full tw-h-[300px]'
                 fillOpacity={0.1}
-                radius={1000}
+                radius={0}
                 // showToggleMapStyle
               />
               <Button fullWidth onClick={() => setViewMap(true)}>
@@ -219,7 +219,7 @@ const LocationDetailTab = (props: ViewPostDetailProps) => {
           dragPan
           fillOpacity={0.1}
           showToggleMapStyle
-          radius={1000}
+          radius={0}
         />
       </ModalLayout>
     </>

@@ -5,14 +5,16 @@ import { PostTabProps } from '@/pages/UserPage/components/UserPostPage';
 import postService from '@/services/post.service';
 import { Button, Divider, LinearProgress, Skeleton } from '@mui/joy';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import React from 'react';
 import { toast } from 'sonner';
 
 export default function UserRentalPostTab(props: PostTabProps) {
+  const toastId = React.useId();
   const { userId } = useUrl().params;
   const { whereConditions, orderConditions } = props;
 
   const handleFetchPosts = async ({ pageParam }: { pageParam: number }) => {
-    const toastId = toast.loading('Đang lấy danh sách bài đăng...');
+    toast.loading('Đang lấy danh sách bài đăng...', { id: toastId });
     const response = await postService.searchRentalPost({
       whereConditions: { ...whereConditions, ownerId: Number(userId) },
       orderConditions: orderConditions,
