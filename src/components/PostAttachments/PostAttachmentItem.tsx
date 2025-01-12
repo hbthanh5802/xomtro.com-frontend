@@ -34,7 +34,7 @@ const PostAttachmentItem = (props: PostAttachmentItemProps) => {
                 flexShrink: 0,
               }}
             >
-              {assets.length && <img src={assets?.[0].url} alt={post?.title} />}
+              {!!assets.length && <img src={assets?.[0].url} alt={post?.title} />}
             </AspectRatio>
           </Skeleton>
 

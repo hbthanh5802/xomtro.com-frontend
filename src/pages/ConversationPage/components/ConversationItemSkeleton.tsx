@@ -10,9 +10,9 @@ const ConversationItemSkeleton = () => {
   }
   return (
     <div className={`tw-px-[18px] tw-py-[18px] tw-flex tw-items-start tw-gap-2`}>
-      <Skeleton variant='circular' width={42} height={42} />
+      <Skeleton animation='wave' variant='circular' width={42} height={42} />
       <div className='tw-flex-1 tw-overflow-hidden tw-hidden tablet:tw-block'>
-        <Skeleton variant='rectangular' sx={{ flex: 1, height: 42 }} />
+        <Skeleton animation='wave' variant='rectangular' sx={{ flex: 1, height: 42 }} />
       </div>
     </div>
   );
