@@ -50,14 +50,13 @@ const SideBar = (props: SideBarProps) => {
       </section>
 
       <section>
-        {getUserIndividualConversationFetching && (
+        {getUserIndividualConversationFetching ? (
           <>
             <ConversationItemSkeleton />
             <ConversationItemSkeleton />
             <ConversationItemSkeleton />
           </>
-        )}
-        {userIndividualConversations?.length ? (
+        ) : userIndividualConversations?.length ? (
           userIndividualConversations?.map((item, index) => {
             return (
               <div
